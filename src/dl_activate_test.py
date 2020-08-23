@@ -98,7 +98,11 @@ def test_softmax():
     zr_copy = np.copy(zr)
     ar = softmax(zr)
 
-    zr_max = np.max(zr)
-    assert 1==1 #TO DO
+    zr_max = np.max(zr, axis=0) # Get the max of each column
+    zr_copy = zr_copy - zr_max # Subtract the max of each column from all rows
+    zr_copy = np.exp(zr_copy) # Take the exponent of all values
+    zr_copy_sum_cols = np.sum(zr_copy, axis=0) # The the sum of each column
+    expected_value = zr_copy / zr_copy_sum_cols # Divide each row by the sum of each column
+    np.testing.assert_equal(ar, expected_value) # Check that ar is the same as the expected value.
     
 

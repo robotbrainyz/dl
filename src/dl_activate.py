@@ -36,7 +36,7 @@ def softmax(z):
     Returns: 
         matrix: A n[1] x m matrix where the elements in each column sum up to 1, and each element in a column is a 0 to 1 probability that it is the predicted class among the n[l] classes.
     '''
-    expz = np.exp(z - np.max(z)) # subtract max of each column for numerical stability.
+    expz = np.exp(z - np.max(z, axis=0)) # subtract max of each column for numerical stability.
     return expz / np.sum(expz, axis=0)
 
 def sigmoid_back(z):

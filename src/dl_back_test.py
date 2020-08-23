@@ -1,7 +1,7 @@
 import numpy as np
 
 from dl_activate import sigmoid, tanh
-from dl_back import back_linear, back_sigmoid, back_tanh
+from dl_back import back_linear, back_sigmoid, back_tanh, back_softmax
 
 def test_back_linear():
     dz = np.random.randn(3,4) # 3 nodes in layer, 4 examples
@@ -47,4 +47,11 @@ def test_back_tanh():
     assert dz[1, 2] == expected_value    
 
 def test_back_softmax():
-    assert 1==1
+    y = np.random.randn(3,4) # 3 nodes in layer, 4 examples
+    y_pred = np.random.randn(3,4) # 3 nodes in layer, 4 examples
+    dz = back_softmax(y, y_pred)
+    expected_value = y_pred - y
+
+    # test that all values are equal to the expected values
+    np.testing.assert_equal(dz, expected_value) 
+

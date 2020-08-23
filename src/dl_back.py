@@ -56,7 +56,7 @@ def back_tanh(da, z):
 def back_softmax(y, y_pred):
     ''' Given y and y_pred (y_pred is also a), compute dL/dz. 
 
-    y_pred is a = softmax(z), where z=wx+b.
+    y_pred = a, where a = softmax(z), where z=wx+b.
     Let L be the loss function given y and y_pred. By reduction of the underlying math, it is not necessary to compute dL/da to get dL/dz for back propagation. dL/dz is simply y_pred - y.
 
     Args:
