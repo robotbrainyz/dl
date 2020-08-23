@@ -1,7 +1,7 @@
 import math
 import numpy as np
 
-from dl_activate import sigmoid, sigmoid_back, tanh, tanh_back
+from dl_activate import sigmoid, sigmoid_back, tanh, tanh_back, softmax
 
 '''
 Test sigmoid activating a matrix of zeros.
@@ -89,3 +89,16 @@ def test_tanh_back():
         for j in range(0, zr_shape[1]):
             expected_value = 1.0 - (zr_copy[i][j] * zr_copy[i][j])
             assert ar[i][j] == expected_value
+
+'''
+Test the softmax activation function
+'''
+def test_softmax():
+    zr = np.random.randn(3,4)
+    zr_copy = np.copy(zr)
+    ar = softmax(zr)
+
+    zr_max = np.max(zr)
+    assert 1==1 #TO DO
+    
+
