@@ -26,5 +26,10 @@ def back_tanh(da, z):
     '''    
     return da * tanh_back(z)
 
+def back_softmax(y, y_pred):
+    ''' Given y and y_pred (y_pred is also a), compute dL/dz. 
+    '''        
+    return y_pred - y
+    
     
 

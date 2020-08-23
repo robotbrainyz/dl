@@ -27,6 +27,18 @@ def tanh(z):
     
     return (2.0 / (np.exp(-2 * z) + 1.0)) - 1
 
+def softmax(z):
+    ''' Softmax activation.
+
+    Args:
+        z (matrix): a n[1] x m matrix, where n[1] is the number of nodes in the layer being activated, and m is the number of examples. z = wx + b, where w is a n[1] x n[0] matrix, and x is a n[0] x m matrix. b is a n[1] x m matrix where every column is the same. 
+
+    Returns: 
+        matrix: A n[1] x m matrix where the elements in each column sum up to 1, and each element in a column is a 0 to 1 probability that it is the predicted class among the n[l] classes.
+    '''
+    expz = np.exp(z - np.max(z)) # subtract max of each column for numerical stability.
+    return expz / np.sum(expz, axis=0)
+
 def sigmoid_back(z):
     '''
     Derivative of the sigmoid function.
@@ -58,5 +70,3 @@ def tanh_back(z):
     
     tz = tanh(z)
     return 1 - (tz * tz)
-
-
