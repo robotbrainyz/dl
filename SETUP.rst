@@ -60,7 +60,7 @@ Contents:
 Pull python docstring comments into restructuredtext files
 cd doc
 mkdir source
-sphinx-apidoc -f -o source/ ../src
+sphinx-apidoc -f -o . ../src
 This should create a list of .rst files in the /doc folder
 
 Generate html from restructuredtext (.rst) files

@@ -69,6 +69,18 @@ The sigmoid derivative is sigmoid(z).(1 - sigmoid(z)).</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="dl_activate.softmax">
+<code class="descclassname">dl_activate.</code><code class="descname">softmax</code><span class="sig-paren">(</span><em>z</em><span class="sig-paren">)</span><a class="headerlink" href="#dl_activate.softmax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Softmax activation.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>z (matrix): a n[1] x m matrix, where n[1] is the number of nodes in the layer being activated, and m is the number of examples. z = wx + b, where w is a n[1] x n[0] matrix, and x is a n[0] x m matrix. b is a n[1] x m matrix where every column is the same.</dd>
+<dt>Returns: </dt>
+<dd>matrix: A n[1] x m matrix where the elements in each column sum up to 1, and each element in a column is a 0 to 1 probability that it is the predicted class among the n[l] classes.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
 <dt id="dl_activate.tanh">
 <code class="descclassname">dl_activate.</code><code class="descname">tanh</code><span class="sig-paren">(</span><em>z</em><span class="sig-paren">)</span><a class="headerlink" href="#dl_activate.tanh" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tanh activation.</p>
