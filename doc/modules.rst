@@ -12,3 +12,5 @@ src
    dl_forward_test
    dl_loss
    dl_loss_test
+   dl_model_mlp
+   dl_model_mlp_test

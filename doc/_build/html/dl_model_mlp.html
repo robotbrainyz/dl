@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>dl_loss_test module &mdash; dl 1 documentation</title>
+    <title>dl_model_mlp module &mdash; dl 1 documentation</title>
     
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -25,8 +25,8 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="dl 1 documentation" href="index.html" />
     <link rel="up" title="src" href="modules.html" />
-    <link rel="next" title="dl_model_mlp module" href="dl_model_mlp.html" />
-    <link rel="prev" title="dl_loss module" href="dl_loss.html" />
+    <link rel="next" title="dl_model_mlp_test module" href="dl_model_mlp_test.html" />
+    <link rel="prev" title="dl_loss_test module" href="dl_loss_test.html" />
    
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
@@ -39,27 +39,40 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-dl_loss_test">
-<span id="dl-loss-test-module"></span><h1>dl_loss_test module<a class="headerlink" href="#module-dl_loss_test" title="Permalink to this headline">¶</a></h1>
-<dl class="function">
-<dt id="dl_loss_test.test_loss_cross_entropy_back">
-<code class="descclassname">dl_loss_test.</code><code class="descname">test_loss_cross_entropy_back</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dl_loss_test.test_loss_cross_entropy_back" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+  <div class="section" id="module-dl_model_mlp">
+<span id="dl-model-mlp-module"></span><h1>dl_model_mlp module<a class="headerlink" href="#module-dl_model_mlp" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="dl_model_mlp.MultiLayerPerceptronLayerConfig">
+<em class="property">class </em><code class="descclassname">dl_model_mlp.</code><code class="descname">MultiLayerPerceptronLayerConfig</code><span class="sig-paren">(</span><em>numNodes</em>, <em>activationFunctionID</em><span class="sig-paren">)</span><a class="headerlink" href="#dl_model_mlp.MultiLayerPerceptronLayerConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Configuration and settings for a layer in a multi-layer perceptron model.</p>
+</dd></dl>
 
-<dl class="function">
-<dt id="dl_loss_test.test_loss_cross_entropy_multi_row_input">
-<code class="descclassname">dl_loss_test.</code><code class="descname">test_loss_cross_entropy_multi_row_input</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dl_loss_test.test_loss_cross_entropy_multi_row_input" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dl class="class">
+<dt id="dl_model_mlp.MultiLayerPerceptronModel">
+<em class="property">class </em><code class="descclassname">dl_model_mlp.</code><code class="descname">MultiLayerPerceptronModel</code><span class="sig-paren">(</span><em>numInputNodes</em>, <em>layerConfigs</em><span class="sig-paren">)</span><a class="headerlink" href="#dl_model_mlp.MultiLayerPerceptronModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>A multi-layer perceptron model.</p>
+<dl class="method">
+<dt id="dl_model_mlp.MultiLayerPerceptronModel.validateLayerConfigs">
+<code class="descname">validateLayerConfigs</code><span class="sig-paren">(</span><em>layerConfigs</em><span class="sig-paren">)</span><a class="headerlink" href="#dl_model_mlp.MultiLayerPerceptronModel.validateLayerConfigs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates if a valid list of layer configuration objects is provided to initialize the multi-layer perceptron model.</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>Args:</dt>
+<dd>layerConfigs (list)</dd>
+</dl>
+</div></blockquote>
+<p>: A list of MultiLayerPerceptronLayerConfig objects.</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>Returns:</dt>
+<dd>bool: True if the list of layer configuration objects is valid, False otherwise.</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
 
-<dl class="function">
-<dt id="dl_loss_test.test_loss_cross_entropy_single_row_input">
-<code class="descclassname">dl_loss_test.</code><code class="descname">test_loss_cross_entropy_single_row_input</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dl_loss_test.test_loss_cross_entropy_single_row_input" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="dl_loss_test.test_loss_cross_entropy_softmax">
-<code class="descclassname">dl_loss_test.</code><code class="descname">test_loss_cross_entropy_softmax</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dl_loss_test.test_loss_cross_entropy_softmax" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+</dd></dl>
 
 </div>
 
@@ -74,8 +87,8 @@
   <li><a href="index.html">Documentation overview</a><ul>
   <li><a href="setup.html">dl - Neural Networks in Python</a><ul>
   <li><a href="modules.html">src</a><ul>
-      <li>Previous: <a href="dl_loss.html" title="previous chapter">dl_loss module</a></li>
-      <li>Next: <a href="dl_model_mlp.html" title="next chapter">dl_model_mlp module</a></li>
+      <li>Previous: <a href="dl_loss_test.html" title="previous chapter">dl_loss_test module</a></li>
+      <li>Next: <a href="dl_model_mlp_test.html" title="next chapter">dl_model_mlp_test module</a></li>
   </ul></li>
   </ul></li>
   </ul></li>
@@ -84,7 +97,7 @@
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/dl_loss_test.txt"
+      <li><a href="_sources/dl_model_mlp.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -113,7 +126,7 @@
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
       
       |
-      <a href="_sources/dl_loss_test.txt"
+      <a href="_sources/dl_model_mlp.txt"
           rel="nofollow">Page source</a>
     </div>
 
