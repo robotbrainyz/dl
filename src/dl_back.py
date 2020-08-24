@@ -9,12 +9,16 @@ def back_linear(dz, a_prev, w):
 
     Args:
         dz (matrix): A (n[l] x m) matrix, where l is the current layer, and n[l] is the number of nodes in the current layer. 
+
         a_prev (matrix): A (n[l-1] x m) matrix. This is the activation output from the previous layer.
+
         w (matrix): A (n[l] x n[l-1]) matrix. Weight values for the connections between the l-1, the previous layer, and l, the current layer.
 
     Returns:
         dw (matrix): A (n[l] x n[l-1]) matrix. The values are the change in L with respect to the weights between the l-1 and l layers.
+
         db (vector): A vector of size n[l]. The values are the change in L with respect to the constant b in the l layer.
+
         da_prev (matrix): A (n[l-1] x m) matrix. This is a matrix containing the change in L with respect to a[l-1], the activation output from the previous layer.
 
     '''
@@ -32,6 +36,7 @@ def back_sigmoid(da, z):
 
     Args:
         da (matrix): A (n[l] x m) matrix containing dL/da values.
+
         z (matrix): A (n[l] x m) matrix containing z=wx+b values.
 
     Returns:
@@ -46,6 +51,7 @@ def back_tanh(da, z):
 
     Args:
         da (matrix): A (n[l] x m) matrix containing dL/da values.
+
         z (matrix): A (n[l] x m) matrix containing z=wx+b values.
 
     Returns:
@@ -61,7 +67,8 @@ def back_softmax(y, y_pred):
 
     Args:
         y (matrix): A (n[l] x m) matrix. Contains the expected output value for each example in each column. m is the number of examples.
-        y (matrix): A (n[l] x m) matrix. Contains the predicted values for each example in each column. m is the number of examples.
+
+        y_pred (matrix): A (n[l] x m) matrix. Contains the predicted values for each example in each column. m is the number of examples.
 
     Returns:
         dL/dz (matrix): A (n[l] x m) matrix.    
