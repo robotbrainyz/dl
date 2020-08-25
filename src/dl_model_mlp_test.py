@@ -1,11 +1,11 @@
-from dl_model_mlp import MultiLayerPerceptronLayerConfig, MultiLayerPerceptronModel
+from dl_model_mlp import MLPLayerConfig, MLPModel
 
 
-def test_MultiLayerPerceptronModel_invalidConfig():
+def test_MLPModel_invalidConfig():
     # Test that a 'None' or null MLP layer configs is not accepted.        
     layers = None
     numInputNodes = 1
-    mlp = MultiLayerPerceptronModel(numInputNodes, layers)
+    mlp = MLPModel(numInputNodes, layers)
 
     mlpWeightsExist = True
     mlpConstantsExist = True
@@ -24,7 +24,7 @@ def test_MultiLayerPerceptronModel_invalidConfig():
 
     # Test that an empty list of MLP layer configs is not accepted.    
     layers = []
-    mlp = MultiLayerPerceptronModel(numInputNodes, layers)
+    mlp = MLPModel(numInputNodes, layers)
 
     mlpWeightsExist = True
     mlpConstantsExist = True
@@ -43,7 +43,7 @@ def test_MultiLayerPerceptronModel_invalidConfig():
 
     # Test that non-list type for MLP layer configs is not accepted.
     layers = 1
-    mlp = MultiLayerPerceptronModel(numInputNodes, layers)
+    mlp = MLPModel(numInputNodes, layers)
 
     mlpWeightsExist = True
     mlpConstantsExist = True
@@ -60,9 +60,9 @@ def test_MultiLayerPerceptronModel_invalidConfig():
         mlpConstantsExist = False
     assert not mlpConstantsExist
 
-    # Test that a non MultiLayerPerceptronLayerConfig object is not accepted.
-    layers = [MultiLayerPerceptronLayerConfig(2, 'sigmoid'), 'non MultiLayerPerceptronLayerConfig string']
-    mlp = MultiLayerPerceptronModel(numInputNodes, layers)
+    # Test that a non MLPLayerConfig object is not accepted.
+    layers = [MLPLayerConfig(2, 'sigmoid'), 'non MLPLayerConfig string']
+    mlp = MLPModel(numInputNodes, layers)
 
     mlpWeightsExist = True
     mlpConstantsExist = True
@@ -80,11 +80,11 @@ def test_MultiLayerPerceptronModel_invalidConfig():
     assert not mlpConstantsExist        
 
     
-def test_MultiLayerPerceptronModel_init_1Layer_MLP():
-    layer0 = MultiLayerPerceptronLayerConfig(1, 'sigmoid')
+def test_MLPModel_init_1Layer_MLP():
+    layer0 = MLPLayerConfig(1, 'sigmoid')
     layers = [layer0]
     numInputNodes = 3
-    mlp = MultiLayerPerceptronModel(numInputNodes, layers)
+    mlp = MLPModel(numInputNodes, layers)
     assert len(mlp.weights) == 1
     assert mlp.weights[0].shape[0] == 1
     assert mlp.weights[0].shape[1] == 3
@@ -92,12 +92,12 @@ def test_MultiLayerPerceptronModel_init_1Layer_MLP():
     assert mlp.constants[0].shape[0] == 1        
     assert mlp.constants[0].shape[1] == 1
 
-def test_MultiLayerPerceptronModel_init_2Layer_MLP():
-    layer0 = MultiLayerPerceptronLayerConfig(5, 'tanh')
-    layer1 = MultiLayerPerceptronLayerConfig(3, 'softmax')
+def test_MLPModel_init_2Layer_MLP():
+    layer0 = MLPLayerConfig(5, 'tanh')
+    layer1 = MLPLayerConfig(3, 'softmax')
     layers = [layer0, layer1]
     numInputNodes = 4
-    mlp = MultiLayerPerceptronModel(numInputNodes, layers)
+    mlp = MLPModel(numInputNodes, layers)
     assert len(mlp.weights) == 2
     assert mlp.weights[0].shape[0] == 5
     assert mlp.weights[0].shape[1] == 4
