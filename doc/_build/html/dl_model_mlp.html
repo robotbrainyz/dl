@@ -73,31 +73,21 @@
 <dl class="docutils">
 <dt>Args:</dt>
 <dd>layerConfigs (list): A list of MLPLayerConfig objects.</dd>
-<dt>Returns:</dt>
-<dd>bool: True if the list of layer configuration objects is valid, False otherwise.</dd>
 </dl>
 </dd></dl>
 
-</dd></dl>
-
-<dl class="function">
-<dt id="dl_model_mlp.mlpInitConstants">
-<code class="descclassname">dl_model_mlp.</code><code class="descname">mlpInitConstants</code><span class="sig-paren">(</span><em>mlp</em><span class="sig-paren">)</span><a class="headerlink" href="#dl_model_mlp.mlpInitConstants" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resets the constant values in the given multi layer perceptron.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>mlp (MLPModel): The multi-layer perceptron containing the weights to reset.</dd>
-</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="dl_model_mlp.mlpInitWeights">
-<code class="descclassname">dl_model_mlp.</code><code class="descname">mlpInitWeights</code><span class="sig-paren">(</span><em>mlp</em>, <em>initWeightsMethodID</em><span class="sig-paren">)</span><a class="headerlink" href="#dl_model_mlp.mlpInitWeights" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resets the weight values in the given multi-layer perceptron using the given weight initialization method.</p>
+<code class="descclassname">dl_model_mlp.</code><code class="descname">mlpInitWeights</code><span class="sig-paren">(</span><em>mlp</em>, <em>useZeroSeed</em><span class="sig-paren">)</span><a class="headerlink" href="#dl_model_mlp.mlpInitWeights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the weight values in the given multi-layer perceptron using the He initialization method.</p>
+<p>The He initialization method is based on a paper by He et al., 2015.
+Randomly initialize weights in a layer using mean 0 and variance 1. Scale the weights by sqrt(2/(n[l-1])), where n[l-1] is the number of nodes in the previous layer.</p>
 <dl class="docutils">
 <dt>Args:</dt>
 <dd><p class="first">mlp (MLPModel): The multi-layer perceptron containing the weights to reset.</p>
-<p class="last">initWeightsMethodID (string): &#8216;standard&#8217;, &#8216;He&#8217;, or &#8216;Xavier&#8217;.</p>
+<p class="last">useZeroSeed (bool): Flag to indicate if 0 is used as the seed for random number generation.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -108,7 +98,7 @@
 <dd><p>Performs forward propagation with input X through the given multi-layer perceptron.</p>
 <dl class="docutils">
 <dt>Args:</dt>
-<dd><p class="first">mlp (MLPModel): The multi-layer perceptron (MLP) containing the constants to reset.</p>
+<dd><p class="first">mlp (MLPModel): The multi-layer perceptron (MLP) containing the biases to reset.</p>
 <p class="last">X (matrix): A matrix where each column is a training example. The number of rows is the number of input features to the multi-layer perceptron.</p>
 </dd>
 <dt>Returns:</dt>
@@ -117,13 +107,13 @@
 </dd></dl>
 
 <dl class="function">
-<dt id="dl_model_mlp.mlpSetConstants">
-<code class="descclassname">dl_model_mlp.</code><code class="descname">mlpSetConstants</code><span class="sig-paren">(</span><em>mlp</em>, <em>constants</em><span class="sig-paren">)</span><a class="headerlink" href="#dl_model_mlp.mlpSetConstants" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets the constant values in the given multi-layer perceptron with the given list of matrices.</p>
+<dt id="dl_model_mlp.mlpSetBiases">
+<code class="descclassname">dl_model_mlp.</code><code class="descname">mlpSetBiases</code><span class="sig-paren">(</span><em>mlp</em>, <em>biases</em><span class="sig-paren">)</span><a class="headerlink" href="#dl_model_mlp.mlpSetBiases" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the bias values in the given multi-layer perceptron with the given list of matrices.</p>
 <dl class="docutils">
 <dt>Args:</dt>
-<dd><p class="first">mlp (MLPModel): The multi-layer perceptron (MLP) containing the constants to reset.</p>
-<p class="last">constants (list of matrices): A list of matrices containing the constant values. The size of the matrices should match that in the MLP model, otherwise an exception will be raised. Each matrix in this list should only have 1 column.</p>
+<dd><p class="first">mlp (MLPModel): The multi-layer perceptron (MLP) containing the biases to reset.</p>
+<p class="last">biases (list of matrices): A list of matrices containing the bias values. The size of the matrices should match that in the MLP model, otherwise an exception will be raised. Each matrix in this list should only have 1 column.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -146,7 +136,7 @@
 <dd><p>Trains the given multi-layer perceptron with the Adam optimization algorithm. Uses the given regularization parameters and batchSize for training.</p>
 <dl class="docutils">
 <dt>Args:</dt>
-<dd><p class="first">mlp (MLPModel): The multi-layer perceptron (MLP) containing the constants to reset.</p>
+<dd><p class="first">mlp (MLPModel): The multi-layer perceptron (MLP) containing the biases to reset.</p>
 <p>X (matrix): A matrix where each column is a training example. The number of rows is the number of input features to the multi-layer perceptron.</p>
 <p>y (matrix): A matrix where each column is a training example. The number of rows is the number of output features from the multi-layer perceptron and should match the size of the last layer in the MLP.</p>
 <p>regularizer (Regularizer): Object that computes the L1 or L2 regularization amount that is added to the loss during training.</p>
