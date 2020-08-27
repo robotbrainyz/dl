@@ -80,14 +80,14 @@
 
 <dl class="function">
 <dt id="dl_model_mlp.mlpInitWeights">
-<code class="descclassname">dl_model_mlp.</code><code class="descname">mlpInitWeights</code><span class="sig-paren">(</span><em>mlp</em>, <em>useZeroSeed</em><span class="sig-paren">)</span><a class="headerlink" href="#dl_model_mlp.mlpInitWeights" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">dl_model_mlp.</code><code class="descname">mlpInitWeights</code><span class="sig-paren">(</span><em>mlp</em>, <em>useSeeds</em><span class="sig-paren">)</span><a class="headerlink" href="#dl_model_mlp.mlpInitWeights" title="Permalink to this definition">¶</a></dt>
 <dd><p>Resets the weight values in the given multi-layer perceptron using the He initialization method.</p>
 <p>The He initialization method is based on a paper by He et al., 2015.
 Randomly initialize weights in a layer using mean 0 and variance 1. Scale the weights by sqrt(2/(n[l-1])), where n[l-1] is the number of nodes in the previous layer.</p>
 <dl class="docutils">
 <dt>Args:</dt>
 <dd><p class="first">mlp (MLPModel): The multi-layer perceptron containing the weights to reset.</p>
-<p class="last">useZeroSeed (bool): Flag to indicate if 0 is used as the seed for random number generation.</p>
+<p class="last">useSeeds (bool): Flag to indicate if seeds are used for random number generation. This is useful in testing where the same set of random numbers can be generated again to validate against the weight values.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -132,16 +132,20 @@ Randomly initialize weights in a layer using mean 0 and variance 1. Scale the we
 
 <dl class="function">
 <dt id="dl_model_mlp.mlpTrain">
-<code class="descclassname">dl_model_mlp.</code><code class="descname">mlpTrain</code><span class="sig-paren">(</span><em>mlp</em>, <em>X</em>, <em>y</em>, <em>regularizer</em>, <em>batchSize=2000</em><span class="sig-paren">)</span><a class="headerlink" href="#dl_model_mlp.mlpTrain" title="Permalink to this definition">¶</a></dt>
-<dd><p>Trains the given multi-layer perceptron with the Adam optimization algorithm. Uses the given regularization parameters and batchSize for training.</p>
+<code class="descclassname">dl_model_mlp.</code><code class="descname">mlpTrain</code><span class="sig-paren">(</span><em>mlp</em>, <em>X</em>, <em>y</em>, <em>lossFunctionID</em>, <em>regularizer</em>, <em>batchSize=2000</em>, <em>numIterations=1</em><span class="sig-paren">)</span><a class="headerlink" href="#dl_model_mlp.mlpTrain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trains the given multi-layer perceptron for 1 epoch with the Adam optimization algorithm. 1 epoch propagates all training examples through the multi-layer perceptron exactly once. Uses the given regularization parameters and batchSize for training.</p>
 <dl class="docutils">
 <dt>Args:</dt>
 <dd><p class="first">mlp (MLPModel): The multi-layer perceptron (MLP) containing the biases to reset.</p>
-<p>X (matrix): A matrix where each column is a training example. The number of rows is the number of input features to the multi-layer perceptron.</p>
+<p>X (matrix): A matrix where each column is a training example. The number of rows is the number of input features to the multi-layer perceptron. This function assumes that X is already pre-processed for training, i.e. any data set shuffling, etc. is already done.</p>
 <p>y (matrix): A matrix where each column is a training example. The number of rows is the number of output features from the multi-layer perceptron and should match the size of the last layer in the MLP.</p>
+<p>lossFunctionID (string): Function name that matches a loss function in dl_loss.py.</p>
 <p>regularizer (Regularizer): Object that computes the L1 or L2 regularization amount that is added to the loss during training.</p>
-<p class="last">batchSize (int): If the number of columns in X is larger than batchSize, X is broken down into batches, each with batchSize number of columns for training.</p>
+<p>batchSize (int): If the number of columns in X is larger than batchSize, X is broken down into batches, each with batchSize number of columns for training.</p>
+<p class="last">numIterations (int): Number of epochs to train the given MLP. 1 epoch propagates all training examples through the multi-layer perceptron exactly once.</p>
 </dd>
+<dt>Returns:</dt>
+<dd>numBatches (int): Number of batches given the batchSize and number of training examples.</dd>
 </dl>
 </dd></dl>
 
