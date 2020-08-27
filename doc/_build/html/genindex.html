@@ -41,8 +41,7 @@
 <h1 id="index">Index</h1>
 
 <div class="genindex-jumpbox">
- <a href="#A"><strong>A</strong></a>
- | <a href="#B"><strong>B</strong></a>
+ <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
  | <a href="#F"><strong>F</strong></a>
@@ -54,16 +53,6 @@
  | <a href="#V"><strong>V</strong></a>
  
 </div>
-<h2 id="A">A</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%" valign="top"><dl>
-      
-  <dt><a href="dl_activate.html#dl_activate.activate">activate() (in module dl_activate)</a>
-  </dt>
-
-  </dl></td>
-</tr></table>
-
 <h2 id="B">B</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
@@ -92,7 +81,7 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="dl_loss.html#dl_loss.computeLoss">computeLoss() (in module dl_loss)</a>
+  <dt><a href="dl_loss.html#dl_loss.compute_loss">compute_loss() (in module dl_loss)</a>
   </dt>
 
   </dl></td>
@@ -150,7 +139,21 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
+  <dt><a href="dl_forward.html#dl_forward.forward">forward() (in module dl_forward)</a>
+  </dt>
+
+      
   <dt><a href="dl_forward.html#dl_forward.forward_sigmoid">forward_sigmoid() (in module dl_forward)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="dl_forward.html#dl_forward.forward_softmax">forward_softmax() (in module dl_forward)</a>
+  </dt>
+
+      
+  <dt><a href="dl_forward.html#dl_forward.forward_tanh">forward_tanh() (in module dl_forward)</a>
   </dt>
 
   </dl></td>
@@ -160,9 +163,15 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="dl_model_mlp.html#dl_model_mlp.MLPModel.init">init() (dl_model_mlp.MLPModel method)</a>
+  <dt><a href="dl_model_mlp.html#dl_model_mlp.MLPLayerConfig.init">init() (dl_model_mlp.MLPLayerConfig method)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="dl_model_mlp.html#dl_model_mlp.MLPModel.init">(dl_model_mlp.MLPModel method)</a>
+  </dt>
+
+      </dl></dd>
   </dl></td>
 </tr></table>
 
@@ -190,7 +199,25 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="dl_model_mlp.html#dl_model_mlp.mlpInitWeights">mlpInitWeights() (in module dl_model_mlp)</a>
+  <dt><a href="dl_model_mlp.html#dl_model_mlp.mlp_init_weights">mlp_init_weights() (in module dl_model_mlp)</a>
+  </dt>
+
+      
+  <dt><a href="dl_model_mlp.html#dl_model_mlp.mlp_predict">mlp_predict() (in module dl_model_mlp)</a>
+  </dt>
+
+      
+  <dt><a href="dl_model_mlp.html#dl_model_mlp.mlp_set_biases">mlp_set_biases() (in module dl_model_mlp)</a>
+  </dt>
+
+      
+  <dt><a href="dl_model_mlp.html#dl_model_mlp.mlp_set_weights">mlp_set_weights() (in module dl_model_mlp)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="dl_model_mlp.html#dl_model_mlp.mlp_train">mlp_train() (in module dl_model_mlp)</a>
   </dt>
 
       
@@ -199,24 +226,6 @@
 
       
   <dt><a href="dl_model_mlp.html#dl_model_mlp.MLPModel">MLPModel (class in dl_model_mlp)</a>
-  </dt>
-
-      
-  <dt><a href="dl_model_mlp.html#dl_model_mlp.mlpPredict">mlpPredict() (in module dl_model_mlp)</a>
-  </dt>
-
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
-      
-  <dt><a href="dl_model_mlp.html#dl_model_mlp.mlpSetBiases">mlpSetBiases() (in module dl_model_mlp)</a>
-  </dt>
-
-      
-  <dt><a href="dl_model_mlp.html#dl_model_mlp.mlpSetWeights">mlpSetWeights() (in module dl_model_mlp)</a>
-  </dt>
-
-      
-  <dt><a href="dl_model_mlp.html#dl_model_mlp.mlpTrain">mlpTrain() (in module dl_model_mlp)</a>
   </dt>
 
   </dl></td>
@@ -290,33 +299,33 @@
   </dt>
 
       
-  <dt><a href="dl_model_mlp_test.html#dl_model_mlp_test.test_mlpInitWeights">test_mlpInitWeights() (in module dl_model_mlp_test)</a>
+  <dt><a href="dl_model_mlp_test.html#dl_model_mlp_test.test_mlp_init_weights">test_mlp_init_weights() (in module dl_model_mlp_test)</a>
   </dt>
 
       
-  <dt><a href="dl_model_mlp_test.html#dl_model_mlp_test.test_mlpInitWeights1Layer">test_mlpInitWeights1Layer() (in module dl_model_mlp_test)</a>
+  <dt><a href="dl_model_mlp_test.html#dl_model_mlp_test.test_mlp_init_weights1Layer">test_mlp_init_weights1Layer() (in module dl_model_mlp_test)</a>
   </dt>
 
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="dl_model_mlp_test.html#dl_model_mlp_test.test_mlp_train_2Layer_softmax_costs">test_mlp_train_2Layer_softmax_costs() (in module dl_model_mlp_test)</a>
+  </dt>
+
+      
+  <dt><a href="dl_model_mlp_test.html#dl_model_mlp_test.test_mlp_train_numBatches">test_mlp_train_numBatches() (in module dl_model_mlp_test)</a>
+  </dt>
+
+      
+  <dt><a href="dl_model_mlp_test.html#dl_model_mlp_test.test_mlp_train_singleLayer_sigmoid_costs">test_mlp_train_singleLayer_sigmoid_costs() (in module dl_model_mlp_test)</a>
+  </dt>
+
       
   <dt><a href="dl_model_mlp_test.html#dl_model_mlp_test.test_MLPModel_init_1Layer_MLP">test_MLPModel_init_1Layer_MLP() (in module dl_model_mlp_test)</a>
   </dt>
 
       
   <dt><a href="dl_model_mlp_test.html#dl_model_mlp_test.test_MLPModel_init_2Layer_MLP">test_MLPModel_init_2Layer_MLP() (in module dl_model_mlp_test)</a>
-  </dt>
-
-      
-  <dt><a href="dl_model_mlp_test.html#dl_model_mlp_test.test_mlpTrain_2Layer_softmax_costs">test_mlpTrain_2Layer_softmax_costs() (in module dl_model_mlp_test)</a>
-  </dt>
-
-      
-  <dt><a href="dl_model_mlp_test.html#dl_model_mlp_test.test_mlpTrain_numBatches">test_mlpTrain_numBatches() (in module dl_model_mlp_test)</a>
-  </dt>
-
-      
-  <dt><a href="dl_model_mlp_test.html#dl_model_mlp_test.test_mlpTrain_singleLayer_sigmoid_costs">test_mlpTrain_singleLayer_sigmoid_costs() (in module dl_model_mlp_test)</a>
   </dt>
 
       

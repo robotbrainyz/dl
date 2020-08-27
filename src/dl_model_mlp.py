@@ -7,9 +7,19 @@ from dl_loss import compute_loss
 class MLPLayerConfig:
     ''' Configuration and settings for a layer in a multi-layer perceptron model.
     '''
-    def __init__(self, numNodes, activationFunctionID):
+    def init(self, numNodes, activationFunctionID):
+        ''' Initializes this layer configuration.
+
+        Args:
+            numNodes (int): Number of nodes in this layer.
+
+            activationFunctionID (string): Identifies the activation function for this layer. Needs to match one of the functions in dl_activate.py, e.g. sigmoid.
+        '''
         self.numNodes = numNodes
-        self.activationFunctionID = activationFunctionID # A string identifier that matches one of the functions in dl_activate.py, e.g. sigmoid.
+        self.activationFunctionID = activationFunctionID
+        
+    def __init__(self, numNodes, activationFunctionID):
+        self.init(numNodes, activationFunctionID)
 
 class MLPModel:
     ''' A multi-layer perceptron model.
