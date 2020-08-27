@@ -144,7 +144,7 @@ Randomly initialize weights in a layer using mean 0 and variance 1. Scale the we
 
 <dl class="function">
 <dt id="dl_model_mlp.mlp_train">
-<code class="descclassname">dl_model_mlp.</code><code class="descname">mlp_train</code><span class="sig-paren">(</span><em>mlp</em>, <em>X</em>, <em>y</em>, <em>lossFunctionID</em>, <em>regularizer</em>, <em>batchSize=2000</em>, <em>numEpochs=1</em><span class="sig-paren">)</span><a class="headerlink" href="#dl_model_mlp.mlp_train" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">dl_model_mlp.</code><code class="descname">mlp_train</code><span class="sig-paren">(</span><em>mlp</em>, <em>X</em>, <em>y</em>, <em>lossFunctionID</em>, <em>regularizer</em>, <em>batchSize=2000</em>, <em>numEpochs=1</em>, <em>learningRate=0.1</em>, <em>adamMomentum=0.9</em>, <em>adamScale=0.99</em><span class="sig-paren">)</span><a class="headerlink" href="#dl_model_mlp.mlp_train" title="Permalink to this definition">¶</a></dt>
 <dd><p>Trains the given multi-layer perceptron for 1 epoch with the Adam optimization algorithm. 1 epoch propagates all training examples through the multi-layer perceptron exactly once. Uses the given regularization parameters and batchSize for training.</p>
 <dl class="docutils">
 <dt>Args:</dt>
@@ -154,7 +154,10 @@ Randomly initialize weights in a layer using mean 0 and variance 1. Scale the we
 <p>lossFunctionID (string): Function name that matches a loss function in dl_loss.py.</p>
 <p>regularizer (Regularizer): Object that computes the L1 or L2 regularization amount that is added to the loss during training.</p>
 <p>batchSize (int): If the number of columns in X is larger than batchSize, X is broken down into batches, each with batchSize number of columns for training.</p>
-<p class="last">numEpochs (int): Number of epochs to train the given MLP. 1 epoch propagates all training examples through the multi-layer perceptron exactly once.</p>
+<p>numEpochs (int): Number of epochs to train the given MLP. 1 epoch propagates all training examples through the multi-layer perceptron exactly once.</p>
+<p>learningRate (float): Scalar multiplied against weight derivatives before subtracting derivatives from weights.</p>
+<p>adamMomentum (float): Proportion of previous derivatives to retain vs the latest derivatives computed. A value between 0 to 1.</p>
+<p class="last">adamScale (float): Proportion to previous derivative used to scale the latest derivatives computed. A value between 0 to 1.</p>
 </dd>
 <dt>Returns:</dt>
 <dd>numBatches (int): Number of batches given the batchSize and number of training examples.</dd>
