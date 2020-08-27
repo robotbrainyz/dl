@@ -144,15 +144,13 @@ def mlp_train(mlp, X, y, lossFunctionID, regularizer, batchSize=2000, numEpochs=
             aCache = [] # Cache to contain activation output of all layers
             for layerIndex in range(0, len(mlp.layerConfigs)):
                 if layerIndex > 0:
-                    aCache.append(forward(aCache[layerIndex-1],
-                                          mlp.weights[layerIndex],
-                                          mlp.biases[layerIndex],
-                                          mlp.layerConfigs[layerIndex].activationFunctionID))
+                    layerInput = aCache[layerIndex-1]
                 else:
-                    aCache.append(forward(XBatch,
-                                          mlp.weights[layerIndex],
-                                          mlp.biases[layerIndex],
-                                          mlp.layerConfigs[layerIndex].activationFunctionID))
+                    layerInput = XBatch
+                aCache.append(forward(layerInput,
+                              mlp.weights[layerIndex],
+                              mlp.biases[layerIndex],
+                              mlp.layerConfigs[layerIndex].activationFunctionID))
     
             # Compute Loss and cost
             y_pred = aCache[len(aCache)-1] # Predicted output is activation output of last layer
