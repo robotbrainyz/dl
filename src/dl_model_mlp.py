@@ -1,7 +1,8 @@
 import logging
 import numpy as np
-from dl_activate import activate
-from dl_loss import computeLoss
+
+from dl_forward import forward
+from dl_loss import compute_loss
 
 class MLPLayerConfig:
     ''' Configuration and settings for a layer in a multi-layer perceptron model.
@@ -54,7 +55,7 @@ class MLPModel:
     def __init__(self, numInputNodes, layerConfigs):
         self.init(numInputNodes, layerConfigs)
 
-def mlpInitWeights(mlp, useSeeds):
+def mlp_init_weights(mlp, useSeeds):
     ''' Resets the weight values in the given multi-layer perceptron using the He initialization method.
 
     The He initialization method is based on a paper by He et al., 2015.
@@ -78,7 +79,7 @@ def mlpInitWeights(mlp, useSeeds):
             np.random.seed(i)
         mlp.weights[i] = np.random.randn(mlp.weights[i].shape[0], mlp.weights[i].shape[1]) * np.sqrt(2.0 / mlp.weights[1].shape[1]) # Number of columns in weight matrix is the number of nodes in the previous layer.
     
-def mlpSetWeights(mlp, weights):
+def mlp_set_weights(mlp, weights):
     ''' Sets the weight values in the given multi-layer perceptron with the given list of matrices.
     
     Args:
@@ -88,7 +89,7 @@ def mlpSetWeights(mlp, weights):
     '''    
     return
 
-def mlpSetBiases(mlp, biases):
+def mlp_set_biases(mlp, biases):
     ''' Sets the bias values in the given multi-layer perceptron with the given list of matrices.
     
     Args:
@@ -98,7 +99,7 @@ def mlpSetBiases(mlp, biases):
     '''
     return
 
-def mlpTrain(mlp, X, y, lossFunctionID, regularizer, batchSize=2000, numIterations=1):
+def mlp_train(mlp, X, y, lossFunctionID, regularizer, batchSize=2000, numEpochs=1):
     ''' Trains the given multi-layer perceptron for 1 epoch with the Adam optimization algorithm. 1 epoch propagates all training examples through the multi-layer perceptron exactly once. Uses the given regularization parameters and batchSize for training.
 
     Args:
@@ -114,7 +115,7 @@ def mlpTrain(mlp, X, y, lossFunctionID, regularizer, batchSize=2000, numIteratio
 
         batchSize (int): If the number of columns in X is larger than batchSize, X is broken down into batches, each with batchSize number of columns for training. 
 
-        numIterations (int): Number of epochs to train the given MLP. 1 epoch propagates all training examples through the multi-layer perceptron exactly once.
+        numEpochs (int): Number of epochs to train the given MLP. 1 epoch propagates all training examples through the multi-layer perceptron exactly once.
 
     Returns:
         numBatches (int): Number of batches given the batchSize and number of training examples.
@@ -130,38 +131,41 @@ def mlpTrain(mlp, X, y, lossFunctionID, regularizer, batchSize=2000, numIteratio
     
     numBatches = X.shape[1]//batchSize + 1
     costs = [] # List of computed costs (average loss) per batch
+
+    for epochIndex in range(0, numEpochs):
+        for batchIndex in range(0, numBatches):
+            # Select the columns for this batch from input X, and output y
+            startColumn = batchIndex * batchSize
+            endColumn = min((batchIndex + 1) * batchSize, X.shape[1])
+            XBatch = X[:, startColumn:endColumn]
+            yBatch = y[:, startColumn:endColumn]
+        
+            # Forward propagate
+            aCache = [] # Cache to contain activation output of all layers
+            for layerIndex in range(0, len(mlp.layerConfigs)):
+                if layerIndex > 0:
+                    aCache.append(forward(aCache[layerIndex-1],
+                                          mlp.weights[layerIndex],
+                                          mlp.biases[layerIndex],
+                                          mlp.layerConfigs[layerIndex].activationFunctionID))
+                else:
+                    aCache.append(forward(XBatch,
+                                          mlp.weights[layerIndex],
+                                          mlp.biases[layerIndex],
+                                          mlp.layerConfigs[layerIndex].activationFunctionID))
     
-    for batchIndex in range(0, numBatches):
-        # Select the columns for this batch from input X, and output y
-        startColumn = batchIndex * batchSize
-        endColumn = min((batchIndex + 1) * batchSize, X.shape[1])
-        XBatch = X[:, startColumn:endColumn]
-        yBatch = y[:, startColumn:endColumn]
-        
-        # Forward propagate
-        # z = wx + b, w contains the weights from previous layer to the current layer, x is the input to the layer (the activation output from the previous layer), and b is the bias in the current layer.
-        aCache = [] # Cache containing activation output of all layers
-
-        for layerIndex in range(0, len(mlp.layerConfigs)):
-            if layerIndex > 0:
-                z = np.matmul(mlp.weights[layerIndex], aCache[layerIndex-1]) + mlp.biases[layerIndex]                
-            else:
-                z = np.matmul(mlp.weights[layerIndex], XBatch) + mlp.biases[layerIndex]
-
-            # Perform activation and store result in cache
-            aCache.append(activate(z, mlp.layerConfigs[layerIndex].activationFunctionID))
-
-        # Compute Loss and cost
-        y_pred = aCache[len(aCache)-1] # Predicted output is activation output of last layer
-        loss = computeLoss(yBatch, y_pred, lossFunctionID)
-        cost = np.divide(np.sum(loss, axis = 1), loss.shape[1]) # Mean of loss
-        costs.append(cost) 
-        
-        # Back propagate
+            # Compute Loss and cost
+            y_pred = aCache[len(aCache)-1] # Predicted output is activation output of last layer
+            loss = compute_loss(yBatch, y_pred, lossFunctionID)
+            cost = np.divide(np.sum(loss, axis = 1), loss.shape[1]) # Mean of loss
+            costs.append(cost) 
+            
+            # Back propagate
+            
     
     return numBatches, costs
 
-def mlpPredict(mlp, X):
+def mlp_predict(mlp, X):
     ''' Performs forward propagation with input X through the given multi-layer perceptron.
 
     Args:

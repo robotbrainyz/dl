@@ -46,7 +46,7 @@ def loss_cross_entropy_softmax(y, y_pred):
     return - (y * np.log(y_pred))
 
     
-def computeLoss(y, y_pred, lossFunctionID):
+def compute_loss(y, y_pred, lossFunctionID):
     if lossFunctionID == 'loss_cross_entropy':
         return loss_cross_entropy(y, y_pred)
     elif lossFunctionID == 'loss_cross_entropy_softmax':

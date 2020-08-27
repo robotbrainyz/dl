@@ -1,8 +1,9 @@
 import math
 import numpy as np
-from dl_activate import activate
-from dl_loss import computeLoss
-from dl_model_mlp import MLPLayerConfig, MLPModel, mlpInitWeights, mlpTrain
+
+from dl_activate import sigmoid, tanh, softmax
+from dl_loss import compute_loss
+from dl_model_mlp import MLPLayerConfig, MLPModel, mlp_init_weights, mlp_train
 
 def test_MLPModel_init_1Layer_MLP():
     layer0 = MLPLayerConfig(1, 'sigmoid')
@@ -33,7 +34,7 @@ def test_MLPModel_init_2Layer_MLP():
     assert mlp.biases[1].shape[0] == 3
     assert mlp.biases[1].shape[1] == 1            
 
-def test_mlpInitWeights():
+def test_mlp_init_weights():
     # Create a MLP with 4-5-3 nodes in the input, middle and output layer.
     # This is a 2 layer MLP (not counting the input layer).
     layer0 = MLPLayerConfig(5, 'tanh')
@@ -42,7 +43,7 @@ def test_mlpInitWeights():
     numInputNodes = 4
     mlp = MLPModel(numInputNodes, layers)
     
-    mlpInitWeights(mlp, True)
+    mlp_init_weights(mlp, True)
 
     factorHeInit = np.sqrt(2.0/4) # Scale factor used in He initialization for layer 0
     assert(factorHeInit == math.sqrt(2/4))
@@ -58,7 +59,7 @@ def test_mlpInitWeights():
     expectedWeightsL1 = np.random.randn(3, 5) * factorHeInit
     np.testing.assert_equal(mlp.weights[1], expectedWeightsL1)    
 
-def test_mlpInitWeights1Layer():
+def test_mlp_init_weights1Layer():
     # Create a MLP with 4-5 nodes in the inputand output layer.
     # This is a 1 layer MLP (not counting the input layer).
     layer0 = MLPLayerConfig(5, 'softmax')
@@ -66,7 +67,7 @@ def test_mlpInitWeights1Layer():
     numInputNodes = 4
     mlp = MLPModel(numInputNodes, layers)
     
-    mlpInitWeights(mlp, True)
+    mlp_init_weights(mlp, True)
 
     factorHeInit = np.sqrt(2.0/4) # Scale factor used in He initialization for layer 0
     assert(factorHeInit == math.sqrt(2/4))
@@ -75,7 +76,7 @@ def test_mlpInitWeights1Layer():
     expectedWeightsL0 = np.random.randn(5, 4) * factorHeInit
     np.testing.assert_equal(mlp.weights[0], expectedWeightsL0)
 
-def test_mlpTrain_numBatches():
+def test_mlp_train_numBatches():
     X = np.random.randn(5, 10)
     y = np.random.randn(1, 10)
 
@@ -86,18 +87,18 @@ def test_mlpTrain_numBatches():
     mlp = MLPModel(numInputNodes, layers)
 
     lossFunctionID = 'loss_cross_entropy'
-    numIterations = 1
+    numEpochs = 1
 
     batchSize = 4
-    numBatches, costs = mlpTrain(mlp, X, y, lossFunctionID, None, batchSize, numIterations)
+    numBatches, costs = mlp_train(mlp, X, y, lossFunctionID, None, batchSize, numEpochs)
     assert(numBatches == 3)
     
     
     batchSize = 11
-    numBatches, costs = mlpTrain(mlp, X, y, lossFunctionID, None, batchSize, numIterations)
+    numBatches, costs = mlp_train(mlp, X, y, lossFunctionID, None, batchSize, numEpochs)
     assert(numBatches == 1)
 
-def test_mlpTrain_singleLayer_sigmoid_costs():
+def test_mlp_train_singleLayer_sigmoid_costs():
     X = np.random.randn(5, 10)
     y = np.random.randn(1, 10)
 
@@ -108,9 +109,9 @@ def test_mlpTrain_singleLayer_sigmoid_costs():
     mlp = MLPModel(numInputNodes, layers)
 
     lossFunctionID = 'loss_cross_entropy'
-    numIterations = 1
+    numEpochs = 1
     batchSize = 4
-    numBatches, costs = mlpTrain(mlp, X, y, lossFunctionID, None, batchSize, numIterations)
+    numBatches, costs = mlp_train(mlp, X, y, lossFunctionID, None, batchSize, numEpochs)
 
     assert(len(costs) == 3)
 
@@ -119,9 +120,9 @@ def test_mlpTrain_singleLayer_sigmoid_costs():
     yBatch0 = y[:, 0:4]
     assert(xBatch0.shape[1] == 4)
     z0 = np.matmul(mlp.weights[0], xBatch0) + mlp.biases[0]
-    a0 = activate(z0, activationFunctionID)
+    a0 = sigmoid(z0)
     y_pred0 = a0
-    loss0 = computeLoss(yBatch0, y_pred0, lossFunctionID)
+    loss0 = compute_loss(yBatch0, y_pred0, lossFunctionID)
     cost0 = np.divide(np.sum(loss0, axis = 1), loss0.shape[1])
     np.testing.assert_almost_equal(costs[0], cost0)
     np.testing.assert_equal(costs[0].shape[0], 1)
@@ -132,14 +133,14 @@ def test_mlpTrain_singleLayer_sigmoid_costs():
     yBatch2 = y[:, 8:10]
     assert(xBatch2.shape[1] == 2)
     z2 = np.matmul(mlp.weights[0], xBatch2) + mlp.biases[0]
-    a2 = activate(z2, activationFunctionID)
+    a2 = sigmoid(z2)
     y_pred2 = a2
-    loss2 = computeLoss(yBatch2, y_pred2, lossFunctionID)
+    loss2 = compute_loss(yBatch2, y_pred2, lossFunctionID)
     cost2 = np.divide(np.sum(loss2, axis = 1), loss2.shape[1])
     np.testing.assert_almost_equal(costs[2], cost2)
     np.testing.assert_equal(costs[2].shape[0], 1)    
 
-def test_mlpTrain_2Layer_softmax_costs():
+def test_mlp_train_2Layer_softmax_costs():
     X = np.random.randn(5, 10)
     y = np.random.randn(3, 10)
 
@@ -152,9 +153,9 @@ def test_mlpTrain_2Layer_softmax_costs():
     mlp = MLPModel(numInputNodes, layers)
 
     lossFunctionID = 'loss_cross_entropy_softmax'
-    numIterations = 1
+    numEpochs = 1
     batchSize = 4
-    numBatches, costs = mlpTrain(mlp, X, y, lossFunctionID, None, batchSize, numIterations)
+    numBatches, costs = mlp_train(mlp, X, y, lossFunctionID, None, batchSize, numEpochs)
 
     assert(len(costs) == 3)
 
@@ -163,11 +164,11 @@ def test_mlpTrain_2Layer_softmax_costs():
     yBatch0 = y[:, 0:4]
     assert(xBatch0.shape[1] == 4)
     z0 = np.matmul(mlp.weights[0], xBatch0) + mlp.biases[0]
-    a0 = activate(z0, activationFunctionID0)
+    a0 = tanh(z0)
     z1 = np.matmul(mlp.weights[1], a0) + mlp.biases[1]
-    a1 = activate(z1, activationFunctionID1)    
+    a1 = softmax(z1)    
     y_pred = a1
-    loss0 = computeLoss(yBatch0, y_pred, lossFunctionID)
+    loss0 = compute_loss(yBatch0, y_pred, lossFunctionID)
     cost0 = np.divide(np.sum(loss0, axis = 1), loss0.shape[1])
     np.testing.assert_almost_equal(costs[0], cost0)
     np.testing.assert_equal(costs[0].shape[0], 3)
@@ -177,11 +178,11 @@ def test_mlpTrain_2Layer_softmax_costs():
     yBatch2 = y[:, 8:10]
     assert(xBatch2.shape[1] == 2)
     z0 = np.matmul(mlp.weights[0], xBatch2) + mlp.biases[0]
-    a0 = activate(z0, activationFunctionID0)
+    a0 = tanh(z0)
     z1 = np.matmul(mlp.weights[1], a0) + mlp.biases[1]
-    a1 = activate(z1, activationFunctionID1)    
+    a1 = softmax(z1)    
     y_pred = a1
-    loss2 = computeLoss(yBatch2, y_pred, lossFunctionID)
+    loss2 = compute_loss(yBatch2, y_pred, lossFunctionID)
     cost2 = np.divide(np.sum(loss2, axis = 1), loss2.shape[1])
     np.testing.assert_almost_equal(costs[2], cost2)
     np.testing.assert_equal(costs[2].shape[0], 3)    
