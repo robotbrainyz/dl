@@ -1,8 +1,9 @@
 import logging
 import numpy as np
 
+from dl_back import back_softmax, back, back_linear
 from dl_forward import forward
-from dl_loss import compute_loss, compute_cost
+from dl_loss import compute_loss, compute_cost, loss_cross_entropy_back
 
 class MLPLayerConfig:
     ''' Configuration and settings for a layer in a multi-layer perceptron model.
@@ -109,7 +110,7 @@ def mlp_set_biases(mlp, biases):
     '''
     return
 
-def mlp_train(mlp, X, y, lossFunctionID, regularizer, batchSize=2000, numEpochs=1):
+def mlp_train(mlp, X, y, lossFunctionID, regularizer, batchSize=2000, numEpochs=1, learningRate = 0.1, adamMomentum = 0.9, adamScale = 0.99):
     ''' Trains the given multi-layer perceptron for 1 epoch with the Adam optimization algorithm. 1 epoch propagates all training examples through the multi-layer perceptron exactly once. Uses the given regularization parameters and batchSize for training.
 
     Args:
@@ -127,6 +128,12 @@ def mlp_train(mlp, X, y, lossFunctionID, regularizer, batchSize=2000, numEpochs=
 
         numEpochs (int): Number of epochs to train the given MLP. 1 epoch propagates all training examples through the multi-layer perceptron exactly once.
 
+        learningRate (float): Scalar multiplied against weight derivatives before subtracting derivatives from weights.
+
+        adamMomentum (float): Proportion of previous derivatives to retain vs the latest derivatives computed. A value between 0 to 1.
+
+        adamScale (float): Proportion to previous derivative used to scale the latest derivatives computed. A value between 0 to 1.
+
     Returns:
         numBatches (int): Number of batches given the batchSize and number of training examples.
     '''
@@ -142,6 +149,19 @@ def mlp_train(mlp, X, y, lossFunctionID, regularizer, batchSize=2000, numEpochs=
     numBatches = X.shape[1]//batchSize + 1
     costs = [] # List of computed costs (average loss) per batch
 
+    # Adam optimizer - Momentum and scale for weights and biases, iteration count
+    iteration = 1
+    weightsMomentum = []
+    weightsScale = []
+    biasesMomentum = []
+    biasesScale = []
+    for layerWeights in mlp.weights:
+        weightsMomentum.append(np.zeros(layerWeights.shape))
+        weightsScale.append(np.zeros(layerWeights.shape))
+    for layerBiases in mlp.biases:
+        biasesMomentum.append(np.zeros(layerBiases.shape))
+        biasesScale.append(np.zeros(layerBiases.shape))                
+
     for epochIndex in range(0, numEpochs):
         for batchIndex in range(0, numBatches):
             # Select the columns for this batch from input X, and output y
@@ -152,24 +172,58 @@ def mlp_train(mlp, X, y, lossFunctionID, regularizer, batchSize=2000, numEpochs=
         
             # Forward propagate
             aCache = [] # Cache to contain activation output of all layers
+            zCache = [] # Cache to contain input to activation for all layers
             for layerIndex in range(0, len(mlp.layerConfigs)):
                 if layerIndex > 0:
                     layerInput = aCache[layerIndex-1]
                 else:
                     layerInput = XBatch
-                aCache.append(forward(layerInput,
+                z, a = forward(layerInput,
                               mlp.weights[layerIndex],
                               mlp.biases[layerIndex],
-                              mlp.layerConfigs[layerIndex].activationFunctionID))
+                              mlp.layerConfigs[layerIndex].activationFunctionID)
+                aCache.append(a)
+                zCache.append(z)
     
             # Compute Loss and cost
-            y_pred = aCache[len(aCache)-1] # Predicted output is activation output of last layer
-            loss = compute_loss(yBatch, y_pred, lossFunctionID)
+            yBatch_pred = aCache[len(aCache)-1] # Predicted output is activation output of last layer
+            loss = compute_loss(yBatch, yBatch_pred, lossFunctionID)
             costs.append(compute_cost(loss)) # cost is the average loss per example
             
             # Back propagate
-            
-            
+            if (mlp.layerConfigs[len(mlp.layerConfigs)-1].activationFunctionID != 'softmax'):
+                da = loss_cross_entropy_back(yBatch, yBatch_pred)
+            else:
+                da = None
+                
+            for layerIndex in range(len(mlp.layerConfigs)-1, -1, -1):
+                layerActivationFunctionID = mlp.layerConfigs[layerIndex].activationFunctionID
+                if (layerActivationFunctionID != 'softmax'):
+                    dz = back(da, zCache[layerIndex], layerActivationFunctionID)
+                else:
+                    dz = back_softmax(yBatch, yBatch_pred)
+                if layerIndex == 0:
+                    aPrev = XBatch
+                else:
+                    aPrev = aCache[layerIndex-1]
+                dw, db, da = back_linear(dz, aPrev, mlp.weights[layerIndex]) # Replace da to continue back prop in previous layer.
+
+
+                weightsMomentum[layerIndex] = adamMomentum * weightsMomentum[layerIndex] + (1-adamMomentum) * dw
+                biasesMomentum[layerIndex] = adamMomentum * biasesMomentum[layerIndex] + (1-adamMomentum) * db
+                weightsMomentumCorrected = weightsMomentum[layerIndex] / (1 - adamMomentum**iteration)
+                biasesMomentumCorrected = biasesMomentum[layerIndex] / (1 - adamMomentum**iteration)
+                
+                weightsScale[layerIndex] = adamScale * weightsScale[layerIndex] + (1-adamScale) * (dw**2)
+                biasesScale[layerIndex] = adamScale * biasesScale[layerIndex] + (1-adamScale) * (db**2)
+                weightsScaleCorrected = weightsScale[layerIndex] / (1 - adamScale**iteration)
+                biasesScaleCorrected = biasesScale[layerIndex] / (1 - adamScale**iteration)
+
+                epsilon = 1e-8
+                weightsDelta = np.divide(weightsMomentumCorrected, (np.sqrt(weightsScaleCorrected) + epsilon))
+                biasesDelta = np.divide(biasesMomentumCorrected, (np.sqrt(biasesScaleCorrected) + epsilon))
+                mlp.weights[layerIndex] = mlp.weights[layerIndex] - learningRate * weightsDelta
+                mlp.biases[layerIndex] = mlp.biases[layerIndex] - learningRate * biasesDelta                
     
     return numBatches, costs
 

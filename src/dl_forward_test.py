@@ -14,7 +14,7 @@ def test_forward_sigmoid():
     br = np.random.randn(2, 1)
 
     # a, the forward propagation result in the layer is a 2x3 matrix. 2 nodes or features for each of the 3 examples.
-    ar = forward_sigmoid(xr, wr, br)
+    zr, ar = forward_sigmoid(xr, wr, br)
 
     # check the values of ar against manual matrix multiplicatin allowing only a difference of epsilon in the results.
     epsilon = 0.00000001

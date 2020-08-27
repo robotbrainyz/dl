@@ -15,9 +15,12 @@ def forward_sigmoid(x, w, b):
         b (matrix): A (n[1] x 1) matrix of constants in this layer, where n[1] is the number of nodes in this layer, 
 
     Returns:
+        z: A (n[1] x m) matrix equals to wx + b.
+
         matrix: A (n[1] x m) matrix where (every n[1] x 1) column is the activated forward propagation output for an example.
-    '''    
-    return sigmoid(np.matmul(w, x) + b)
+    '''
+    z = np.matmul(w, x) + b
+    return z, sigmoid(z)
 
 def forward_tanh(x, w, b):
     ''' Forward propagate x, the input to this layer, with w and b, the weights in this layer, to obtain z. Activate z with the tanh function to produce a.
@@ -32,9 +35,12 @@ def forward_tanh(x, w, b):
         b (matrix): A (n[1] x 1) matrix of constants in this layer, where n[1] is the number of nodes in this layer, 
 
     Returns:
+        z: A (n[1] x m) matrix equals to wx + b.
+
         matrix: A (n[1] x m) matrix where (every n[1] x 1) column is the activated forward propagation output for an example.
-    '''    
-    return tanh(np.matmul(w, x) + b)
+    '''
+    z = np.matmul(w, x) + b
+    return z, tanh(z)
 
 def forward_softmax(x, w, b):
     ''' Forward propagate x, the input to this layer, with w and b, the weights in this layer, to obtain z. Activate z with the softmax function to produce a.
@@ -49,9 +55,12 @@ def forward_softmax(x, w, b):
         b (matrix): A (n[1] x 1) matrix of constants in this layer, where n[1] is the number of nodes in this layer, 
 
     Returns:
+        z: A (n[1] x m) matrix equals to wx + b.
+
         matrix: A (n[1] x m) matrix where (every n[1] x 1) column is the activated forward propagation output for an example.
-    '''    
-    return softmax(np.matmul(w, x) + b)
+    '''
+    z = np.matmul(w, x) + b
+    return z, softmax(z)
 
 def forward(x, w, b, activationFunctionID):
     if activationFunctionID == 'sigmoid':

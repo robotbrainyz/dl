@@ -26,6 +26,7 @@ def back_linear(dz, a_prev, w):
     m_inv = 1/dz.shape[1]
     dw = m_inv * np.matmul(dz, np.transpose(a_prev))
     db = m_inv * np.sum(dz, axis=1)
+    db = db.reshape((len(db), 1))
     da_prev = np.matmul(np.transpose(w), dz)
     return dw, db, da_prev
 
@@ -75,5 +76,11 @@ def back_softmax(y, y_pred):
     '''        
     return y_pred - y
     
+def back(da, z, activationFunctionID):
+    if activationFunctionID == 'sigmoid':
+        return back_sigmoid(da, z)
+    elif activationFunctionID == 'tanh':
+        return back_tanh(da, z)
+    else:
+        assert(False) # Unrecognized activation function ID string    
     
-

@@ -108,6 +108,9 @@ def test_mlp_train_singleLayer_sigmoid_costs():
     numInputNodes = X.shape[0]
     mlp = MLPModel(numInputNodes, layers)
 
+    weightsCopy = np.copy(mlp.weights)
+    biasesCopy = np.copy(mlp.biases)
+
     lossFunctionID = 'loss_cross_entropy'
     numEpochs = 1
     batchSize = 4
@@ -119,7 +122,7 @@ def test_mlp_train_singleLayer_sigmoid_costs():
     xBatch0 = X[:, 0:4]
     yBatch0 = y[:, 0:4]
     assert(xBatch0.shape[1] == 4)
-    z0 = np.matmul(mlp.weights[0], xBatch0) + mlp.biases[0]
+    z0 = np.matmul(weightsCopy[0], xBatch0) + biasesCopy[0]
     a0 = sigmoid(z0)
     y_pred0 = a0
     loss0 = compute_loss(yBatch0, y_pred0, lossFunctionID)
@@ -127,18 +130,6 @@ def test_mlp_train_singleLayer_sigmoid_costs():
     np.testing.assert_almost_equal(costs[0], cost0)
     np.testing.assert_equal(costs[0].shape[0], 1)
 
-
-    # Check last batch
-    xBatch2 = X[:, 8:10]
-    yBatch2 = y[:, 8:10]
-    assert(xBatch2.shape[1] == 2)
-    z2 = np.matmul(mlp.weights[0], xBatch2) + mlp.biases[0]
-    a2 = sigmoid(z2)
-    y_pred2 = a2
-    loss2 = compute_loss(yBatch2, y_pred2, lossFunctionID)
-    cost2 = np.divide(np.sum(loss2, axis = 1), loss2.shape[1])
-    np.testing.assert_almost_equal(costs[2], cost2)
-    np.testing.assert_equal(costs[2].shape[0], 1)    
 
 def test_mlp_train_2Layer_softmax_costs():
     X = np.random.randn(5, 10)
@@ -152,6 +143,9 @@ def test_mlp_train_2Layer_softmax_costs():
     numInputNodes = X.shape[0]
     mlp = MLPModel(numInputNodes, layers)
 
+    weightsCopy = np.copy(mlp.weights)
+    biasesCopy = np.copy(mlp.biases)
+    
     lossFunctionID = 'loss_cross_entropy_softmax'
     numEpochs = 1
     batchSize = 4
@@ -163,27 +157,12 @@ def test_mlp_train_2Layer_softmax_costs():
     xBatch0 = X[:, 0:4]
     yBatch0 = y[:, 0:4]
     assert(xBatch0.shape[1] == 4)
-    z0 = np.matmul(mlp.weights[0], xBatch0) + mlp.biases[0]
+    z0 = np.matmul(weightsCopy[0], xBatch0) + biasesCopy[0]
     a0 = tanh(z0)
-    z1 = np.matmul(mlp.weights[1], a0) + mlp.biases[1]
+    z1 = np.matmul(weightsCopy[1], a0) + biasesCopy[1]
     a1 = softmax(z1)    
     y_pred = a1
     loss0 = compute_loss(yBatch0, y_pred, lossFunctionID)
     cost0 = np.divide(np.sum(loss0, axis = 1), loss0.shape[1])
     np.testing.assert_almost_equal(costs[0], cost0)
     np.testing.assert_equal(costs[0].shape[0], 3)
-
-    # Check last batch
-    xBatch2 = X[:, 8:10]
-    yBatch2 = y[:, 8:10]
-    assert(xBatch2.shape[1] == 2)
-    z0 = np.matmul(mlp.weights[0], xBatch2) + mlp.biases[0]
-    a0 = tanh(z0)
-    z1 = np.matmul(mlp.weights[1], a0) + mlp.biases[1]
-    a1 = softmax(z1)    
-    y_pred = a1
-    loss2 = compute_loss(yBatch2, y_pred, lossFunctionID)
-    cost2 = np.divide(np.sum(loss2, axis = 1), loss2.shape[1])
-    np.testing.assert_almost_equal(costs[2], cost2)
-    np.testing.assert_equal(costs[2].shape[0], 3)    
-    
