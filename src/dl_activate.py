@@ -70,3 +70,13 @@ def tanh_back(z):
     
     tz = tanh(z)
     return 1 - (tz * tz)
+
+def activate(z, activationFunctionID):
+    if activationFunctionID == 'sigmoid':
+        return sigmoid(z)
+    elif activationFunctionID == 'tanh':
+        return tanh(z)
+    elif activationFunctionID == 'softmax':
+        return softmax(z)
+    else:
+        assert(False) # Unrecognized activation function ID string
