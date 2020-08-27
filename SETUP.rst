@@ -11,6 +11,8 @@ Requirements
 - Numpy
 - pytest
 - Sphinx
+- seaborn
+- pandas
 
 Installation - Python environment
 ============
