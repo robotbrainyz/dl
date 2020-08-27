@@ -1,7 +1,7 @@
 import math
 import numpy as np
 
-from dl_loss import loss_cross_entropy, loss_cross_entropy_back, loss_cross_entropy_softmax
+from dl_loss import loss_cross_entropy, loss_cross_entropy_back, loss_cross_entropy_softmax, compute_cost
 
 def test_loss_cross_entropy_single_row_input():
     y = np.array([[1, 0, 1, 0]]) # (1 x 4) matrix
@@ -51,3 +51,13 @@ def test_loss_cross_entropy_softmax():
     for i in range(0, y.shape[0]):
         for j in range(0, y.shape[1]):
             assert L[i][j] == -(y[i][j] * math.log(y_pred[i][j]))
+
+def test_compute_cost():
+    # loss values for 4 examples and 2 features.
+    loss = np.array([[0.9, 0.3, 0.1, 0.77], [0.83, 0.27, 0.119, 0.71]])
+
+    cost = compute_cost(loss)
+
+    assert (cost[0] == (0.9 + 0.3 + 0.1 + 0.77)/4)
+    assert (cost[1] == (0.83 + 0.27 + 0.119 + 0.71)/4)    
+    

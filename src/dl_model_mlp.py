@@ -2,7 +2,7 @@ import logging
 import numpy as np
 
 from dl_forward import forward
-from dl_loss import compute_loss
+from dl_loss import compute_loss, compute_cost
 
 class MLPLayerConfig:
     ''' Configuration and settings for a layer in a multi-layer perceptron model.
@@ -165,10 +165,10 @@ def mlp_train(mlp, X, y, lossFunctionID, regularizer, batchSize=2000, numEpochs=
             # Compute Loss and cost
             y_pred = aCache[len(aCache)-1] # Predicted output is activation output of last layer
             loss = compute_loss(yBatch, y_pred, lossFunctionID)
-            cost = np.divide(np.sum(loss, axis = 1), loss.shape[1]) # Mean of loss
-            costs.append(cost) 
+            costs.append(compute_cost(loss)) # cost is the average loss per example
             
             # Back propagate
+            
             
     
     return numBatches, costs
@@ -183,10 +183,23 @@ def mlp_predict(mlp, X):
 
     Returns:
         matrix: Predicted output for the given input X. The number of columns is the number of examples. The number of rows is the number of output features from the MLP.
-    ''' 
-    return
+    '''
 
-    
+    '''
+    aPrev = None
+    for layerIndex in range(0, len(mlp.layerConfigs)):
+        if layerIndex > 0:
+            layerInput = aPrev
+        else:
+            layerInput = X
+        aPrev = forward(layerInput,
+                        mlp.weights[layerIndex],
+                        mlp.biases[layerIndex],
+                        mlp.layerConfigs[layerIndex].activationFunctionID)
+    return aPrev
+
+    '''
+    return
     
 
 

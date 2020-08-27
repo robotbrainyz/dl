@@ -38,7 +38,7 @@ def loss_cross_entropy_softmax(y, y_pred):
     Args:
         y (matrix): The dataset's output. y is a (n[l] x m) matrix, where l is the number of layers in the model, n[l] is the number of nodes or features in the l-th layer, and m is the number of examples. The elements in y are expected to be 0s or 1s.
 
-        y_pred (matrix): The predicted output. y_pred is a (n[l] x m) matrix, where l is the number of layers in the model, n[l] is the number of nodes or features in the l-th layer, and m is the number of examples. The elements in y_pred are expected to be in the range [0, 1]..
+        y_pred (matrix): The predicted output. y_pred is a (n[l] x m) matrix, where l is the number of layers in the model, n[l] is the number of nodes or features in the l-th layer, and m is the number of examples. The elements in y_pred are expected to be in the range [0, 1].
 
     Returns:
         matrix: L , a (n[l] x m) matrix. Each element is the loss value for a feature in a training example.
@@ -47,6 +47,18 @@ def loss_cross_entropy_softmax(y, y_pred):
 
     
 def compute_loss(y, y_pred, lossFunctionID):
+    ''' Returns loss given the loss function, the predicted, and the expected output.
+    
+    Args:
+        y (matrix): The dataset's output. y is a (n[l] x m) matrix, where l is the number of layers in the model, n[l] is the number of nodes or features in the l-th layer, and m is the number of examples. The elements in y are expected to be 0s or 1s.
+
+        y_pred (matrix): The predicted output. y_pred is a (n[l] x m) matrix, where l is the number of layers in the model, n[l] is the number of nodes or features in the l-th layer, and m is the number of examples. The elements in y_pred are expected to be in the range [0, 1].
+
+        lossFunctionID (string): String identifying a loss function. Needs to match a function in dl_loss.py
+
+    Returns:
+        matrix: L , a (n[l] x m) matrix. Each element is the loss value for a feature in a training example.
+    '''
     if lossFunctionID == 'loss_cross_entropy':
         return loss_cross_entropy(y, y_pred)
     elif lossFunctionID == 'loss_cross_entropy_softmax':
@@ -54,3 +66,13 @@ def compute_loss(y, y_pred, lossFunctionID):
     else:
         assert(False) # Unrecognized loss function
     
+def compute_cost(loss):
+    ''' Computes cost, the average loss per example.
+
+    Args:
+        loss (matrix): A (n[l] x m) matrix. Each column contains the loss values of an example. Each element is the loss value for a feature in a training example.
+
+    Returns:
+        cost (matrix): A n[l]-element vector. Each element is the cost for a feature.
+    '''
+    return np.divide(np.sum(loss, axis = 1), loss.shape[1])
