@@ -4,6 +4,7 @@ import numpy as np
 from dl_back import back_softmax, back, back_linear
 from dl_forward import forward
 from dl_loss import compute_loss, compute_cost, loss_cross_entropy_back
+from dl_plot import plot_costs
 
 class MLPLayerConfig:
     ''' Configuration and settings for a layer in a multi-layer perceptron model.
@@ -110,7 +111,7 @@ def mlp_set_biases(mlp, biases):
     '''
     return
 
-def mlp_train(mlp, X, y, lossFunctionID, regularizer, batchSize=2000, numEpochs=1, learningRate = 0.1, adamMomentum = 0.9, adamScale = 0.99):
+def mlp_train(mlp, X, y, lossFunctionID, regularizer, batchSize=2000, numEpochs=1, learningRate = 0.1, adamMomentum = 0.9, adamScale = 0.99, plotCosts = False):
     ''' Trains the given multi-layer perceptron for 1 epoch with the Adam optimization algorithm. 1 epoch propagates all training examples through the multi-layer perceptron exactly once. Uses the given regularization parameters and batchSize for training.
 
     Args:
@@ -225,7 +226,9 @@ def mlp_train(mlp, X, y, lossFunctionID, regularizer, batchSize=2000, numEpochs=
                 mlp.weights[layerIndex] = mlp.weights[layerIndex] - learningRate * weightsDelta
                 mlp.biases[layerIndex] = mlp.biases[layerIndex] - learningRate * biasesDelta
                 iteration = iteration + 1
-    
+
+    if plotCosts:
+        plot_costs(costs)
     return numBatches, costs
 
 def mlp_predict(mlp, X):

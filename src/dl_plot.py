@@ -5,6 +5,18 @@ import matplotlib.pyplot as plt
 import time
 import timeit
 
+def plot_costs(costs):
+    costsNumpy = np.vstack(costs)#[n for n in costs]
+    columnIndexColumn = np.arange(len(costs))
+    columnIndexColumn = columnIndexColumn.reshape(columnIndexColumn.shape[0], 1)
+    costsNumpy = np.hstack((costsNumpy, columnIndexColumn))
+    indices = np.arange(costsNumpy.shape[1]-1)
+    columnNames = ['feature ' + str(i) for i in indices]
+    columnNames.append('indexCol')
+    df = pd.DataFrame(costsNumpy, columns=columnNames) # column names are compulsory
+    sns.lineplot(data = pd.melt(df, ['indexCol']), x = 'indexCol', y = 'value', hue='variable')
+    plt.show()    
+
 def test_plot_training_time():
     totalTime = 0
     totalTimes = []
@@ -29,6 +41,7 @@ def test_plot_training_time():
     sns.lineplot(data = pd.melt(df, ['indexCol']), x = 'indexCol', y = 'value', hue='variable')
     plt.show()    
         
+
     
 def test_plot_costs2():
     costs = []
@@ -67,5 +80,5 @@ def test_plot_costs():
 
 if __name__ == "__main__":
     #test_plot_costs()
-    test_plot_costs2()
-    #test_plot_training_time()
+    #test_plot_costs2()
+    test_plot_training_time()
