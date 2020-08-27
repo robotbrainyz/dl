@@ -42,9 +42,31 @@
   <div class="section" id="module-dl_loss">
 <span id="dl-loss-module"></span><h1>dl_loss module<a class="headerlink" href="#module-dl_loss" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
+<dt id="dl_loss.compute_cost">
+<code class="descclassname">dl_loss.</code><code class="descname">compute_cost</code><span class="sig-paren">(</span><em>loss</em><span class="sig-paren">)</span><a class="headerlink" href="#dl_loss.compute_cost" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes cost, the average loss per example.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>loss (matrix): A (n[l] x m) matrix. Each column contains the loss values of an example. Each element is the loss value for a feature in a training example.</dd>
+<dt>Returns:</dt>
+<dd>cost (matrix): A n[l]-element vector. Each element is the cost for a feature.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
 <dt id="dl_loss.compute_loss">
 <code class="descclassname">dl_loss.</code><code class="descname">compute_loss</code><span class="sig-paren">(</span><em>y</em>, <em>y_pred</em>, <em>lossFunctionID</em><span class="sig-paren">)</span><a class="headerlink" href="#dl_loss.compute_loss" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns loss given the loss function, the predicted, and the expected output.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">y (matrix): The dataset&#8217;s output. y is a (n[l] x m) matrix, where l is the number of layers in the model, n[l] is the number of nodes or features in the l-th layer, and m is the number of examples. The elements in y are expected to be 0s or 1s.</p>
+<p>y_pred (matrix): The predicted output. y_pred is a (n[l] x m) matrix, where l is the number of layers in the model, n[l] is the number of nodes or features in the l-th layer, and m is the number of examples. The elements in y_pred are expected to be in the range [0, 1].</p>
+<p class="last">lossFunctionID (string): String identifying a loss function. Needs to match a function in dl_loss.py</p>
+</dd>
+<dt>Returns:</dt>
+<dd>matrix: L , a (n[l] x m) matrix. Each element is the loss value for a feature in a training example.</dd>
+</dl>
+</dd></dl>
 
 <dl class="function">
 <dt id="dl_loss.loss_cross_entropy">
@@ -83,7 +105,7 @@
 <dl class="docutils">
 <dt>Args:</dt>
 <dd><p class="first">y (matrix): The dataset&#8217;s output. y is a (n[l] x m) matrix, where l is the number of layers in the model, n[l] is the number of nodes or features in the l-th layer, and m is the number of examples. The elements in y are expected to be 0s or 1s.</p>
-<p class="last">y_pred (matrix): The predicted output. y_pred is a (n[l] x m) matrix, where l is the number of layers in the model, n[l] is the number of nodes or features in the l-th layer, and m is the number of examples. The elements in y_pred are expected to be in the range [0, 1]..</p>
+<p class="last">y_pred (matrix): The predicted output. y_pred is a (n[l] x m) matrix, where l is the number of layers in the model, n[l] is the number of nodes or features in the l-th layer, and m is the number of examples. The elements in y_pred are expected to be in the range [0, 1].</p>
 </dd>
 <dt>Returns:</dt>
 <dd>matrix: L , a (n[l] x m) matrix. Each element is the loss value for a feature in a training example.</dd>
