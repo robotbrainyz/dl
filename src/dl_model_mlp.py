@@ -223,7 +223,8 @@ def mlp_train(mlp, X, y, lossFunctionID, regularizer, batchSize=2000, numEpochs=
                 weightsDelta = np.divide(weightsMomentumCorrected, (np.sqrt(weightsScaleCorrected) + epsilon))
                 biasesDelta = np.divide(biasesMomentumCorrected, (np.sqrt(biasesScaleCorrected) + epsilon))
                 mlp.weights[layerIndex] = mlp.weights[layerIndex] - learningRate * weightsDelta
-                mlp.biases[layerIndex] = mlp.biases[layerIndex] - learningRate * biasesDelta                
+                mlp.biases[layerIndex] = mlp.biases[layerIndex] - learningRate * biasesDelta
+                iteration = iteration + 1
     
     return numBatches, costs
 
