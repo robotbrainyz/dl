@@ -1,5 +1,6 @@
 import math
 import numpy as np
+import numpy.testing as npt
 
 from dl_activate import sigmoid, sigmoid_back, tanh, tanh_back, softmax
 
@@ -9,10 +10,10 @@ Test sigmoid activating a matrix of zeros.
 def test_sigmoid_zeros():
     z0 = np.zeros((2, 2))
     a0 = sigmoid(z0)
-    assert a0[0][0] == 0.5
-    assert a0[0][1] == 0.5
-    assert a0[1][0] == 0.5
-    assert a0[1][1] == 0.5
+    npt.assert_approx_equal(a0[0][0], 0.5, 5)
+    npt.assert_approx_equal(a0[0][1], 0.5, 5)
+    npt.assert_approx_equal(a0[1][0], 0.5, 5)
+    npt.assert_approx_equal(a0[1][1], 0.5, 5)
 
 '''
 Test sigmoid activating a matrix of ones.
@@ -21,10 +22,10 @@ def test_sigmoid_ones():
     z1 = np.ones((2, 2))
     a1 = sigmoid(z1)
     expected_value = 1.0 / (math.exp(-1.0) + 1.0)
-    assert a1[0][0] == expected_value
-    assert a1[0][1] == expected_value
-    assert a1[1][0] == expected_value
-    assert a1[1][1] == expected_value
+    npt.assert_approx_equal(a1[0][0], expected_value, 5)
+    npt.assert_approx_equal(a1[0][1], expected_value, 5)
+    npt.assert_approx_equal(a1[1][0], expected_value, 5)
+    npt.assert_approx_equal(a1[1][1], expected_value, 5)
 
 '''
 Test sigmoid activating a matrix of random values.
@@ -38,7 +39,7 @@ def test_sigmoid_random():
     # Check that every element in ar, which was activated by the sigmoid function implementation, is equal to 1 / (1 + e**z), where z is the original value of the element before activation.
     for i in range(0, zr_shape[0]):
         for j in range(0, zr_shape[1]):
-            assert ar[i][j] == 1.0 / (math.exp(-zr_copy[i][j]) + 1.0)
+            npt.assert_approx_equal(ar[i][j], 1.0 / (math.exp(-zr_copy[i][j]) + 1.0), 5)
 
 '''
 Test getting the sigmoid derivative of a matrix of random values.
@@ -52,7 +53,7 @@ def test_sigmoid_back():
 
     for i in range(0,2):
         for j in range(0,3):
-            assert da_dz[i][j] == sz[i][j]
+            npt.assert_approx_equal(da_dz[i][j], sz[i][j], 5)
 
 '''
 Test tanh activation of a matrix of random values.
@@ -65,13 +66,12 @@ def test_tanh():
 
     # Check that each element in ar is equal to (e**x - e**-x)/(e**x + e**-x)
     # tanh is implemented as (2 / (1 + e**-2z)) - 1 in dl_activate
-    epsilon = 0.00000000001
     for i in range(0, zr_shape[0]):
         for j in range(0, zr_shape[1]):
             ex = math.exp(zr_copy[i][j]) # e**x
             emx = math.exp(-zr_copy[i][j]) # e**-x
             expected_value = (ex - emx)/(ex + emx)
-            assert abs(ar[i][j] - expected_value) < epsilon
+            npt.assert_approx_equal(ar[i][j], expected_value, 5)
 
 '''
 Test getting the tanh derivative of a matrix of random values.
@@ -88,7 +88,7 @@ def test_tanh_back():
     for i in range(0, zr_shape[0]):
         for j in range(0, zr_shape[1]):
             expected_value = 1.0 - (zr_copy[i][j] * zr_copy[i][j])
-            assert ar[i][j] == expected_value
+            npt.assert_approx_equal(ar[i][j], expected_value, 5)
 
 '''
 Test the softmax activation function

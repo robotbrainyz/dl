@@ -1,4 +1,5 @@
 import numpy as np
+import numpy.testing as npt
 
 from dl_activate import sigmoid, tanh
 from dl_back import back_linear, back_sigmoid, back_tanh, back_softmax
@@ -16,15 +17,14 @@ def test_back_linear():
 
     # Check value at row index 1, column index 1 of dw
     expected_value_dw = m_inv * np.sum(dz[1, :] * a_prev_T[:, 1])
-    epsilon = 0.00000000001
-    assert abs(dw[1, 1] - expected_value_dw) < epsilon
+    npt.assert_approx_equal(dw[1, 1], expected_value_dw, 5)
 
     # Check value at row index 2 of db
-    assert db[2] == m_inv * np.sum(dz[2, :])
+    npt.assert_approx_equal(db[2], m_inv * np.sum(dz[2, :]), 5)
 
     # Check value at row index 0, column index 1 of da_prev
     expected_value_da_prev = np.sum(w_T[0, :] * dz[:, 1])
-    assert abs(da_prev[0, 1] - expected_value_da_prev) < epsilon
+    npt.assert_approx_equal(da_prev[0, 1], expected_value_da_prev, 5)
     
 def test_back_sigmoid():
     da = np.random.randn(3,4) # 3 nodes in layer, 4 examples
@@ -34,7 +34,7 @@ def test_back_sigmoid():
 
     a = sigmoid(z)
     expected_value = da[1, 2] * (a * (1-a))[1, 2]
-    assert dz[1, 2] == expected_value
+    npt.assert_approx_equal(dz[1, 2], expected_value, 5)
 
 def test_back_tanh():
     da = np.random.randn(3,4) # 3 nodes in layer, 4 examples
@@ -44,7 +44,7 @@ def test_back_tanh():
 
     a = tanh(z)
     expected_value = da[1, 2] * (1 - a * a)[1, 2]
-    assert dz[1, 2] == expected_value    
+    npt.assert_approx_equal(dz[1, 2], expected_value, 5)
 
 def test_back_softmax():
     y = np.random.randn(3,4) # 3 nodes in layer, 4 examples
@@ -53,5 +53,5 @@ def test_back_softmax():
     expected_value = y_pred - y
 
     # test that all values are equal to the expected values
-    np.testing.assert_equal(dz, expected_value) 
+    npt.assert_equal(dz, expected_value, 5) 
 
