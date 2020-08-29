@@ -54,4 +54,3 @@ def standardize_column(df, columnName):
     columnStdDev = df[columnName].std()
     df[columnName] = (df[columnName]-columnMean)/columnStdDev
     return columnMean, columnStdDev, df
-

@@ -3,6 +3,7 @@ import numpy as np
 import numpy.testing as npt
 
 from dl_activate import sigmoid, tanh, softmax
+from dl_data import load_csv, one_hot_encode_column, standardize_column
 from dl_loss import compute_loss
 from dl_model_mlp import MLPLayerConfig, MLPModel, mlp_init_weights, mlp_train
 
@@ -167,3 +168,42 @@ def test_mlp_train_2Layer_softmax_costs():
     cost0 = np.divide(np.sum(loss0, axis = 1), loss0.shape[1])
     np.testing.assert_almost_equal(costs[0], cost0)
     np.testing.assert_equal(costs[0].shape[0], 3)
+
+def test_mlp_train():
+    ''' End-to-end MLP training and evaluation test using penguin dataset found in ../data/penguins/penguins_size.csv.
+    '''
+    dataFilePath = '../data/penguins/penguins_size.csv'
+    df = load_csv(dataFilePath)
+    df = one_hot_encode_column(df, 'species')#original 'species' column is removed
+    culmen_length_mean, culmean_length_stddev, df = standardize_column(df, 'culmen_length_mm')
+    culmen_depth_mean, culmen_depth_stddev, df = standardize_column(df, 'culmen_depth_mm')
+    flipper_length_mean, flipper_length_stddev, df = standardize_column(df, 'flipper_length_mm')
+    body_mass_mean, body_mass_stddev, df = standardize_column(df, 'body_mass_g')        
+
+
+    data = df.to_numpy()
+    assert data.shape[0] == 344
+    assert data.shape[1] == 9
+
+    y = data[:, -3:]
+    X = data[:, :6]
+    
+
+    
+if __name__ == '__main__':
+    dataFilePath = '../data/penguins/penguins_size.csv'
+    df = load_csv(dataFilePath)
+    df = one_hot_encode_column(df, 'species')
+    culmen_length_mean, culmean_length_stddev, df = standardize_column(df, 'culmen_length_mm')
+    culmen_depth_mean, culmen_depth_stddev, df = standardize_column(df, 'culmen_depth_mm')
+    flipper_length_mean, flipper_length_stddev, df = standardize_column(df, 'flipper_length_mm')
+    body_mass_mean, body_mass_stddev, df = standardize_column(df, 'body_mass_g')        
+
+
+    data = df.to_numpy()
+    y = data[:, -3:]    
+    print(y.shape)
+    print(y)
+    X = data[:, :6]
+    print(X)
+    
