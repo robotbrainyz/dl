@@ -111,7 +111,7 @@ def mlp_set_biases(mlp, biases):
     '''
     return
 
-def mlp_train(mlp, X, y, lossFunctionID, regularizer, batchSize=2000, numEpochs=1, learningRate = 0.1, adamMomentum = 0.9, adamScale = 0.99, plotCosts = False):
+def mlp_train(mlp, X, y, lossFunctionID, regularizer, optimizer, batchSize=2000, numEpochs=1, learningRate = 0.1, adamMomentum = 0.9, adamScale = 0.99, plotCosts = False):
     ''' Trains the given multi-layer perceptron for 1 epoch with the Adam optimization algorithm. 1 epoch propagates all training examples through the multi-layer perceptron exactly once. Uses the given regularization parameters and batchSize for training.
 
     Args:
@@ -150,19 +150,7 @@ def mlp_train(mlp, X, y, lossFunctionID, regularizer, batchSize=2000, numEpochs=
     numBatches = X.shape[1]//batchSize + 1
     costs = [] # List of computed costs (average loss) per batch
 
-    # Adam optimizer - Momentum and scale for weights and biases, iteration count
     iteration = 1
-    weightsMomentum = []
-    weightsScale = []
-    biasesMomentum = []
-    biasesScale = []
-    for layerWeights in mlp.weights:
-        weightsMomentum.append(np.zeros(layerWeights.shape))
-        weightsScale.append(np.zeros(layerWeights.shape))
-    for layerBiases in mlp.biases:
-        biasesMomentum.append(np.zeros(layerBiases.shape))
-        biasesScale.append(np.zeros(layerBiases.shape))                
-
     for epochIndex in range(0, numEpochs):
         for batchIndex in range(0, numBatches):
             # Select the columns for this batch from input X, and output y
@@ -209,19 +197,7 @@ def mlp_train(mlp, X, y, lossFunctionID, regularizer, batchSize=2000, numEpochs=
                     aPrev = aCache[layerIndex-1]
                 dw, db, da = back_linear(dz, aPrev, mlp.weights[layerIndex]) # Replace da to continue back prop in previous layer.
 
-                weightsMomentum[layerIndex] = adamMomentum * weightsMomentum[layerIndex] + (1-adamMomentum) * dw
-                biasesMomentum[layerIndex] = adamMomentum * biasesMomentum[layerIndex] + (1-adamMomentum) * db
-                weightsMomentumCorrected = weightsMomentum[layerIndex] / (1 - adamMomentum**iteration)
-                biasesMomentumCorrected = biasesMomentum[layerIndex] / (1 - adamMomentum**iteration)
-                
-                weightsScale[layerIndex] = adamScale * weightsScale[layerIndex] + (1-adamScale) * (dw**2)
-                biasesScale[layerIndex] = adamScale * biasesScale[layerIndex] + (1-adamScale) * (db**2)
-                weightsScaleCorrected = weightsScale[layerIndex] / (1 - adamScale**iteration)
-                biasesScaleCorrected = biasesScale[layerIndex] / (1 - adamScale**iteration)
-
-                epsilon = 1e-8
-                weightsDelta = np.divide(weightsMomentumCorrected, (np.sqrt(weightsScaleCorrected) + epsilon))
-                biasesDelta = np.divide(biasesMomentumCorrected, (np.sqrt(biasesScaleCorrected) + epsilon))
+                weightsDelta, biasesDelta = optimizer.optimize(dw, db, iteration, layerIndex)
                 mlp.weights[layerIndex] = mlp.weights[layerIndex] - learningRate * weightsDelta
                 mlp.biases[layerIndex] = mlp.biases[layerIndex] - learningRate * biasesDelta
                 iteration = iteration + 1
