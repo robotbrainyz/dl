@@ -4,8 +4,8 @@ import numpy.testing as npt
 
 from dl_activate import sigmoid, tanh, softmax
 from dl_data import load_csv, one_hot_encode_column, standardize_column
-from dl_loss import compute_loss
-from dl_model_mlp import MLPLayerConfig, MLPModel, mlp_init_weights, mlp_train
+from dl_loss import compute_loss, compute_cost
+from dl_model_mlp import MLPLayerConfig, MLPModel, mlp_init_weights, mlp_train, mlp_predict
 
 def test_MLPModel_init_1Layer_MLP():
     layer0 = MLPLayerConfig(1, 'sigmoid')
@@ -231,5 +231,11 @@ def test_mlp_train():
 
     assert numBatches == 3
 
-    trainingCostThreshold = 0.03
+    trainingCostThreshold = 0.03 # 97% training accuracy
     assert (np.less(costs[-1], trainingCostThreshold)).all() # Check that training costs at the last epoch/iteration is less than the threshold.
+
+    yPred = mlp_predict(mlp, XTest)
+    lossPred = compute_loss(yTest, yPred, lossFunctionID)
+    costPred = compute_cost(lossPred) # cost is the average loss per example
+    testCostThreshold = 0.15 # 85% test accuracy
+    assert (np.less(costPred, testCostThreshold)).all()

@@ -241,23 +241,17 @@ def mlp_predict(mlp, X):
     Returns:
         matrix: Predicted output for the given input X. The number of columns is the number of examples. The number of rows is the number of output features from the MLP.
     '''
-
-    '''
-    aPrev = None
+    aCache = [] # Cache to contain activation output of all layers
     for layerIndex in range(0, len(mlp.layerConfigs)):
         if layerIndex > 0:
-            layerInput = aPrev
+            layerInput = aCache[layerIndex-1]
         else:
             layerInput = X
-        aPrev = forward(layerInput,
-                        mlp.weights[layerIndex],
-                        mlp.biases[layerIndex],
-                        mlp.layerConfigs[layerIndex].activationFunctionID)
-    return aPrev
-
-    '''
-    return
+        z, a = forward(layerInput,
+                       mlp.weights[layerIndex],
+                       mlp.biases[layerIndex],
+                       mlp.layerConfigs[layerIndex].activationFunctionID)
+        aCache.append(a)
     
-
-
-        
+    # Predicted output is activation output of last layer
+    return aCache[len(aCache)-1] 
