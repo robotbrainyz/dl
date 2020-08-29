@@ -1,4 +1,5 @@
-from dl_data import load_csv, one_hot_encode_column
+import numpy.testing as npt
+from dl_data import load_csv, one_hot_encode_column, standardize_column
 
 def test_load_data():
     filePath = '../data/penguins/penguins_size.csv'
@@ -10,15 +11,17 @@ def test_one_hot_encode_column():
     filePath = '../data/penguins/penguins_size.csv'
     df = load_csv(filePath)
     df = one_hot_encode_column(df, 'species')
+
     assert df.shape[1]==9
+    assert(df.loc[343]['species_Gentoo']==1)
+    assert(df.loc[0]['species_Adelie']==1)
 
-
-if __name__ == "__main__":
+def test_standardize_column():
     filePath = '../data/penguins/penguins_size.csv'
     df = load_csv(filePath)
-    print(df.head())
-    print(df.tail())        
-    df = one_hot_encode_column(df, 'species')
-    print(df.head())    
-    print(df.tail())
-    
+    columnName = 'culmen_length_mm'
+    columnMean, columnStd, df = standardize_column(df, columnName)
+    npt.assert_approx_equal(columnMean, 43.6665, 5)
+    npt.assert_approx_equal(columnStd, 5.4595, 5)    
+    npt.assert_approx_equal(df.loc[343][columnName], 1.1417, 5)
+    npt.assert_approx_equal(df.loc[0][columnName], -0.83643, 5)    
