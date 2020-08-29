@@ -231,11 +231,11 @@ def test_mlp_train():
 
     assert numBatches == 3
 
-    trainingCostThreshold = 0.03 # 97% training accuracy
-    assert (np.less(costs[-1], trainingCostThreshold)).all() # Check that training costs at the last epoch/iteration is less than the threshold.
+    trainingCostThreshold = 0.03 # Expect 97% training accuracy
+    assert (np.less(costs[-1], trainingCostThreshold)).all()
 
     yPred = mlp_predict(mlp, XTest)
     lossPred = compute_loss(yTest, yPred, lossFunctionID)
     costPred = compute_cost(lossPred) # cost is the average loss per example
-    testCostThreshold = 0.15 # 85% test accuracy
+    testCostThreshold = 0.15 # Expect 85% test accuracy
     assert (np.less(costPred, testCostThreshold)).all()
