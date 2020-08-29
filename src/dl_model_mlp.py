@@ -67,7 +67,7 @@ class MLPModel:
     def __init__(self, numInputNodes, layerConfigs):
         self.init(numInputNodes, layerConfigs)
 
-def mlp_init_weights(mlp, useSeeds):
+def mlp_init_weights(mlp, useSeeds=False):
     ''' Resets the weight values in the given multi-layer perceptron using the He initialization method.
 
     The He initialization method is based on a paper by He et al., 2015.
@@ -188,8 +188,11 @@ def mlp_train(mlp, X, y, lossFunctionID, regularizer, batchSize=2000, numEpochs=
     
             # Compute Loss and cost
             yBatch_pred = aCache[len(aCache)-1] # Predicted output is activation output of last layer
+            print(yBatch_pred)#debug
             loss = compute_loss(yBatch, yBatch_pred, lossFunctionID)
             costs.append(compute_cost(loss)) # cost is the average loss per example
+            
+            #print(mlp.biases[layerIndex]) #debug
             
             # Back propagate
             if (mlp.layerConfigs[len(mlp.layerConfigs)-1].activationFunctionID != 'softmax'):
@@ -226,6 +229,8 @@ def mlp_train(mlp, X, y, lossFunctionID, regularizer, batchSize=2000, numEpochs=
                 mlp.weights[layerIndex] = mlp.weights[layerIndex] - learningRate * weightsDelta
                 mlp.biases[layerIndex] = mlp.biases[layerIndex] - learningRate * biasesDelta
                 iteration = iteration + 1
+
+                #print(mlp.biases[layerIndex]) #debug
 
     if plotCosts:
         plot_costs(costs)
