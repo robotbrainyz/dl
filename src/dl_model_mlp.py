@@ -188,11 +188,8 @@ def mlp_train(mlp, X, y, lossFunctionID, regularizer, batchSize=2000, numEpochs=
     
             # Compute Loss and cost
             yBatch_pred = aCache[len(aCache)-1] # Predicted output is activation output of last layer
-            print(yBatch_pred)#debug
             loss = compute_loss(yBatch, yBatch_pred, lossFunctionID)
             costs.append(compute_cost(loss)) # cost is the average loss per example
-            
-            #print(mlp.biases[layerIndex]) #debug
             
             # Back propagate
             if (mlp.layerConfigs[len(mlp.layerConfigs)-1].activationFunctionID != 'softmax'):
@@ -212,7 +209,6 @@ def mlp_train(mlp, X, y, lossFunctionID, regularizer, batchSize=2000, numEpochs=
                     aPrev = aCache[layerIndex-1]
                 dw, db, da = back_linear(dz, aPrev, mlp.weights[layerIndex]) # Replace da to continue back prop in previous layer.
 
-
                 weightsMomentum[layerIndex] = adamMomentum * weightsMomentum[layerIndex] + (1-adamMomentum) * dw
                 biasesMomentum[layerIndex] = adamMomentum * biasesMomentum[layerIndex] + (1-adamMomentum) * db
                 weightsMomentumCorrected = weightsMomentum[layerIndex] / (1 - adamMomentum**iteration)
@@ -229,8 +225,6 @@ def mlp_train(mlp, X, y, lossFunctionID, regularizer, batchSize=2000, numEpochs=
                 mlp.weights[layerIndex] = mlp.weights[layerIndex] - learningRate * weightsDelta
                 mlp.biases[layerIndex] = mlp.biases[layerIndex] - learningRate * biasesDelta
                 iteration = iteration + 1
-
-                #print(mlp.biases[layerIndex]) #debug
 
     if plotCosts:
         plot_costs(costs)

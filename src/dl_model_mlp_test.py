@@ -174,17 +174,20 @@ def test_mlp_train():
     '''
     dataFilePath = '../data/penguins/penguins_size.csv'
     df = load_csv(dataFilePath)
+
     df = one_hot_encode_column(df, 'species')#original 'species' column is removed
     culmen_length_mean, culmean_length_stddev, df = standardize_column(df, 'culmen_length_mm')
     culmen_depth_mean, culmen_depth_stddev, df = standardize_column(df, 'culmen_depth_mm')
     flipper_length_mean, flipper_length_stddev, df = standardize_column(df, 'flipper_length_mm')
     body_mass_mean, body_mass_stddev, df = standardize_column(df, 'body_mass_g')        
     df.drop(['sex'], axis=1, inplace=True)
-    df.drop(['island'], axis=1, inplace=True)    
+    df.drop(['island'], axis=1, inplace=True)
+    df = df.dropna()
     data = df.to_numpy()
-    assert data.shape[0] == 344
-    assert data.shape[1] == 7
-    
+
+    assert data.shape[0] == 342
+    assert data.shape[1] == 7    
+
     np.random.shuffle(data) # Shuffle in-place to ensure distribution is random
     
     y = data[:, -3:] # MLP output - one-hot encoded 'species', 3 different species
@@ -221,72 +224,12 @@ def test_mlp_train():
     batchSize = 100
     numEpochs = 100
     learningRate = 0.1
-    numBatches, costs = mlp_train(mlp, XTrain, yTrain, lossFunctionID, None, batchSize,numEpochs)
+    adamMomentum = 0.9
+    adamScale = 0.99
+    plotCosts = False
+    numBatches, costs = mlp_train(mlp, XTrain, yTrain, lossFunctionID, None, batchSize,numEpochs, learningRate, adamMomentum, adamScale, plotCosts)
 
     assert numBatches == 3
-    print(costs)
-    
-    
 
-
-    
-    
-
-    
-if __name__ == '__main__':
-    dataFilePath = '../data/penguins/penguins_size.csv'
-    df = load_csv(dataFilePath)
-
-    df = one_hot_encode_column(df, 'species')#original 'species' column is removed
-    culmen_length_mean, culmean_length_stddev, df = standardize_column(df, 'culmen_length_mm')
-    culmen_depth_mean, culmen_depth_stddev, df = standardize_column(df, 'culmen_depth_mm')
-    flipper_length_mean, flipper_length_stddev, df = standardize_column(df, 'flipper_length_mm')
-    body_mass_mean, body_mass_stddev, df = standardize_column(df, 'body_mass_g')        
-    df.drop(['sex'], axis=1, inplace=True)
-    df.drop(['island'], axis=1, inplace=True)    
-    data = df.to_numpy()
-    assert data.shape[0] == 344
-    assert data.shape[1] == 7
-    
-    np.random.shuffle(data) # Shuffle in-place to ensure distribution is random
-    
-    y = data[:, -3:] # MLP output - one-hot encoded 'species', 3 different species
-    X = data[:, :4] # MLP input - culmen length, depth, flipper length, body mass
-
-    X = np.transpose(X)
-    y = np.transpose(y)
-    
-    assert y.shape[0] == 3
-    assert X.shape[0] == 4
-
-    trainSetSize = (data.shape[0]//5) * 4
-    testSetSize = data.shape[0]-trainSetSize
-    XTrain = X[:, :trainSetSize]
-    yTrain = y[:, :trainSetSize]
-    XTest = X[:, trainSetSize:]
-    yTest = y[:, trainSetSize:]
-    assert XTrain.shape[1] == trainSetSize
-    assert yTrain.shape[1] == trainSetSize
-    assert XTest.shape[1] == testSetSize
-    assert yTest.shape[1] == testSetSize
-
-    activationFunctionID0 = 'tanh'
-    activationFunctionID1 = 'softmax'    
-    layer0 = MLPLayerConfig(4, activationFunctionID0)
-    layer1 = MLPLayerConfig(3, activationFunctionID1)
-    layers = [layer0, layer1]
-    numInputNodes = X.shape[0]
-    mlp = MLPModel(numInputNodes, layers)
-
-    mlp_init_weights(mlp) # Initialize weights randomly, biases are all zeros.
-    # print(mlp.weights) #OK
-
-    lossFunctionID = 'loss_cross_entropy_softmax'
-    batchSize = 100
-    numEpochs = 1
-    learningRate = 0.1
-    numBatches, costs = mlp_train(mlp, XTrain, yTrain, lossFunctionID, None, batchSize,numEpochs)
-
-    assert numBatches == 3
-    #print(costs)
-    
+    trainingCostThreshold = 0.03
+    assert (np.less(costs[-1], trainingCostThreshold)).all() # Check that training costs at the last epoch/iteration is less than the threshold.
