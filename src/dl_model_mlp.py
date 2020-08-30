@@ -175,8 +175,9 @@ def mlp_train(mlp, X, y, lossFunctionID, regularizer, optimizer, batchSize=2000,
             # Compute Loss and cost
             yBatch_pred = aCache[len(aCache)-1] # Predicted output is activation output of last layer
             loss = compute_loss(yBatch, yBatch_pred, lossFunctionID)
-            costs.append(compute_cost(loss)) # cost is the average loss per example
-            
+            regCost, regWeightsDelta = regularizer.regularize(mlp.weights, loss.shape[1])
+            costs.append(compute_cost(loss+regCost)) # cost is the average loss per example
+
             # Back propagate
             if (mlp.layerConfigs[len(mlp.layerConfigs)-1].activationFunctionID != 'softmax'):
                 da = loss_cross_entropy_back(yBatch, yBatch_pred)
@@ -196,7 +197,7 @@ def mlp_train(mlp, X, y, lossFunctionID, regularizer, optimizer, batchSize=2000,
                 dw, db, da = back_linear(dz, aPrev, mlp.weights[layerIndex]) # Replace da to continue back prop in previous layer.
 
                 weightsDelta, biasesDelta = optimizer.optimize(dw, db, iteration, layerIndex)
-                mlp.weights[layerIndex] = mlp.weights[layerIndex] - learningRate * weightsDelta
+                mlp.weights[layerIndex] = mlp.weights[layerIndex] - learningRate * (weightsDelta + regWeightsDelta[layerIndex])
                 mlp.biases[layerIndex] = mlp.biases[layerIndex] - learningRate * biasesDelta
                 iteration = iteration + 1
 

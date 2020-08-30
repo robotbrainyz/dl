@@ -7,6 +7,7 @@ from dl_data import load_csv, one_hot_encode_column, standardize_column
 from dl_loss import compute_loss, compute_cost
 from dl_model_mlp import MLPLayerConfig, MLPModel, mlp_init_weights, mlp_train, mlp_predict
 from dl_optimizer import AdamOptimizer
+from dl_regularizer import L2Regularizer
 
 def test_MLPModel_init_1Layer_MLP():
     layer0 = MLPLayerConfig(1, 'sigmoid')
@@ -94,13 +95,15 @@ def test_mlp_train_numBatches():
 
     batchSize = 4
     optimizer = AdamOptimizer(mlp)
-    print(type(optimizer))
-    numBatches, costs = mlp_train(mlp, X, y, lossFunctionID, None, optimizer, batchSize, numEpochs)
+    regularizationFactor = 0
+    regularizer = L2Regularizer(regularizationFactor)
+    
+    numBatches, costs = mlp_train(mlp, X, y, lossFunctionID, regularizer, optimizer, batchSize, numEpochs)
     npt.assert_approx_equal(numBatches,  3)
     
     
     batchSize = 11
-    numBatches, costs = mlp_train(mlp, X, y, lossFunctionID, None, optimizer, batchSize, numEpochs)
+    numBatches, costs = mlp_train(mlp, X, y, lossFunctionID, regularizer, optimizer, batchSize, numEpochs)
     npt.assert_approx_equal(numBatches,  1)
 
 def test_mlp_train_singleLayer_sigmoid_costs():
@@ -119,8 +122,10 @@ def test_mlp_train_singleLayer_sigmoid_costs():
     lossFunctionID = 'loss_cross_entropy'
     numEpochs = 1
     batchSize = 4
-    optimizer = AdamOptimizer(mlp)    
-    numBatches, costs = mlp_train(mlp, X, y, lossFunctionID, None, optimizer, batchSize, numEpochs)
+    optimizer = AdamOptimizer(mlp)
+    regularizationFactor = 0
+    regularizer = L2Regularizer(regularizationFactor)    
+    numBatches, costs = mlp_train(mlp, X, y, lossFunctionID, regularizer, optimizer, batchSize, numEpochs)
 
     npt.assert_approx_equal(len(costs),  3)
 
@@ -156,7 +161,9 @@ def test_mlp_train_2Layer_softmax_costs():
     numEpochs = 1
     batchSize = 4
     optimizer = AdamOptimizer(mlp)
-    numBatches, costs = mlp_train(mlp, X, y, lossFunctionID, None, optimizer, batchSize, numEpochs)
+    regularizationFactor = 0
+    regularizer = L2Regularizer(regularizationFactor)    
+    numBatches, costs = mlp_train(mlp, X, y, lossFunctionID, regularizer, optimizer, batchSize, numEpochs)
 
     npt.assert_approx_equal(len(costs),  3)
 
@@ -232,16 +239,23 @@ def test_mlp_train():
     adamMomentum = 0.9
     adamScale = 0.99
     plotCosts = False
-    optimizer = AdamOptimizer(mlp, adamMomentum, adamScale)    
-    numBatches, costs = mlp_train(mlp, XTrain, yTrain, lossFunctionID, None, optimizer, batchSize,numEpochs, learningRate, plotCosts)
+    optimizer = AdamOptimizer(mlp, adamMomentum, adamScale)
+    regularizationFactor = 0.05
+    regularizer = L2Regularizer(regularizationFactor)    
+    numBatches, costs = mlp_train(mlp, XTrain, yTrain, lossFunctionID, regularizer, optimizer, batchSize,numEpochs, learningRate, plotCosts)
 
     assert numBatches == 3
 
-    trainingCostThreshold = 0.03 # Expect 97% training accuracy
+    trainingCostThreshold = 0.065 # Expect 93.5% training accuracy
+    print(costs[-1])    
     assert (np.less(costs[-1], trainingCostThreshold)).all()
 
     yPred = mlp_predict(mlp, XTest)
     lossPred = compute_loss(yTest, yPred, lossFunctionID)
     costPred = compute_cost(lossPred) # cost is the average loss per example
-    testCostThreshold = 0.15 # Expect 85% test accuracy
+    testCostThreshold = 0.1 # Expect 90% test accuracy
+    print(costPred)
     assert (np.less(costPred, testCostThreshold)).all()
+
+if __name__ == '__main__':
+    test_mlp_train()
