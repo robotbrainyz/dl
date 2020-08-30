@@ -19,3 +19,5 @@ src
    dl_optimizer
    dl_optimizer_test
    dl_plot
+   dl_regularizer
+   dl_regularizer_test
