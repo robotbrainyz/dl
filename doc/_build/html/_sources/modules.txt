@@ -16,4 +16,6 @@ src
    dl_loss_test
    dl_model_mlp
    dl_model_mlp_test
+   dl_optimizer
+   dl_optimizer_test
    dl_plot

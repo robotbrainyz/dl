@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>dl_optimizer module &mdash; dl 1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="dl 1 documentation" href="index.html" />
+    <link rel="up" title="src" href="modules.html" />
+    <link rel="next" title="dl_optimizer_test module" href="dl_optimizer_test.html" />
+    <link rel="prev" title="dl_model_mlp_test module" href="dl_model_mlp_test.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-dl_optimizer">
+<span id="dl-optimizer-module"></span><h1>dl_optimizer module<a class="headerlink" href="#module-dl_optimizer" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="dl_optimizer.AdamOptimizer">
+<em class="property">class </em><code class="descclassname">dl_optimizer.</code><code class="descname">AdamOptimizer</code><span class="sig-paren">(</span><em>mlp</em>, <em>adamMomentum=0.9</em>, <em>adamScale=0.99</em><span class="sig-paren">)</span><a class="headerlink" href="#dl_optimizer.AdamOptimizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Adam optimizer</p>
+<dl class="method">
+<dt id="dl_optimizer.AdamOptimizer.init">
+<code class="descname">init</code><span class="sig-paren">(</span><em>mlp</em>, <em>adamMomentum</em>, <em>adamScale</em><span class="sig-paren">)</span><a class="headerlink" href="#dl_optimizer.AdamOptimizer.init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes this AdamOptimizer with an MLP model.</p>
+<p>Assume that the MLP model is already initialized.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">mlp (MLPModel): Instance of initialized MLPModel.</p>
+<p>adamMomentum (float): Proportion of previous derivatives to retain vs the latest derivatives computed. A value between 0 to 1.</p>
+<p class="last">adamScale (float): Proportion to previous derivative used to scale the latest derivatives computed. A value between 0 to 1.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="dl_optimizer.AdamOptimizer.optimize">
+<code class="descname">optimize</code><span class="sig-paren">(</span><em>dw</em>, <em>db</em>, <em>iteration</em>, <em>layerIndex</em><span class="sig-paren">)</span><a class="headerlink" href="#dl_optimizer.AdamOptimizer.optimize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the change in weights and biases given the derivative of the weights and biases with respect to the loss, and the layer index in the multi-layer perceptron.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">dw (matrix): A (n[l] * n[l-1]) matrix that contains the derivatives of the weights in the given layer. n[l] is the number of nodes in the given layer, and n[l-1] is the number of nodes in the previous layer.</p>
+<p>db (matrix): A (n[l] * 1) matrix that contains the derivatives of the biases in the given layer. n[l] is the number of nodes in the given layer.</p>
+<p>iteration (int): Training iteration that increases as training progresses. This value is used to reduce the effect of this Adam optimizer as training progresses further.</p>
+<p class="last">layerIndex (int): Index of the layer to identify the weights and biases momentum and scales in this optimizer.</p>
+</dd>
+<dt>Returns:</dt>
+<dd><p class="first">weightsDelta (matrix): A (n[l] * n[l-1]) matrix that contains the recommended change in the weights for the given layer in the multi-layer perceptron.</p>
+<p class="last">biasesDelta (matrix): A (n[l] * 1) matrix that contains the recommended change in the biases for the given layer in the multi-layer perceptron.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="dl_optimizer.DummyOptimizer">
+<em class="property">class </em><code class="descclassname">dl_optimizer.</code><code class="descname">DummyOptimizer</code><span class="sig-paren">(</span><em>mlp</em><span class="sig-paren">)</span><a class="headerlink" href="#dl_optimizer.DummyOptimizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="dl_optimizer.DummyOptimizer.optimize">
+<code class="descname">optimize</code><span class="sig-paren">(</span><em>dw</em>, <em>db</em>, <em>iteration</em>, <em>layerIndex</em><span class="sig-paren">)</span><a class="headerlink" href="#dl_optimizer.DummyOptimizer.optimize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="setup.html">dl - Neural Networks in Python</a><ul>
+  <li><a href="modules.html">src</a><ul>
+      <li>Previous: <a href="dl_model_mlp_test.html" title="previous chapter">dl_model_mlp_test module</a></li>
+      <li>Next: <a href="dl_optimizer_test.html" title="next chapter">dl_optimizer_test module</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/dl_optimizer.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Yongzhi Ong.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="_sources/dl_optimizer.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
