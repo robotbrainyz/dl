@@ -233,7 +233,7 @@ def test_mlp_train():
     adamScale = 0.99
     plotCosts = False
     optimizer = AdamOptimizer(mlp, adamMomentum, adamScale)    
-    numBatches, costs = mlp_train(mlp, XTrain, yTrain, lossFunctionID, None, optimizer, batchSize,numEpochs, learningRate, adamMomentum, adamScale, plotCosts)
+    numBatches, costs = mlp_train(mlp, XTrain, yTrain, lossFunctionID, None, optimizer, batchSize,numEpochs, learningRate, plotCosts)
 
     assert numBatches == 3
 

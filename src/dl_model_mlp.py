@@ -111,7 +111,7 @@ def mlp_set_biases(mlp, biases):
     '''
     return
 
-def mlp_train(mlp, X, y, lossFunctionID, regularizer, optimizer, batchSize=2000, numEpochs=1, learningRate = 0.1, adamMomentum = 0.9, adamScale = 0.99, plotCosts = False):
+def mlp_train(mlp, X, y, lossFunctionID, regularizer, optimizer, batchSize=2000, numEpochs=1, learningRate = 0.1, plotCosts = False):
     ''' Trains the given multi-layer perceptron for 1 epoch with the Adam optimization algorithm. 1 epoch propagates all training examples through the multi-layer perceptron exactly once. Uses the given regularization parameters and batchSize for training.
 
     Args:
@@ -131,9 +131,7 @@ def mlp_train(mlp, X, y, lossFunctionID, regularizer, optimizer, batchSize=2000,
 
         learningRate (float): Scalar multiplied against weight derivatives before subtracting derivatives from weights.
 
-        adamMomentum (float): Proportion of previous derivatives to retain vs the latest derivatives computed. A value between 0 to 1.
-
-        adamScale (float): Proportion to previous derivative used to scale the latest derivatives computed. A value between 0 to 1.
+        plotCosts (bool): Flag to specify if the cost values per iteration are plotted as a visual graph at the end of the training.
 
     Returns:
         numBatches (int): Number of batches given the batchSize and number of training examples.
