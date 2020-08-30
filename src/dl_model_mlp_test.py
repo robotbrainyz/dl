@@ -53,14 +53,14 @@ def test_mlp_init_weights():
 
     np.random.seed(0)    
     expectedWeightsL0 = np.random.randn(5, 4) * factorHeInit
-    np.testing.assert_equal(mlp.weights[0], expectedWeightsL0)
+    npt.assert_array_almost_equal_nulp(mlp.weights[0], expectedWeightsL0)
 
     factorHeInit = np.sqrt(2.0/5) # Scale factor used in He initialization for layer 1
     npt.assert_approx_equal(factorHeInit,  math.sqrt(2/5))    
 
     np.random.seed(1)    
     expectedWeightsL1 = np.random.randn(3, 5) * factorHeInit
-    np.testing.assert_equal(mlp.weights[1], expectedWeightsL1)    
+    npt.assert_array_almost_equal_nulp(mlp.weights[1], expectedWeightsL1)    
 
 def test_mlp_init_weights1Layer():
     # Create a MLP with 4-5 nodes in the inputand output layer.
@@ -77,7 +77,7 @@ def test_mlp_init_weights1Layer():
 
     np.random.seed(0)    
     expectedWeightsL0 = np.random.randn(5, 4) * factorHeInit
-    np.testing.assert_equal(mlp.weights[0], expectedWeightsL0)
+    npt.assert_array_almost_equal_nulp(mlp.weights[0], expectedWeightsL0)
 
 def test_mlp_train_numBatches():
     X = np.random.randn(5, 10)
@@ -133,8 +133,8 @@ def test_mlp_train_singleLayer_sigmoid_costs():
     y_pred0 = a0
     loss0 = compute_loss(yBatch0, y_pred0, lossFunctionID)
     cost0 = np.divide(np.sum(loss0, axis = 1), loss0.shape[1])
-    np.testing.assert_almost_equal(costs[0], cost0)
-    np.testing.assert_equal(costs[0].shape[0], 1)
+    npt.assert_almost_equal(costs[0], cost0)
+    npt.assert_array_almost_equal_nulp(costs[0].shape[0], 1)
 
 
 def test_mlp_train_2Layer_softmax_costs():
@@ -171,8 +171,8 @@ def test_mlp_train_2Layer_softmax_costs():
     y_pred = a1
     loss0 = compute_loss(yBatch0, y_pred, lossFunctionID)
     cost0 = np.divide(np.sum(loss0, axis = 1), loss0.shape[1])
-    np.testing.assert_almost_equal(costs[0], cost0)
-    np.testing.assert_equal(costs[0].shape[0], 3)
+    npt.assert_almost_equal(costs[0], cost0)
+    npt.assert_array_almost_equal_nulp(costs[0].shape[0], 3)
 
 def test_mlp_train():
     ''' End-to-end MLP training and evaluation test using penguin dataset found in ../data/penguins/penguins_size.csv.

@@ -53,5 +53,5 @@ def test_back_softmax():
     expected_value = y_pred - y
 
     # test that all values are equal to the expected values
-    npt.assert_equal(dz, expected_value, 5) 
+    npt.assert_array_almost_equal_nulp(dz, expected_value, 5) 
 

@@ -103,6 +103,6 @@ def test_softmax():
     zr_copy = np.exp(zr_copy) # Take the exponent of all values
     zr_copy_sum_cols = np.sum(zr_copy, axis=0) # The the sum of each column
     expected_value = zr_copy / zr_copy_sum_cols # Divide each row by the sum of each column
-    np.testing.assert_equal(ar, expected_value) # Check that ar is the same as the expected value.
+    npt.assert_array_almost_equal_nulp(ar, expected_value) # Check that ar is the same as the expected value.
     
 
