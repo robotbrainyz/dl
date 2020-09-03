@@ -1,61 +1,31 @@
 ###################################################################
-dl - Neural Networks in Python
+dl - Deep Neural Networks in Python
 ###################################################################
 
-
-Requirements
-============
-**dl**, a neural network implementation in Python has the following dependencies:
-
+Python Dependencies
+===================
 - Python 3
 - Numpy
 - pytest
 - Sphinx
 - seaborn
 - pandas
+- torch
 
--CUDA
-wget http://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/cuda_10.2.89_440.33.01_linux.run
-sudo apt update
-sudo apt-get install build-essential gcc-multilib dkms
-sudo chmod +x cuda_10.2.89_440.33.01_linux.run
-sudo ./cuda_10.2.89_440.33.01_linux.run
-(driver and toolkit mandatory, samples optional)
-sudo bash -c "echo /usr/local/cuda/lib64/ > /etc/ld.so.conf.d/cuda.conf"
-sudo ldconfig
+Download
+=================================
+To download dl from Github, do::
 
-sudo nano /etc/environment
-PATH="/usr/local/sbin:usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games:/usr/local/cuda/bin"
+    $ git clone https://github.com/robotbrainyz/dl.git
 
-nvidia-smi
-(should see GPU driver version and CUDA version)
+Run Tests
+=========
+To run unit tests, do::
 
-sudo nano /etc/rc.local
-#!/bin/bash
-nvidia-smi -pm 1
-nvidia-smi -e 0
-exit 0
-
-sudo chmod +x /etc/rc.local
-
-sudo reboot -h now
-
-
-
-
-Installation - Python environment
-============
-To download the Binary Trees library from Github, do::
-
-    $ git clone https://github.com/shunsvineyard/python-sample-code.git
-
-
-Installation - Environment for auto-generating documentation
-============
-
+    $ pytest
     
-
-
+Installation - Environment for auto-generating documentation
+============================================================
 Install Required Packages
 Python 3
 Pip install numpy

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>dl - Neural Networks in Python &mdash; dl 1 documentation</title>
+    <title>dl - Deep Neural Networks in Python &mdash; dl 1 documentation</title>
     
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -38,11 +38,10 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="dl-neural-networks-in-python">
-<h1>dl - Neural Networks in Python<a class="headerlink" href="#dl-neural-networks-in-python" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="requirements">
-<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
-<p><strong>dl</strong>, a neural network implementation in Python has the following dependencies:</p>
+  <div class="section" id="dl-deep-neural-networks-in-python">
+<h1>dl - Deep Neural Networks in Python<a class="headerlink" href="#dl-deep-neural-networks-in-python" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="python-dependencies">
+<h2>Python Dependencies<a class="headerlink" href="#python-dependencies" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>Python 3</li>
 <li>Numpy</li>
@@ -51,8 +50,42 @@
 <li>seaborn</li>
 <li>pandas</li>
 </ul>
-<p>-CUDA
-wget <a class="reference external" href="http://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/cuda_10.2.89_440.33.01_linux.run">http://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/cuda_10.2.89_440.33.01_linux.run</a>
+</div>
+<div class="section" id="cuda-setup-in-the-cloud">
+<h2>CUDA - Setup in the Cloud<a class="headerlink" href="#cuda-setup-in-the-cloud" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Create Azure account. (Azure offers free trials sometimes. The free trials may come with credits.)</li>
+<li>Sign in to Azure portal (portal.azure.com).</li>
+<li>Go to Virtual Machines -&gt; Add -&gt; Virtual Machine.
+- Subscription: Free Trial
+- Resource group: dl.resource-group
+- Virtual machine name: dl.vm
+- Region: (Europe) UK South
+- Availability options: No infrastructure redundancy required.
+- Image: Ubuntu Server 18.04 LTS - Gen 1
+- Azure Spot Instance: No
+- Size: Standard_NC6_promo
+- Authentication type: SSH public key
+- SSH public key source: Generate new key pair
+- Key pair name: dl.vm-key
+- Public inbound ports: Allow selected ports
+- Select inbound ports: SSH (22)
+- OS disk type: Standard HDD
+- Encryption type: Encryption at rest with platform managed key
+- Virtual network: dl.resource-group-vnet
+- Subnet: 10.0.0.0
+- Public IP: dl.vm-ip
+- NIC network security group: Basic
+- Public inbound ports: SSH (22)
+- Accelerated networking: Off
+- Load balancer: No
+- Tag: Name (dl.tag), Value (dl)</li>
+<li>Deployment error:{&#8220;code&#8221;:&#8221;InvalidTemplateDeployment&#8221;,&#8221;message&#8221;:&#8221;The template deployment &#8216;CreateVm-Canonical.UbuntuServer-18.04-LTS-20200901073648&#8217; is not valid according to the validation procedure. The tracking id is &#8216;e99762c1-eb43-406b-8eba-9d89c6d0ddb1&#8217;. See inner errors for details.&#8221;,&#8221;details&#8221;:[{&#8220;code&#8221;:&#8221;QuotaExceeded&#8221;,&#8221;message&#8221;:&#8221;Operation could not be completed as it results in exceeding approved Total Regional Cores quota. Additional details - Deployment Model: Resource Manager, Location: uksouth, Current Limit: 4, Current Usage: 0, Additional Required: 6, (Minimum) New Limit Required: 6. Submit a request for Quota increase at <a class="reference external" href="https://aka.ms/ProdportalCRP/">https://aka.ms/ProdportalCRP/</a>?#create/Microsoft.Support/Parameters/%7B%22subId%22:%2203e88952-ca2b-4b10-91d7-a02c6826fd3c%22,%22pesId%22:%2206bfd9d3-516b-d5c6-5802-169c800dec89%22,%22supportTopicId%22:%22e12e3d1d-7fa0-af33-c6d0-3c50df9658a3%22%7D by specifying parameters listed in the Details section for deployment to succeed. Please read more about quota limits at <a class="reference external" href="https://docs.microsoft.com/en-us/azure/azure-supportability/regional-quota-requests">https://docs.microsoft.com/en-us/azure/azure-supportability/regional-quota-requests</a>.&#8221;}]}</li>
+</ul>
+</div>
+<div class="section" id="cuda-install-drivers">
+<h2>CUDA - Install Drivers<a class="headerlink" href="#cuda-install-drivers" title="Permalink to this headline">¶</a></h2>
+<p>wget <a class="reference external" href="http://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/cuda_10.2.89_440.33.01_linux.run">http://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/cuda_10.2.89_440.33.01_linux.run</a>
 sudo apt update
 sudo apt-get install build-essential gcc-multilib dkms
 sudo chmod +x cuda_10.2.89_440.33.01_linux.run
@@ -142,8 +175,10 @@ make html</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">dl - Neural Networks in Python</a><ul>
-<li><a class="reference internal" href="#requirements">Requirements</a></li>
+<li><a class="reference internal" href="#">dl - Deep Neural Networks in Python</a><ul>
+<li><a class="reference internal" href="#python-dependencies">Python Dependencies</a></li>
+<li><a class="reference internal" href="#cuda-setup-in-the-cloud">CUDA - Setup in the Cloud</a></li>
+<li><a class="reference internal" href="#cuda-install-drivers">CUDA - Install Drivers</a></li>
 <li><a class="reference internal" href="#installation-python-environment">Installation - Python environment</a></li>
 <li><a class="reference internal" href="#installation-environment-for-auto-generating-documentation">Installation - Environment for auto-generating documentation</a></li>
 </ul>
