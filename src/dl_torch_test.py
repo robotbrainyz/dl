@@ -6,10 +6,8 @@ np.vstack
 np.arange
 np.hstack
 np.square
-
 npt.assert_approx_equal
 npt.assert_array_almost_equal_nulp
-
 '''
 
 import math
@@ -22,6 +20,7 @@ def test_torch_functions():
     np.array
     np.random.randn
     '''
+    
     # torch.ones - np.ones
     matOnes = torch.ones(2, 3)
     assert matOnes.shape[0] == 2
@@ -80,13 +79,14 @@ def test_torch_functions():
     matTranspose = torch.transpose(matRandn, 0, 1)
     assert matTranspose.shape[0] == matRandn.shape[1]
     assert matTranspose.shape[1] == matRandn.shape[0]
+    
     '''
-np.random.seed
-np.sqrt
-np.dot
-np.log
-np.divide    
-   '''
+    np.random.seed
+    np.sqrt
+    np.dot
+    np.log
+    np.divide    
+    '''
 
     # torch.manual_seed - np.random.seed
     torch.manual_seed(1)
@@ -113,6 +113,45 @@ np.divide
     # torch.divide - np.divide
     matDivide = torch.true_divide(matRandn, 5)
     assert math.isclose(matDivide[0][1], matRandn[0][1]/5, rel_tol=1e-6)    
+
+    
+    '''
+    np.random.shuffle
+    np.less
+    np.copy
+    np.vstack
+    np.arange
+    np.hstack
+    np.square
+    npt.assert_approx_equal
+    npt.assert_array_almost_equal_nulp
+    '''
+    # shuffle - np.random.shuffle
+    matShuffle=matRandn[torch.randperm(matRandn.size()[0])] # [0] to shuffle rows, [1] to shuffle columns
+
+    # torch.lt - np.less
+    tA = torch.tensor([[1,2,3],[1,2,3]])
+    tB = torch.tensor([[4,5,6],[4,5,6]])
+    assert (torch.lt(tA, tB).all())
+
+    # clone().detach() - np.copy
+    matCopy = matRandn.clone().detach()
+    assert torch.eq(matCopy, matRandn).all()
+
+    # torch.stack([], dim=0) - np.vstack
+
+    # torch.arange - np.arange
+
+    # torch.stack([], dim=1) - np.hstack
+
+    # torch.square - np.square
+
+    # math.isclose() - np.assert_approx_equal
+    
+    # torch.allclose() - npt.assert_array_almost_equal_nulp
+
+    
+    
 
     
     
