@@ -2,7 +2,7 @@ import math
 import torch
 
 from dlt_activate import sigmoid, tanh, softmax
-from dl_data import load_csv, one_hot_encode_column, standardize_column
+from dlt_data import load_csv, one_hot_encode_column, standardize_column
 from dlt_loss import compute_loss, compute_cost
 from dlt_model_mlp import MLPLayerConfig, MLPModel, mlp_init_weights, mlp_train, mlp_predict
 from dlt_optimizer import AdamOptimizer
@@ -245,7 +245,7 @@ def test_mlp_train():
     learningRate = 0.1
     adamMomentum = 0.9
     adamScale = 0.99
-    plotCosts = False
+    plotCosts = True
     optimizer = AdamOptimizer(mlp, adamMomentum, adamScale)
     regularizationFactor = 0.05
     regularizer = L2Regularizer(regularizationFactor)    

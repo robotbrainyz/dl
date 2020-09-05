@@ -1,16 +1,16 @@
+import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import time
 import timeit
-import torch
 
 def plot_costs(costs):
-    costsNumpy = torch.stack(costs, dim=0)#[n for n in costs]
-    columnIndexColumn = torch.arange(len(costs))
+    costsNumpy = np.vstack(costs)#[n for n in costs]
+    columnIndexColumn = np.arange(len(costs))
     columnIndexColumn = columnIndexColumn.reshape(columnIndexColumn.shape[0], 1)
-    costsNumpy = torch.stack((costsNumpy, columnIndexColumn), dim=1)
-    indices = torch.arange(costsNumpy.shape[1]-1)
+    costsNumpy = np.hstack((costsNumpy, columnIndexColumn))
+    indices = np.arange(costsNumpy.shape[1]-1)
     columnNames = ['feature ' + str(i) for i in indices]
     columnNames.append('indexCol')
     df = pd.DataFrame(costsNumpy, columns=columnNames) # column names are compulsory
@@ -29,12 +29,12 @@ def test_plot_training_time():
         totalTime = totalTime + elapsed
         batchTimes.append(elapsed)        
         totalTimes.append(totalTime)
-    batchTimesNp = torch.tensor(batchTimes)
-    totalTimesNp = torch.tensor(totalTimes)
-    indices = torch.arange(len(batchTimesNp))
-    timings = torch.stack((batchTimesNp, totalTimesNp, indices), dim=1)
+    batchTimesNp = np.array(batchTimes)
+    totalTimesNp = np.array(totalTimes)
+    indices = np.arange(len(batchTimesNp))
+    timings = np.hstack((batchTimesNp, totalTimesNp, indices))
     timings = timings.reshape(len(batchTimesNp), 3)
-    timings = torch.transpose(timings, 0, 1)
+    timings = np.transpose(timings)
     print(timings)
     df = pd.DataFrame(timings, columns=['iteration duration', 'elapsed', 'indexCol']) # column names are compulsory
 
@@ -45,8 +45,8 @@ def test_plot_training_time():
     
 def test_plot_costs2():
     costs = []
-    loss = torch.randn(4,50)
-    cost = torch.true_divide(torch.sum(loss, dim = 1), loss.shape[1])
+    loss = np.random.randn(4,50)
+    cost = np.divide(np.sum(loss, axis = 1), loss.shape[1])
     costs.append(cost)
     costs.append(cost)
     costs.append(cost)
@@ -54,10 +54,10 @@ def test_plot_costs2():
     costs.append(cost)
 
 
-    costsNumpy = torch.stack(costs, dim=0)#[n for n in costs]
-    columnIndexColumn = torch.arange(5)
+    costsNumpy = np.vstack(costs)#[n for n in costs]
+    columnIndexColumn = np.arange(5)
     columnIndexColumn = columnIndexColumn.reshape(columnIndexColumn.shape[0], 1)
-    costsNumpy = torch.stack((costsNumpy, columnIndexColumn), dim=1)
+    costsNumpy = np.hstack((costsNumpy, columnIndexColumn))
     print(costsNumpy)
     df = pd.DataFrame(costsNumpy, columns=['feature 1', 'feature 2', 'feature 3', 'feature 4', 'indexCol']) # column names are compulsory
 
@@ -67,10 +67,10 @@ def test_plot_costs2():
 def test_plot_costs():
     # may need [capitalize(n) for n in names] to concatenate 
     sns.set(style="darkgrid")
-    costs = torch.randn(4, 50)
-    columnIndexRow = torch.arange(50)
-    costs = torch.stack([costs, columnIndexRow], dim=0)
-    costs = torch.transpose(costs, 0, 1)
+    costs = np.random.randn(4, 50)
+    columnIndexRow = np.arange(50)
+    costs = np.vstack([costs, columnIndexRow])
+    costs = np.transpose(costs)
     df = pd.DataFrame(costs, columns=['feature 1', 'feature 2', 'feature 3', 'feature 4', 'indexCol']) # column names are compulsory
 
     sns.lineplot(data = pd.melt(df, ['indexCol']), x = 'indexCol', y = 'value', hue='variable')
