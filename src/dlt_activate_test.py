@@ -9,10 +9,10 @@ Test sigmoid activating a matrix of zeros.
 def test_sigmoid_zeros():
     z0 = torch.zeros((2, 2))
     a0 = sigmoid(z0)
-    math.isclose(a0[0][0], 0.5)
-    math.isclose(a0[0][1], 0.5)
-    math.isclose(a0[1][0], 0.5)
-    math.isclose(a0[1][1], 0.5)
+    assert math.isclose(a0[0][0], 0.5, rel_tol=1e-05)
+    assert math.isclose(a0[0][1], 0.5, rel_tol=1e-05)
+    assert math.isclose(a0[1][0], 0.5, rel_tol=1e-05)
+    assert math.isclose(a0[1][1], 0.5, rel_tol=1e-05)
 
 '''
 Test sigmoid activating a matrix of ones.
@@ -21,10 +21,10 @@ def test_sigmoid_ones():
     z1 = torch.ones((2, 2))
     a1 = sigmoid(z1)
     expected_value = 1.0 / (math.exp(-1.0) + 1.0)
-    math.isclose(a1[0][0], expected_value)
-    math.isclose(a1[0][1], expected_value)
-    math.isclose(a1[1][0], expected_value)
-    math.isclose(a1[1][1], expected_value)
+    assert math.isclose(a1[0][0], expected_value, rel_tol=1e-05)
+    assert math.isclose(a1[0][1], expected_value, rel_tol=1e-05)
+    assert math.isclose(a1[1][0], expected_value, rel_tol=1e-05)
+    assert math.isclose(a1[1][1], expected_value, rel_tol=1e-05)
 
 '''
 Test sigmoid activating a matrix of random values.
@@ -38,7 +38,7 @@ def test_sigmoid_random():
     # Check that every element in ar, which was activated by the sigmoid function implementation, is equal to 1 / (1 + e**z), where z is the original value of the element before activation.
     for i in range(0, zr_shape[0]):
         for j in range(0, zr_shape[1]):
-            math.isclose(ar[i][j], 1.0 / (math.exp(-zr_copy[i][j]) + 1.0))
+            assert math.isclose(ar[i][j], 1.0 / (math.exp(-zr_copy[i][j]) + 1.0), rel_tol=1e-05)
 
 '''
 Test getting the sigmoid derivative of a matrix of random values.
@@ -52,7 +52,7 @@ def test_sigmoid_back():
 
     for i in range(0,2):
         for j in range(0,3):
-            math.isclose(da_dz[i][j], sz[i][j])
+            assert math.isclose(da_dz[i][j], sz[i][j], rel_tol=1e-05)
 
 '''
 Test tanh activation of a matrix of random values.
@@ -70,7 +70,7 @@ def test_tanh():
             ex = math.exp(zr_copy[i][j]) # e**x
             emx = math.exp(-zr_copy[i][j]) # e**-x
             expected_value = (ex - emx)/(ex + emx)
-            math.isclose(ar[i][j], expected_value)
+            assert math.isclose(ar[i][j], expected_value, rel_tol=1e-05)
 
 '''
 Test getting the tanh derivative of a matrix of random values.
@@ -87,7 +87,7 @@ def test_tanh_back():
     for i in range(0, zr_shape[0]):
         for j in range(0, zr_shape[1]):
             expected_value = 1.0 - (zr_copy[i][j] * zr_copy[i][j])
-            math.isclose(ar[i][j], expected_value)
+            assert math.isclose(ar[i][j], expected_value, rel_tol=1e-05)
 
 '''
 Test the softmax activation function

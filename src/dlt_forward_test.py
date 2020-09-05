@@ -32,11 +32,11 @@ def test_forward_sigmoid():
     expected_value02 = 1.0/(math.exp(-torch.dot(wr0, xr2) - br[0][0]) + 1.0)
     expected_value12 = 1.0/(math.exp(-torch.dot(wr1, xr2) - br[1][0]) + 1.0)
     
-    math.isclose(ar[0][0], expected_value00)
-    math.isclose(ar[1][0], expected_value10)
+    assert math.isclose(ar[0][0], expected_value00, rel_tol=1e-05)
+    assert math.isclose(ar[1][0], expected_value10, rel_tol=1e-05)
 
-    math.isclose(ar[0][1], expected_value01)
-    math.isclose(ar[1][1], expected_value11)
+    assert math.isclose(ar[0][1], expected_value01, rel_tol=1e-05)
+    assert math.isclose(ar[1][1], expected_value11, rel_tol=1e-05)
     
-    math.isclose(ar[0][2], expected_value02)
-    math.isclose(ar[1][2], expected_value12)    
+    assert math.isclose(ar[0][2], expected_value02, rel_tol=1e-05)
+    assert math.isclose(ar[1][2], expected_value12, rel_tol=1e-05)    

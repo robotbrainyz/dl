@@ -17,14 +17,14 @@ def test_back_linear():
 
     # Check value at row index 1, column index 1 of dw
     expected_value_dw = m_inv * torch.sum(dz[1, :] * a_prev_T[:, 1])
-    math.isclose(dw[1, 1], expected_value_dw)
+    assert math.isclose(dw[1, 1], expected_value_dw, rel_tol=1e-05)
 
     # Check value at row index 2 of db
-    math.isclose(db[2], m_inv * torch.sum(dz[2, :]))
+    assert math.isclose(db[2], m_inv * torch.sum(dz[2, :]), rel_tol=1e-05)
 
     # Check value at row index 0, column index 1 of da_prev
     expected_value_da_prev = torch.sum(w_T[0, :] * dz[:, 1])
-    math.isclose(da_prev[0, 1], expected_value_da_prev)
+    assert math.isclose(da_prev[0, 1], expected_value_da_prev, rel_tol=1e-05)
     
 def test_back_sigmoid():
     da = torch.randn(3,4) # 3 nodes in layer, 4 examples
@@ -34,7 +34,7 @@ def test_back_sigmoid():
 
     a = sigmoid(z)
     expected_value = da[1, 2] * (a * (1-a))[1, 2]
-    math.isclose(dz[1, 2], expected_value)
+    assert math.isclose(dz[1, 2], expected_value, rel_tol=1e-05)
 
 def test_back_tanh():
     da = torch.randn(3,4) # 3 nodes in layer, 4 examples
@@ -44,7 +44,7 @@ def test_back_tanh():
 
     a = tanh(z)
     expected_value = da[1, 2] * (1 - a * a)[1, 2]
-    math.isclose(dz[1, 2], expected_value)
+    assert math.isclose(dz[1, 2], expected_value, rel_tol=1e-05)
 
 def test_back_softmax():
     y = torch.randn(3,4) # 3 nodes in layer, 4 examples
@@ -53,5 +53,5 @@ def test_back_softmax():
     expected_value = y_pred - y
 
     # test that all values are equal to the expected values
-    torch.allclose(dz, expected_value) 
+    assert torch.allclose(dz, expected_value) 
 

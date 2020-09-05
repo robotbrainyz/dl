@@ -21,7 +21,7 @@ def test_standardize_column():
     df = load_csv(filePath)
     columnName = 'culmen_length_mm'
     columnMean, columnStd, df = standardize_column(df, columnName)
-    math.isclose(columnMean, 43.6665)
-    math.isclose(columnStd, 5.4595)    
-    math.isclose(df.loc[343][columnName], 1.1417)
-    math.isclose(df.loc[0][columnName], -0.83643)    
+    assert math.isclose(columnMean, 43.6665, rel_tol=1e-04)
+    assert math.isclose(columnStd, 5.4595, rel_tol=1e-04)    
+    assert math.isclose(df.loc[343][columnName], 1.1417, rel_tol=1e-04)
+    assert math.isclose(df.loc[0][columnName], -0.83643, rel_tol=1e-04)    
