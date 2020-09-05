@@ -200,6 +200,7 @@ def test_mlp_train():
     assert data.shape[0] == 342
     assert data.shape[1] == 7    
 
+    np.random.seed(3)
     np.random.shuffle(data) # Shuffle in-place to ensure distribution is random
     
     y = data[:, -3:] # MLP output - one-hot encoded 'species', 3 different species
