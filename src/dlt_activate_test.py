@@ -100,7 +100,7 @@ def test_softmax():
     zr_max, zr_max_idx = torch.max(zr, dim=0) # Get the max of each column
     zr_copy = zr_copy - zr_max # Subtract the max of each column from all rows
     zr_copy = torch.exp(zr_copy) # Take the exponent of all values
-    zr_copy_sum_cols = torch.sum(zr_copy, axis=0) # The the sum of each column
+    zr_copy_sum_cols = torch.sum(zr_copy, dim=0) # The the sum of each column
     expected_value = zr_copy / zr_copy_sum_cols # Divide each row by the sum of each column
     assert torch.allclose(ar, expected_value) # Check that ar is the same as the expected value.
     
