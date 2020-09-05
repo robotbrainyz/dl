@@ -1,4 +1,4 @@
-gimport math
+import math
 import torch
 
 from dlt_activate import sigmoid, sigmoid_back, tanh, tanh_back, softmax
