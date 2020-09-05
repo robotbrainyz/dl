@@ -1,4 +1,4 @@
-import math
+gimport math
 import torch
 
 from dlt_activate import sigmoid, sigmoid_back, tanh, tanh_back, softmax
@@ -70,7 +70,7 @@ def test_tanh():
             ex = math.exp(zr_copy[i][j]) # e**x
             emx = math.exp(-zr_copy[i][j]) # e**-x
             expected_value = (ex - emx)/(ex + emx)
-            assert math.isclose(ar[i][j], expected_value, rel_tol=1e-05)
+            assert math.isclose(ar[i][j], expected_value, rel_tol=1e-04)
 
 '''
 Test getting the tanh derivative of a matrix of random values.
