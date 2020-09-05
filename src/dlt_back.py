@@ -24,10 +24,10 @@ def back_linear(dz, a_prev, w):
     '''
     
     m_inv = 1/dz.shape[1]
-    dw = m_inv * torch.matmul(dz, torch.transpose(a_prev, 0, 1))
+    dw = m_inv * torch.matmul(dz.float(), torch.transpose(a_prev, 0, 1).float())
     db = m_inv * torch.sum(dz, dim=1)
     db = db.reshape((len(db), 1))
-    da_prev = torch.matmul(torch.transpose(w, 0, 1), dz)
+    da_prev = torch.matmul(torch.transpose(w, 0, 1), dz.float())
     return dw, db, da_prev
 
 def back_sigmoid(da, z):

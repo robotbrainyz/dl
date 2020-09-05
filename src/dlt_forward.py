@@ -38,7 +38,7 @@ def forward_tanh(x, w, b):
 
         matrix: A (n[1] x m) matrix where (every n[1] x 1) column is the activated forward propagation output for an example.
     '''
-    z = torch.matmul(w, x) + b
+    z = torch.matmul(w, x.float()) + b
     return z, tanh(z)
 
 def forward_softmax(x, w, b):
@@ -58,7 +58,7 @@ def forward_softmax(x, w, b):
 
         matrix: A (n[1] x m) matrix where (every n[1] x 1) column is the activated forward propagation output for an example.
     '''
-    z = np.matmul(w, x) + b
+    z = torch.matmul(w, x) + b
     return z, softmax(z)
 
 def forward(x, w, b, activationFunctionID):
