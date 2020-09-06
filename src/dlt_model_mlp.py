@@ -3,7 +3,7 @@ import time
 import torch
 
 from dlt_back import back_softmax, back, back_linear
-from dlt_device import device
+from dlt_device import get_device
 from dlt_forward import forward
 from dlt_loss import compute_loss, compute_cost, loss_cross_entropy_back
 from dlt_plot import plot_costs, plot_time
@@ -51,7 +51,7 @@ class MLPModel:
 
             layerConfigs (list): List of MLPLayerConfig objects that define each layer in this MLP.
         '''
-        device = device()
+        device = get_device()
     
         self.validateLayerConfigs(layerConfigs)
 
@@ -85,7 +85,7 @@ def mlp_init_weights(mlp, useSeeds=False):
     assert(type(mlp) is MLPModel)
     assert(len(mlp.weights) > 0)
 
-    device = device()
+    device = get_device()
 
     if (useSeeds):
         torch.manual_seed(0)
@@ -151,7 +151,7 @@ def mlp_train(mlp, X, y, lossFunctionID, regularizer, optimizer, batchSize=2000,
     assert(batchSize > 0)
     assert(X.shape[1] == y.shape[1])
 
-    device = device()
+    device = get_device()
     
     numBatches = X.shape[1]//batchSize + 1
     costs = [] # List of computed costs (average loss) per batch

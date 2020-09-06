@@ -1,10 +1,10 @@
 import torch
-from dlt_device import device
+from dlt_device import get_device
 from dlt_model_mlp import MLPModel, MLPLayerConfig
 from dlt_optimizer import AdamOptimizer
 
 def test_adam_optimizer():
-    device = device()
+    device = get_device()
     
     layer0 = MLPLayerConfig(1, 'sigmoid')
     layers = [layer0]
