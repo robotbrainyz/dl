@@ -158,6 +158,14 @@ def mlp_train(mlp, X, y, lossFunctionID, regularizer, optimizer, batchSize=2000,
     assert(batchSize > 0)
     assert(X.shape[1] == y.shape[1])
 
+    if torch.cuda.is_available():  
+        dev = "cuda:0"
+        print('Running test_mlp_train on CUDA')
+    else:  
+        dev = "cpu"
+        print('Running test_mlp_train on CPU')        
+    device = torch.device(dev)
+    
     numBatches = X.shape[1]//batchSize + 1
     costs = [] # List of computed costs (average loss) per batch
 
@@ -175,6 +183,8 @@ def mlp_train(mlp, X, y, lossFunctionID, regularizer, optimizer, batchSize=2000,
             endColumn = min((batchIndex + 1) * batchSize, X.shape[1])
             XBatch = X[:, startColumn:endColumn]
             yBatch = y[:, startColumn:endColumn]
+            XBatch = XBatch.to(device)
+            yBatch = yBatch.to(device)
         
             # Forward propagate
             aCache = [] # Cache to contain activation output of all layers
@@ -188,8 +198,8 @@ def mlp_train(mlp, X, y, lossFunctionID, regularizer, optimizer, batchSize=2000,
                               mlp.weights[layerIndex],
                               mlp.biases[layerIndex],
                               mlp.layerConfigs[layerIndex].activationFunctionID)
-                aCache.append(a)
-                zCache.append(z)
+                aCache.append(a.to(device))
+                zCache.append(z.to(device))
     
             # Compute Loss and cost
             yBatch_pred = aCache[len(aCache)-1] # Predicted output is activation output of last layer
