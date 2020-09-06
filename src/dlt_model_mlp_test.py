@@ -236,10 +236,10 @@ def test_mlp_train():
     yTrain = y[:, :trainSetSize]
     XTest = X[:, trainSetSize:]
     yTest = y[:, trainSetSize:]
-    XTrain.to(device)
-    yTrain.to(device)
-    XTest.to(device)
-    yTest.to(device)    
+    XTrain = XTrain.to(device)
+    yTrain = yTrain.to(device)
+    XTest = XTest.to(device)
+    yTest = yTest.to(device)    
     assert XTrain.shape[1] == trainSetSize
     assert yTrain.shape[1] == trainSetSize
     assert XTest.shape[1] == testSetSize
