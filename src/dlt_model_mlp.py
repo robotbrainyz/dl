@@ -1,10 +1,11 @@
 import math
+import time
 import torch
 
 from dlt_back import back_softmax, back, back_linear
 from dlt_forward import forward
 from dlt_loss import compute_loss, compute_cost, loss_cross_entropy_back
-from dlt_plot import plot_costs
+from dlt_plot import plot_costs, plot_time
 
 class MLPLayerConfig:
     ''' Configuration and settings for a layer in a multi-layer perceptron model.
@@ -111,7 +112,7 @@ def mlp_set_biases(mlp, biases):
     '''
     return
 
-def mlp_train(mlp, X, y, lossFunctionID, regularizer, optimizer, batchSize=2000, numEpochs=1, learningRate = 0.1, plotCosts = False):
+def mlp_train(mlp, X, y, lossFunctionID, regularizer, optimizer, batchSize=2000, numEpochs=1, learningRate = 0.1, plotCosts = False, plotTimings = False):
     ''' Trains the given multi-layer perceptron for 1 epoch with the Adam optimization algorithm. 1 epoch propagates all training examples through the multi-layer perceptron exactly once. Uses the given regularization parameters and batchSize for training.
 
     Args:
@@ -148,9 +149,15 @@ def mlp_train(mlp, X, y, lossFunctionID, regularizer, optimizer, batchSize=2000,
     numBatches = X.shape[1]//batchSize + 1
     costs = [] # List of computed costs (average loss) per batch
 
+    totalTime = 0
+    totalTimings = []
+    batchTimings = []
+    
     iteration = 1
     for epochIndex in range(0, numEpochs):
         for batchIndex in range(0, numBatches):
+            startTime = time.time()
+            
             # Select the columns for this batch from input X, and output y
             startColumn = batchIndex * batchSize
             endColumn = min((batchIndex + 1) * batchSize, X.shape[1])
@@ -200,9 +207,15 @@ def mlp_train(mlp, X, y, lossFunctionID, regularizer, optimizer, batchSize=2000,
                 mlp.weights[layerIndex] = mlp.weights[layerIndex] - learningRate * (weightsDelta + regWeightsDelta[layerIndex])
                 mlp.biases[layerIndex] = mlp.biases[layerIndex] - learningRate * biasesDelta
                 iteration = iteration + 1
-
+            endTime = time.time()
+            elapsed = endTime-startTime
+            totalTime = totalTime + elapsed
+            batchTimings.append(elapsed)        
+            totalTimings.append(totalTime)            
     if plotCosts:
         plot_costs(costs)
+    if plotTimings:
+        plot_time(totalTime, totalTimings, batchTimings)
     return numBatches, costs
 
 def mlp_predict(mlp, X):

@@ -15,8 +15,19 @@ def plot_costs(costs):
     columnNames.append('indexCol')
     df = pd.DataFrame(costsTorch.numpy(), columns=columnNames) # column names are compulsory
     sns.lineplot(data = pd.melt(df, ['indexCol']), x = 'indexCol', y = 'value', hue='variable')
-    plt.show()    
+    plt.show()
 
+def plot_time(totalTime, totalTimings, batchTimings):
+    batchTimesNp = torch.tensor(batchTimings)
+    totalTimesNp = torch.tensor(totalTimings)
+    indices = torch.arange(len(batchTimesNp))
+    timings = torch.stack([batchTimesNp, totalTimesNp, indices], dim=0)
+    timings = torch.transpose(timings, 0, 1)
+    df = pd.DataFrame(timings.numpy(), columns=['iteration duration', 'elapsed', 'indexCol']) # column names are compulsory
+
+    sns.lineplot(data = pd.melt(df, ['indexCol']), x = 'indexCol', y = 'value', hue='variable')
+    plt.show()
+    
 def test_plot_training_time():
     totalTime = 0
     totalTimes = []
@@ -29,16 +40,7 @@ def test_plot_training_time():
         totalTime = totalTime + elapsed
         batchTimes.append(elapsed)        
         totalTimes.append(totalTime)
-    batchTimesNp = torch.tensor(batchTimes)
-    totalTimesNp = torch.tensor(totalTimes)
-    indices = torch.arange(len(batchTimesNp))
-    timings = torch.cat([batchTimesNp, totalTimesNp, indices], dim=0)
-    timings = timings.reshape(len(batchTimesNp), 3)
-    timings = torch.transpose(timings, 0, 1)
-    df = pd.DataFrame(timings.numpy(), columns=['iteration duration', 'elapsed', 'indexCol']) # column names are compulsory
-
-    sns.lineplot(data = pd.melt(df, ['indexCol']), x = 'indexCol', y = 'value', hue='variable')
-    plt.show()    
+    plot_time(totalTime, totalTimes, batchTimes)
         
 
     

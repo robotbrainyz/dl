@@ -246,10 +246,11 @@ def test_mlp_train():
     adamMomentum = 0.9
     adamScale = 0.99
     plotCosts = False
+    plotTimings = True
     optimizer = AdamOptimizer(mlp, adamMomentum, adamScale)
     regularizationFactor = 0.05
     regularizer = L2Regularizer(regularizationFactor)    
-    numBatches, costs = mlp_train(mlp, XTrain, yTrain, lossFunctionID, regularizer, optimizer, batchSize,numEpochs, learningRate, plotCosts)
+    numBatches, costs = mlp_train(mlp, XTrain, yTrain, lossFunctionID, regularizer, optimizer, batchSize,numEpochs, learningRate, plotCosts, plotTimings)
 
     assert numBatches == 3
 
