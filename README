@@ -50,7 +50,6 @@ To run unit tests, do::
 
 View and Update Documentation
 =============================
-NOTE: Auto-generated documentation does not work at the moment.
 - dl's functions and API are available for browsing and searching in dl/doc/_build/html/index.html
 - To update and auto-generate HTML documentation, do::
 
