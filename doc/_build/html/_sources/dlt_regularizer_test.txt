@@ -1,0 +1,7 @@
+dlt_regularizer_test module
+===========================
+
+.. automodule:: dlt_regularizer_test
+    :members:
+    :undoc-members:
+    :show-inheritance:

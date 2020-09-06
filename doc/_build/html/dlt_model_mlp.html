@@ -1,0 +1,255 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>dlt_model_mlp module &#8212; dl 1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="dlt_model_mlp_test module" href="dlt_model_mlp_test.html" />
+    <link rel="prev" title="dlt_loss_test module" href="dlt_loss_test.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-dlt_model_mlp">
+<span id="dlt-model-mlp-module"></span><h1>dlt_model_mlp module<a class="headerlink" href="#module-dlt_model_mlp" title="Permalink to this headline">¶</a></h1>
+<dl class="py class">
+<dt id="dlt_model_mlp.MLPLayerConfig">
+<em class="property">class </em><code class="sig-prename descclassname">dlt_model_mlp.</code><code class="sig-name descname">MLPLayerConfig</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">numNodes</span></em>, <em class="sig-param"><span class="n">activationFunctionID</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlt_model_mlp.MLPLayerConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Configuration and settings for a layer in a multi-layer perceptron model.</p>
+<dl class="py method">
+<dt id="dlt_model_mlp.MLPLayerConfig.init">
+<code class="sig-name descname">init</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">numNodes</span></em>, <em class="sig-param"><span class="n">activationFunctionID</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlt_model_mlp.MLPLayerConfig.init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes this layer configuration.</p>
+<dl>
+<dt>Args:</dt><dd><p>numNodes (int): Number of nodes in this layer.</p>
+<p>activationFunctionID (string): Identifies the activation function for this layer. Needs to match one of the functions in dl_activate.py, e.g. sigmoid.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="dlt_model_mlp.MLPModel">
+<em class="property">class </em><code class="sig-prename descclassname">dlt_model_mlp.</code><code class="sig-name descname">MLPModel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">numInputNodes</span></em>, <em class="sig-param"><span class="n">layerConfigs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlt_model_mlp.MLPModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A multi-layer perceptron model.</p>
+<dl class="py method">
+<dt id="dlt_model_mlp.MLPModel.init">
+<code class="sig-name descname">init</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">numInputNodes</span></em>, <em class="sig-param"><span class="n">layerConfigs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlt_model_mlp.MLPModel.init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes this multi-layer perceptron (MLP) model.</p>
+<p>Training parameters are not essential for an MLP to function and are not created on initialization.</p>
+<dl>
+<dt>Args:</dt><dd><p>numInputNodes (int): Number of input nodes in the input layer.</p>
+<p>layerConfigs (list): List of MLPLayerConfig objects that define each layer in this MLP.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="dlt_model_mlp.MLPModel.validateLayerConfigs">
+<code class="sig-name descname">validateLayerConfigs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">layerConfigs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlt_model_mlp.MLPModel.validateLayerConfigs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates if a valid list of layer configuration objects is provided to initialize the multi-layer perceptron model.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>layerConfigs (list): A list of MLPLayerConfig objects.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="dlt_model_mlp.mlp_init_weights">
+<code class="sig-prename descclassname">dlt_model_mlp.</code><code class="sig-name descname">mlp_init_weights</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mlp</span></em>, <em class="sig-param"><span class="n">useSeeds</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlt_model_mlp.mlp_init_weights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resets the weight values in the given multi-layer perceptron using the He initialization method.</p>
+<p>The He initialization method is based on a paper by He et al., 2015.
+Randomly initialize weights in a layer using mean 0 and variance 1. Scale the weights by sqrt(2/(n[l-1])), where n[l-1] is the number of nodes in the previous layer.</p>
+<dl>
+<dt>Args:</dt><dd><p>mlp (MLPModel): The multi-layer perceptron containing the weights to reset.</p>
+<p>useSeeds (bool): Flag to indicate if seeds are used for random number generation. This is useful in testing where the same set of random numbers can be generated again to validate against the weight values.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dlt_model_mlp.mlp_predict">
+<code class="sig-prename descclassname">dlt_model_mlp.</code><code class="sig-name descname">mlp_predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mlp</span></em>, <em class="sig-param"><span class="n">X</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlt_model_mlp.mlp_predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs forward propagation with input X through the given multi-layer perceptron.</p>
+<dl>
+<dt>Args:</dt><dd><p>mlp (MLPModel): The multi-layer perceptron (MLP) containing the biases to reset.</p>
+<p>X (matrix): A matrix where each column is a training example. The number of rows is the number of input features to the multi-layer perceptron.</p>
+</dd>
+<dt>Returns:</dt><dd><p>matrix: Predicted output for the given input X. The number of columns is the number of examples. The number of rows is the number of output features from the MLP.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dlt_model_mlp.mlp_set_biases">
+<code class="sig-prename descclassname">dlt_model_mlp.</code><code class="sig-name descname">mlp_set_biases</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mlp</span></em>, <em class="sig-param"><span class="n">biases</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlt_model_mlp.mlp_set_biases" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the bias values in the given multi-layer perceptron with the given list of matrices.</p>
+<dl>
+<dt>Args:</dt><dd><p>mlp (MLPModel): The multi-layer perceptron (MLP) containing the biases to reset.</p>
+<p>biases (list of matrices): A list of matrices containing the bias values. The size of the matrices should match that in the MLP model, otherwise an exception will be raised. Each matrix in this list should only have 1 column.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dlt_model_mlp.mlp_set_weights">
+<code class="sig-prename descclassname">dlt_model_mlp.</code><code class="sig-name descname">mlp_set_weights</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mlp</span></em>, <em class="sig-param"><span class="n">weights</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlt_model_mlp.mlp_set_weights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the weight values in the given multi-layer perceptron with the given list of matrices.</p>
+<dl>
+<dt>Args:</dt><dd><p>mlp (MLPModel): The multi-layer perceptron (MLP) containing the weights to reset.</p>
+<p>weights (list): A list of matrices containing the weight values. The size of the matrices should match that in the MLP model, otherwise an exception will be raised.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dlt_model_mlp.mlp_train">
+<code class="sig-prename descclassname">dlt_model_mlp.</code><code class="sig-name descname">mlp_train</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mlp</span></em>, <em class="sig-param"><span class="n">X</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">lossFunctionID</span></em>, <em class="sig-param"><span class="n">regularizer</span></em>, <em class="sig-param"><span class="n">optimizer</span></em>, <em class="sig-param"><span class="n">batchSize</span><span class="o">=</span><span class="default_value">2000</span></em>, <em class="sig-param"><span class="n">numEpochs</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">learningRate</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">plotCosts</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">plotTimings</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlt_model_mlp.mlp_train" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trains the given multi-layer perceptron for 1 epoch with the Adam optimization algorithm. 1 epoch propagates all training examples through the multi-layer perceptron exactly once. Uses the given regularization parameters and batchSize for training.</p>
+<dl>
+<dt>Args:</dt><dd><p>mlp (MLPModel): The multi-layer perceptron (MLP) containing the biases to reset.</p>
+<p>X (matrix): A matrix where each column is a training example. The number of rows is the number of input features to the multi-layer perceptron. This function assumes that X is already pre-processed for training, i.e. any data set shuffling, etc. is already done.</p>
+<p>y (matrix): A matrix where each column is a training example. The number of rows is the number of output features from the multi-layer perceptron and should match the size of the last layer in the MLP.</p>
+<p>lossFunctionID (string): Function name that matches a loss function in dl_loss.py.</p>
+<p>regularizer (Regularizer): Object that computes the L1 or L2 regularization amount that is added to the loss during training.</p>
+<p>batchSize (int): If the number of columns in X is larger than batchSize, X is broken down into batches, each with batchSize number of columns for training.</p>
+<p>numEpochs (int): Number of epochs to train the given MLP. 1 epoch propagates all training examples through the multi-layer perceptron exactly once.</p>
+<p>learningRate (float): Scalar multiplied against weight derivatives before subtracting derivatives from weights.</p>
+<p>plotCosts (bool): Flag to specify if the cost values per iteration are plotted as a visual graph at the end of the training.</p>
+</dd>
+<dt>Returns:</dt><dd><p>numBatches (int): Number of batches given the batchSize and number of training examples.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">dl</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="setup.html">dl - Deep Neural Networks in Python</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="setup.html#python-dependencies">Python Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#run-tests">Run Tests</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="setup.html#installation-environment-for-auto-generating-documentation">Installation - Environment for auto-generating documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#google-colab">Google Colab</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">src</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="dlt_activate.html">dlt_activate module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlt_activate_test.html">dlt_activate_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlt_back.html">dlt_back module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlt_back_test.html">dlt_back_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlt_data.html">dlt_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlt_data_test.html">dlt_data_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlt_device.html">dlt_device module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlt_forward.html">dlt_forward module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlt_forward_test.html">dlt_forward_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlt_loss.html">dlt_loss module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlt_loss_test.html">dlt_loss_test module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">dlt_model_mlp module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlt_model_mlp_test.html">dlt_model_mlp_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlt_optimizer.html">dlt_optimizer module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlt_optimizer_test.html">dlt_optimizer_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlt_plot.html">dlt_plot module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlt_regularizer.html">dlt_regularizer module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlt_regularizer_test.html">dlt_regularizer_test module</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="setup.html">dl - Deep Neural Networks in Python</a><ul>
+  <li><a href="modules.html">src</a><ul>
+      <li>Previous: <a href="dlt_loss_test.html" title="previous chapter">dlt_loss_test module</a></li>
+      <li>Next: <a href="dlt_model_mlp_test.html" title="next chapter">dlt_model_mlp_test module</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Yongzhi Ong.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/dlt_model_mlp.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,41 +1,36 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>dl - Deep Neural Networks in Python &mdash; dl 1 documentation</title>
-    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>dl - Deep Neural Networks in Python &#8212; dl 1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '1',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="top" title="dl 1 documentation" href="index.html" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="src" href="modules.html" />
     <link rel="prev" title="Welcome to dl’s documentation!" href="index.html" />
    
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body role="document">  
+  </head><body>
+  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <div class="section" id="dl-deep-neural-networks-in-python">
@@ -43,72 +38,26 @@
 <div class="section" id="python-dependencies">
 <h2>Python Dependencies<a class="headerlink" href="#python-dependencies" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Python 3</li>
-<li>Numpy</li>
-<li>pytest</li>
-<li>Sphinx</li>
-<li>seaborn</li>
-<li>pandas</li>
+<li><p>Python 3</p></li>
+<li><p>Numpy</p></li>
+<li><p>pytest</p></li>
+<li><p>Sphinx</p></li>
+<li><p>seaborn</p></li>
+<li><p>pandas</p></li>
+<li><p>torch</p></li>
 </ul>
 </div>
-<div class="section" id="cuda-setup-in-the-cloud">
-<h2>CUDA - Setup in the Cloud<a class="headerlink" href="#cuda-setup-in-the-cloud" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>Create Azure account. (Azure offers free trials sometimes. The free trials may come with credits.)</li>
-<li>Sign in to Azure portal (portal.azure.com).</li>
-<li>Go to Virtual Machines -&gt; Add -&gt; Virtual Machine.
-- Subscription: Free Trial
-- Resource group: dl.resource-group
-- Virtual machine name: dl.vm
-- Region: (Europe) UK South
-- Availability options: No infrastructure redundancy required.
-- Image: Ubuntu Server 18.04 LTS - Gen 1
-- Azure Spot Instance: No
-- Size: Standard_NC6_promo
-- Authentication type: SSH public key
-- SSH public key source: Generate new key pair
-- Key pair name: dl.vm-key
-- Public inbound ports: Allow selected ports
-- Select inbound ports: SSH (22)
-- OS disk type: Standard HDD
-- Encryption type: Encryption at rest with platform managed key
-- Virtual network: dl.resource-group-vnet
-- Subnet: 10.0.0.0
-- Public IP: dl.vm-ip
-- NIC network security group: Basic
-- Public inbound ports: SSH (22)
-- Accelerated networking: Off
-- Load balancer: No
-- Tag: Name (dl.tag), Value (dl)</li>
-<li>Deployment error:{&#8220;code&#8221;:&#8221;InvalidTemplateDeployment&#8221;,&#8221;message&#8221;:&#8221;The template deployment &#8216;CreateVm-Canonical.UbuntuServer-18.04-LTS-20200901073648&#8217; is not valid according to the validation procedure. The tracking id is &#8216;e99762c1-eb43-406b-8eba-9d89c6d0ddb1&#8217;. See inner errors for details.&#8221;,&#8221;details&#8221;:[{&#8220;code&#8221;:&#8221;QuotaExceeded&#8221;,&#8221;message&#8221;:&#8221;Operation could not be completed as it results in exceeding approved Total Regional Cores quota. Additional details - Deployment Model: Resource Manager, Location: uksouth, Current Limit: 4, Current Usage: 0, Additional Required: 6, (Minimum) New Limit Required: 6. Submit a request for Quota increase at <a class="reference external" href="https://aka.ms/ProdportalCRP/">https://aka.ms/ProdportalCRP/</a>?#create/Microsoft.Support/Parameters/%7B%22subId%22:%2203e88952-ca2b-4b10-91d7-a02c6826fd3c%22,%22pesId%22:%2206bfd9d3-516b-d5c6-5802-169c800dec89%22,%22supportTopicId%22:%22e12e3d1d-7fa0-af33-c6d0-3c50df9658a3%22%7D by specifying parameters listed in the Details section for deployment to succeed. Please read more about quota limits at <a class="reference external" href="https://docs.microsoft.com/en-us/azure/azure-supportability/regional-quota-requests">https://docs.microsoft.com/en-us/azure/azure-supportability/regional-quota-requests</a>.&#8221;}]}</li>
-</ul>
+<div class="section" id="download">
+<h2>Download<a class="headerlink" href="#download" title="Permalink to this headline">¶</a></h2>
+<p>To download dl from Github, do:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ git clone https://github.com/robotbrainyz/dl.git
+</pre></div>
 </div>
-<div class="section" id="cuda-install-drivers">
-<h2>CUDA - Install Drivers<a class="headerlink" href="#cuda-install-drivers" title="Permalink to this headline">¶</a></h2>
-<p>wget <a class="reference external" href="http://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/cuda_10.2.89_440.33.01_linux.run">http://developer.download.nvidia.com/compute/cuda/10.2/Prod/local_installers/cuda_10.2.89_440.33.01_linux.run</a>
-sudo apt update
-sudo apt-get install build-essential gcc-multilib dkms
-sudo chmod +x cuda_10.2.89_440.33.01_linux.run
-sudo ./cuda_10.2.89_440.33.01_linux.run
-(driver and toolkit mandatory, samples optional)
-sudo bash -c &#8220;echo /usr/local/cuda/lib64/ &gt; /etc/ld.so.conf.d/cuda.conf&#8221;
-sudo ldconfig</p>
-<p>sudo nano /etc/environment
-PATH=&#8221;/usr/local/sbin:usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/games:/usr/games:/usr/local/cuda/bin&#8221;</p>
-<p>nvidia-smi
-(should see GPU driver version and CUDA version)</p>
-<p>sudo nano /etc/rc.local
-#!/bin/bash
-nvidia-smi -pm 1
-nvidia-smi -e 0
-exit 0</p>
-<p>sudo chmod +x /etc/rc.local</p>
-<p>sudo reboot -h now</p>
 </div>
-<div class="section" id="installation-python-environment">
-<h2>Installation - Python environment<a class="headerlink" href="#installation-python-environment" title="Permalink to this headline">¶</a></h2>
-<p>To download the Binary Trees library from Github, do:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>$ git clone https://github.com/shunsvineyard/python-sample-code.git
+<div class="section" id="run-tests">
+<h2>Run Tests<a class="headerlink" href="#run-tests" title="Permalink to this headline">¶</a></h2>
+<p>To run unit tests, do:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ pytest
 </pre></div>
 </div>
 </div>
@@ -125,9 +74,9 @@ mkdir doc
 cd doc
 sphinx-quickstart (all default options), version 1.0, release 1</p>
 <p>In conf.py, ensure the following line points to the folder with python source files:
-sys.path.insert(0, os.path.abspath(&#8216;../src&#8217;))</p>
+sys.path.insert(0, os.path.abspath(‘../src’))</p>
 <p>In conf.py, add sphinx.ext.autodoc to extensions:
-extensions = [&#8216;sphinx.ext.autodoc&#8217;]</p>
+extensions = [‘sphinx.ext.autodoc’]</p>
 <p>By default, the napoleon google docstring style is used:
 <a class="reference external" href="https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html">https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html</a></p>
 <p>In index.rst, add modules:
@@ -135,23 +84,24 @@ Contents:</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">src</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="dl_activate.html">dl_activate module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dl_activate_test.html">dl_activate_test module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dl_back.html">dl_back module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dl_back_test.html">dl_back_test module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dl_data.html">dl_data module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dl_data_test.html">dl_data_test module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dl_forward.html">dl_forward module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dl_forward_test.html">dl_forward_test module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dl_loss.html">dl_loss module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dl_loss_test.html">dl_loss_test module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dl_model_mlp.html">dl_model_mlp module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dl_model_mlp_test.html">dl_model_mlp_test module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dl_optimizer.html">dl_optimizer module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dl_optimizer_test.html">dl_optimizer_test module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dl_plot.html">dl_plot module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dl_regularizer.html">dl_regularizer module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="dl_regularizer_test.html">dl_regularizer_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlt_activate.html">dlt_activate module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlt_activate_test.html">dlt_activate_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlt_back.html">dlt_back module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlt_back_test.html">dlt_back_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlt_data.html">dlt_data module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlt_data_test.html">dlt_data_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlt_device.html">dlt_device module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlt_forward.html">dlt_forward module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlt_forward_test.html">dlt_forward_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlt_loss.html">dlt_loss module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlt_loss_test.html">dlt_loss_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlt_model_mlp.html">dlt_model_mlp module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlt_model_mlp_test.html">dlt_model_mlp_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlt_optimizer.html">dlt_optimizer module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlt_optimizer_test.html">dlt_optimizer_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlt_plot.html">dlt_plot module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlt_regularizer.html">dlt_regularizer module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlt_regularizer_test.html">dlt_regularizer_test module</a></li>
 </ul>
 </li>
 </ul>
@@ -165,54 +115,99 @@ This should create a list of .rst files in the /doc folder</p>
 To generate html page:
 make html</p>
 </div>
+<div class="section" id="google-colab">
+<h2>Google Colab<a class="headerlink" href="#google-colab" title="Permalink to this headline">¶</a></h2>
+<p>Sign in to Google Drive.
+Create a folder where the files for dl can be cloned from github or copied to.</p>
+<p>Sign in to Google Colaboratory.
+Create a new notebook.</p>
+<p>Mount Google Drive in the notebook:
+from google.colab import drive
+drive.mount(‘/content/gdrive’)</p>
+<p>This should bring up a URL. Click on the URL to open the link in a new browser tab or window. Select the account you used to create the Google Drive folder earlier. This allows Google Drive File Stream to access your Google Drive content.</p>
+<p>In the Google Colaboratory notebook, change directory to the folder:
+%cd /content/gdrive/MyDrive/&lt;my folder&gt;
+where &lt;my folder&gt; is the path to the folder.</p>
+<p>To clone a private github repo, create an SSH key and link the SSH key to your github account:
+<a class="reference external" href="https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh">https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh</a></p>
+<p>Generate SSH key:
+! ssh-keygen -t rsa -b 4096 -C “&lt;your email&gt;”</p>
+<p>Print SSH key in console. Copy it to clipboard:
+cat &lt; &lt;your .pub file path&gt;</p>
+<p>In a browser, sign in to github, add the public SSH key to your github account by pasting:
+<a class="reference external" href="https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh">https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh</a></p>
+<p>In Google Colab:
+! chmod 700 /root/.ssh
+Add to known hosts
+! ssh-keyscan github.com &gt;&gt; /root/.ssh/known_hosts
+! chmod 644 /root/.ssh/known_hosts
+Configure git email and username
+! git config –global user.email “email”
+! git config –global user.name “username”
+! ssh <a class="reference external" href="mailto:git&#37;&#52;&#48;github&#46;com">git<span>&#64;</span>github<span>&#46;</span>com</a></p>
+<p>In Google Colab, clone the repo:
+! git clone <a class="reference external" href="mailto:git&#37;&#52;&#48;github&#46;com">git<span>&#64;</span>github<span>&#46;</span>com</a>:robotbrainyz/dl.git</p>
+<p>Run pytest in Google Colab:
+! python3 -m pytest</p>
+</div>
 </div>
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">dl - Deep Neural Networks in Python</a><ul>
-<li><a class="reference internal" href="#python-dependencies">Python Dependencies</a></li>
-<li><a class="reference internal" href="#cuda-setup-in-the-cloud">CUDA - Setup in the Cloud</a></li>
-<li><a class="reference internal" href="#cuda-install-drivers">CUDA - Install Drivers</a></li>
-<li><a class="reference internal" href="#installation-python-environment">Installation - Python environment</a></li>
-<li><a class="reference internal" href="#installation-environment-for-auto-generating-documentation">Installation - Environment for auto-generating documentation</a></li>
+<h1 class="logo"><a href="index.html">dl</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">dl - Deep Neural Networks in Python</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#python-dependencies">Python Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#download">Download</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#run-tests">Run Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation-environment-for-auto-generating-documentation">Installation - Environment for auto-generating documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#google-colab">Google Colab</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">src</a></li>
 </ul>
+
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="index.html" title="previous chapter">Welcome to dl&#8217;s documentation!</a></li>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to dl’s documentation!</a></li>
       <li>Next: <a href="modules.html" title="next chapter">src</a></li>
   </ul></li>
 </ul>
 </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/setup.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
+    </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
         </div>
       </div>
       <div class="clearer"></div>
@@ -221,11 +216,11 @@ make html</p>
       &copy;2020, Yongzhi Ong.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.5</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
-      <a href="_sources/setup.txt"
+      <a href="_sources/setup.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 
