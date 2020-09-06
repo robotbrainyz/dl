@@ -267,7 +267,7 @@ def test_mlp_train():
     learningRate = 0.1
     adamMomentum = 0.9
     adamScale = 0.99
-    plotCosts = False
+    plotCosts = True
     plotTimings = True
     optimizer = AdamOptimizer(mlp, adamMomentum, adamScale)
     regularizationFactor = 0.05
