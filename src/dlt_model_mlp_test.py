@@ -3,6 +3,7 @@ import torch
 
 from dlt_activate import sigmoid, tanh, softmax
 from dlt_data import load_csv, one_hot_encode_column, standardize_column
+from dlt_device import device
 from dlt_loss import compute_loss, compute_cost
 from dlt_model_mlp import MLPLayerConfig, MLPModel, mlp_init_weights, mlp_train, mlp_predict
 from dlt_optimizer import AdamOptimizer
@@ -40,11 +41,7 @@ def test_MLPModel_init_2Layer_MLP():
 def test_mlp_init_weights():
     # Create a MLP with 4-5-3 nodes in the input, middle and output layer.
     # This is a 2 layer MLP (not counting the input layer).
-    if torch.cuda.is_available():  
-        dev = "cuda:0"
-    else:  
-        dev = "cpu"
-    device = torch.device(dev)
+    device = device()
     
     layer0 = MLPLayerConfig(5, 'tanh')
     layer1 = MLPLayerConfig(3, 'softmax')
@@ -73,11 +70,7 @@ def test_mlp_init_weights():
 def test_mlp_init_weights1Layer():
     # Create a MLP with 4-5 nodes in the inputand output layer.
     # This is a 1 layer MLP (not counting the input layer).
-    if torch.cuda.is_available():  
-        dev = "cuda:0"
-    else:  
-        dev = "cpu"
-    device = torch.device(dev)
+    device = device()
     
     layer0 = MLPLayerConfig(5, 'softmax')
     layers = [layer0]
@@ -121,12 +114,7 @@ def test_mlp_train_numBatches():
     assert math.isclose(numBatches,  1, rel_tol=1e-05)
 
 def test_mlp_train_singleLayer_sigmoid_costs():
-    if torch.cuda.is_available():  
-        dev = "cuda:0"
-    else:  
-        dev = "cpu"
-    device = torch.device(dev)
-    
+    device = device()    
     X = torch.randn(5, 10).to(device)
     y = torch.randn(1, 10).to(device)
 
@@ -168,12 +156,7 @@ def test_mlp_train_singleLayer_sigmoid_costs():
 
 
 def test_mlp_train_2Layer_softmax_costs():
-    if torch.cuda.is_available():  
-        dev = "cuda:0"
-    else:  
-        dev = "cpu"
-    device = torch.device(dev)
-    
+    device = device()        
     X = torch.randn(5, 10).to(device)
     y = torch.randn(3, 10).to(device)
 
@@ -220,14 +203,8 @@ def test_mlp_train_2Layer_softmax_costs():
 def test_mlp_train():
     ''' End-to-end MLP training and evaluation test using penguin dataset found in ../data/penguins/penguins_size.csv.
     '''
-    if torch.cuda.is_available():  
-        dev = "cuda:0"
-        print('Running test_mlp_train on CUDA')
-    else:  
-        dev = "cpu"
-        print('Running test_mlp_train on CPU')        
-    device = torch.device(dev)
-
+    device = device()
+    
     dataFilePath = '../data/penguins/penguins_size.csv'
     df = load_csv(dataFilePath)
 
