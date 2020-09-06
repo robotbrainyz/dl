@@ -174,8 +174,8 @@ def test_mlp_train_2Layer_softmax_costs():
         dev = "cpu"
     device = torch.device(dev)
     
-    X = torch.randn(5, 10)
-    y = torch.randn(3, 10)
+    X = torch.randn(5, 10).to(device)
+    y = torch.randn(3, 10).to(device)
 
     activationFunctionID0 = 'tanh'
     activationFunctionID1 = 'softmax'    
