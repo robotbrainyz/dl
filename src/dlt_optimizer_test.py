@@ -3,6 +3,12 @@ from dlt_model_mlp import MLPModel, MLPLayerConfig
 from dlt_optimizer import AdamOptimizer
 
 def test_adam_optimizer():
+    if torch.cuda.is_available():  
+        dev = "cuda:0"
+    else:  
+        dev = "cpu"
+    device = torch.device(dev)
+    
     layer0 = MLPLayerConfig(1, 'sigmoid')
     layers = [layer0]
     numInputNodes = 3
@@ -13,8 +19,8 @@ def test_adam_optimizer():
     optimizer = AdamOptimizer(mlp, momentum, scale)
     optimizerCopy = AdamOptimizer(mlp, momentum, scale)    
 
-    dw = torch.randn(1, 3)
-    db = torch.randn(1, 1)
+    dw = torch.randn(1, 3).to(device)
+    db = torch.randn(1, 1).to(device)
     iteration = 2
     layerIndex = 0
     

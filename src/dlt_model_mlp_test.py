@@ -138,10 +138,10 @@ def test_mlp_train_singleLayer_sigmoid_costs():
 
     weightsCopy = []
     for weight in mlp.weights:
-        weightsCopy.append(weight.clone().detach().to(device))
+        weightsCopy.append(weight.clone().detach())
     biasesCopy = []
     for bias in mlp.biases:
-        biasesCopy.append(bias.clone().detach().to(device))
+        biasesCopy.append(bias.clone().detach())
 
     lossFunctionID = 'loss_cross_entropy'
     numEpochs = 1
