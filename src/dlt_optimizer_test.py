@@ -1,13 +1,10 @@
 import torch
+from dlt_device import device
 from dlt_model_mlp import MLPModel, MLPLayerConfig
 from dlt_optimizer import AdamOptimizer
 
 def test_adam_optimizer():
-    if torch.cuda.is_available():  
-        dev = "cuda:0"
-    else:  
-        dev = "cpu"
-    device = torch.device(dev)
+    device = device()
     
     layer0 = MLPLayerConfig(1, 'sigmoid')
     layers = [layer0]
