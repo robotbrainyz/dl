@@ -15,7 +15,7 @@ def plot_costs(costs):
     indices = torch.arange(costsTorch.shape[1]-1)
     columnNames = ['feature ' + str(i) for i in indices]
     columnNames.append('indexCol')
-    df = pd.DataFrame(costsTorch.numpy(), columns=columnNames) # column names are compulsory
+    df = pd.DataFrame(costsTorch.cpu().numpy(), columns=columnNames) # column names are compulsory
     sns.lineplot(data = pd.melt(df, ['indexCol']), x = 'indexCol', y = 'value', hue='variable')
     plt.show()
 
