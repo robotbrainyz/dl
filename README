@@ -2,115 +2,90 @@
 dl - Deep Neural Networks in Python
 ###################################################################
 
-Python Dependencies
-===================
-- Python 3
-- Numpy
-- pytest
-- Sphinx
-- seaborn
-- pandas
-- torch
+Introduction
+============
+This library, dl, is an implementation of neural networks using Python.
+
+
+Running and Development Environment
+===================================
+- Developed and (unit) tested locally on Mac OS 10.15.5. 
+- GPU (CUDA) acceleration (unit) tested on Google Colaboratory.
+
+
+Python Dependencies - Local (CPU)
+=================================
+- Python 3.6.10
+
+- pandas 1.1.1
+- pytest 6.0.1
+- seaborn 0.10.1
+- Sphinx 3.2.1 (installed using Anaconda: conda install -c anaconda sphinx)
+- torch 1.6.0
+
+
+Python Dependencies - Remote - Google Colaboratory (GPU)
+========================================================
+- Python 3.6.9
+
+- pandas 1.0.5
+- pytest 3.6.3
+- seaborn 0.10.1
+- torch 1.6.0+cu101
+
 
 Download
-=================================
+========
 To download dl from Github, do::
 
     $ git clone https://github.com/robotbrainyz/dl.git
+
 
 Run Tests
 =========
 To run unit tests, do::
 
     $ pytest
+
+
+View and Update Documentation
+=============================
+NOTE: Auto-generated documentation does not work at the moment.
+- dl's functions and API are available for browsing and searching in dl/doc/_build/html/index.html
+- To update and auto-generate HTML documentation, do::
+
+    $ cd doc
+    $ . updateDocs.sh
+
+
+Getting Started with dl on Google Colaboratory
+==============================================
+- Sign in to Google Drive.
+- Create a folder to work in.
+
+- Sign in to Google Colaboratory.
+- Create a new notebook.
+- Go to Runtime -> Change runtime type in the menu to select CPU or GPU as the notebook runtime.
+
+- Mount Google Drive in the notebook::
+
+    from google.colab import drive
+    drive.mount('/content/gdrive')
     
-Installation - Environment for auto-generating documentation
-============================================================
-Install Required Packages
-Python 3
-Pip install numpy
-Pip install pytest
-conda install -c anaconda sphinx
+- This should bring up a URL. Click on the URL to open the link in a new browser tab or window. Select the account you used to create the Google Drive folder earlier. This allows Google Drive File Stream to access your Google Drive content.
 
+- In the Google Colaboratory notebook, change directory to the folder::
 
-Documentation 
-Install sphinx for documentation
-mkdir doc
-cd doc
-sphinx-quickstart (all default options), version 1.0, release 1
+    %cd /content/gdrive/My\ Drive/<my folder>
 
-In conf.py, ensure the following line points to the folder with python source files:
-sys.path.insert(0, os.path.abspath('../src'))   
+- Clone the repo::
 
-In conf.py, add sphinx.ext.autodoc to extensions:
-extensions = ['sphinx.ext.autodoc']  
+    ! git clone https://www.github.com/robotbrainyz/dl.git
 
-By default, the napoleon google docstring style is used:
-https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html
+- Run pytest::
 
-In index.rst, add modules:
-Contents:                                                                                                                                                                          
-                                                                                                                                                                                   
-.. toctree::                                                                                                                                                                       
-   :maxdepth: 2                                                                                                                                                                    
-                                                                                                                                                                                   
-   modules  
+    ! python3 -m pytest
+    
+- The unit tests include basic training and evaluation of neural network models supported by dl. See files named dl_model*_test.py for examples on how to use dl.
 
-
-
-Pull python docstring comments into restructuredtext files
-cd doc
-mkdir source
-sphinx-apidoc -f -o . ../src
-This should create a list of .rst files in the /doc folder
-
-Generate html from restructuredtext (.rst) files
-To generate html page: 
-make html 
-
-Google Colab
-============
-Sign in to Google Drive.
-Create a folder where the files for dl can be cloned from github or copied to.
-
-Sign in to Google Colaboratory.
-Create a new notebook.
-
-Mount Google Drive in the notebook:
-from google.colab import drive
-drive.mount('/content/gdrive')
-
-This should bring up a URL. Click on the URL to open the link in a new browser tab or window. Select the account you used to create the Google Drive folder earlier. This allows Google Drive File Stream to access your Google Drive content.
-
-In the Google Colaboratory notebook, change directory to the folder:
-%cd /content/gdrive/My\ Drive/<my folder>
-where <my folder> is the path to the folder.
-
-To clone a private github repo, create an SSH key and link the SSH key to your github account:
-https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh
-
-Generate SSH key:
-! ssh-keygen -t rsa -b 4096 -C "<your email>"
-
-Print SSH key in console. Copy it to clipboard:
-cat < <your .pub file path>
-
-In a browser, sign in to github, add the public SSH key to your github account by pasting:
-https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh
-
-In Google Colab:
-! chmod 700 /root/.ssh
-Add to known hosts
-! ssh-keyscan github.com >> /root/.ssh/known_hosts
-! chmod 644 /root/.ssh/known_hosts
-Configure git email and username
-! git config --global user.email "email"
-! git config --global user.name "username"
-! ssh git@github.com
-
-In Google Colab, clone the repo:
-! git clone git@github.com:robotbrainyz/dl.git
-
-Run pytest in Google Colab:
-! python3 -m pytest
-
+- dl/dl_base.ipynb is a sample notebook that runs on Google Colaboratory.
