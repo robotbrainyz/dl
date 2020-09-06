@@ -40,6 +40,12 @@ def test_MLPModel_init_2Layer_MLP():
 def test_mlp_init_weights():
     # Create a MLP with 4-5-3 nodes in the input, middle and output layer.
     # This is a 2 layer MLP (not counting the input layer).
+    if torch.cuda.is_available():  
+        dev = "cuda:0"
+    else:  
+        dev = "cpu"
+    device = torch.device(dev)
+    
     layer0 = MLPLayerConfig(5, 'tanh')
     layer1 = MLPLayerConfig(3, 'softmax')
     layers = [layer0, layer1]
@@ -53,6 +59,7 @@ def test_mlp_init_weights():
 
     torch.manual_seed(0)    
     expectedWeightsL0 = torch.randn(5, 4) * factorHeInit
+    expectedWeightsL0 = expectedWeightsL0.to(device)
     assert torch.allclose(mlp.weights[0], expectedWeightsL0)
 
     factorHeInit = math.sqrt(2.0/5) # Scale factor used in He initialization for layer 1
@@ -60,11 +67,18 @@ def test_mlp_init_weights():
 
     torch.manual_seed(1)    
     expectedWeightsL1 = torch.randn(3, 5) * factorHeInit
+    expectedWeightsL1 = expectedWeightsL1.to(device)    
     assert torch.allclose(mlp.weights[1], expectedWeightsL1)    
 
 def test_mlp_init_weights1Layer():
     # Create a MLP with 4-5 nodes in the inputand output layer.
     # This is a 1 layer MLP (not counting the input layer).
+    if torch.cuda.is_available():  
+        dev = "cuda:0"
+    else:  
+        dev = "cpu"
+    device = torch.device(dev)
+    
     layer0 = MLPLayerConfig(5, 'softmax')
     layers = [layer0]
     numInputNodes = 4
@@ -77,6 +91,7 @@ def test_mlp_init_weights1Layer():
 
     torch.manual_seed(0)    
     expectedWeightsL0 = torch.randn(5, 4) * factorHeInit
+    expectedWeightsL0 = expectedWeightsL0.to(device)
     assert torch.allclose(mlp.weights[0], expectedWeightsL0)
 
 def test_mlp_train_numBatches():
@@ -106,6 +121,12 @@ def test_mlp_train_numBatches():
     assert math.isclose(numBatches,  1, rel_tol=1e-05)
 
 def test_mlp_train_singleLayer_sigmoid_costs():
+    if torch.cuda.is_available():  
+        dev = "cuda:0"
+    else:  
+        dev = "cpu"
+    device = torch.device(dev)
+    
     X = torch.randn(5, 10)
     y = torch.randn(1, 10)
 
@@ -141,11 +162,18 @@ def test_mlp_train_singleLayer_sigmoid_costs():
     y_pred0 = a0
     loss0 = compute_loss(yBatch0, y_pred0, lossFunctionID)
     cost0 = torch.true_divide(torch.sum(loss0, dim = 1), loss0.shape[1])
+    cost0 = cost0.to(device)
     assert torch.allclose(costs[0], cost0)
     assert costs[0].shape[0] == 1
 
 
 def test_mlp_train_2Layer_softmax_costs():
+    if torch.cuda.is_available():  
+        dev = "cuda:0"
+    else:  
+        dev = "cpu"
+    device = torch.device(dev)
+    
     X = torch.randn(5, 10)
     y = torch.randn(3, 10)
 
@@ -185,6 +213,7 @@ def test_mlp_train_2Layer_softmax_costs():
     y_pred = a1
     loss0 = compute_loss(yBatch0, y_pred, lossFunctionID)
     cost0 = torch.true_divide(torch.sum(loss0, dim = 1), loss0.shape[1])
+    cost0 = cost0.to(device)
     assert torch.allclose(costs[0], cost0)
     assert costs[0].shape[0] == 3
 
