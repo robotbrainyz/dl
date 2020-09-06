@@ -23,6 +23,12 @@ class AdamOptimizer:
 
             adamScale (float): Proportion to previous derivative used to scale the latest derivatives computed. A value between 0 to 1.
         '''
+        if torch.cuda.is_available():  
+            dev = "cuda:0"
+        else:  
+            dev = "cpu"
+        device = torch.device(dev)
+    
         self.adamMomentum = adamMomentum
         self.adamScale = adamScale
         self.weightsMomentum = []
@@ -30,11 +36,11 @@ class AdamOptimizer:
         self.biasesMomentum = []
         self.biasesScale = []
         for layerWeights in mlp.weights:
-            self.weightsMomentum.append(torch.zeros(layerWeights.shape))
-            self.weightsScale.append(torch.zeros(layerWeights.shape))
+            self.weightsMomentum.append(torch.zeros(layerWeights.shape).to(device))
+            self.weightsScale.append(torch.zeros(layerWeights.shape).to(device))
         for layerBiases in mlp.biases:
-            self.biasesMomentum.append(torch.zeros(layerBiases.shape))
-            self.biasesScale.append(torch.zeros(layerBiases.shape))
+            self.biasesMomentum.append(torch.zeros(layerBiases.shape).to(device))
+            self.biasesScale.append(torch.zeros(layerBiases.shape).to(device))
 
     def optimize(self, dw, db, iteration, layerIndex):
         ''' Computes the change in weights and biases given the derivative of the weights and biases with respect to the loss, and the layer index in the multi-layer perceptron.
