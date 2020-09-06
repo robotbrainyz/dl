@@ -3,6 +3,7 @@ import time
 import torch
 
 from dlt_back import back_softmax, back, back_linear
+from dlt_device import device
 from dlt_forward import forward
 from dlt_loss import compute_loss, compute_cost, loss_cross_entropy_back
 from dlt_plot import plot_costs, plot_time
@@ -50,11 +51,7 @@ class MLPModel:
 
             layerConfigs (list): List of MLPLayerConfig objects that define each layer in this MLP.
         '''
-        if torch.cuda.is_available():  
-            dev = "cuda:0"
-        else:  
-            dev = "cpu"
-        device = torch.device(dev)    
+        device = device()
     
         self.validateLayerConfigs(layerConfigs)
 
@@ -88,11 +85,7 @@ def mlp_init_weights(mlp, useSeeds=False):
     assert(type(mlp) is MLPModel)
     assert(len(mlp.weights) > 0)
 
-    if torch.cuda.is_available():  
-        dev = "cuda:0"
-    else:  
-        dev = "cpu"
-    device = torch.device(dev)        
+    device = device()
 
     if (useSeeds):
         torch.manual_seed(0)
@@ -158,13 +151,7 @@ def mlp_train(mlp, X, y, lossFunctionID, regularizer, optimizer, batchSize=2000,
     assert(batchSize > 0)
     assert(X.shape[1] == y.shape[1])
 
-    if torch.cuda.is_available():  
-        dev = "cuda:0"
-        print('Running test_mlp_train on CUDA')
-    else:  
-        dev = "cpu"
-        print('Running test_mlp_train on CPU')        
-    device = torch.device(dev)
+    device = device()
     
     numBatches = X.shape[1]//batchSize + 1
     costs = [] # List of computed costs (average loss) per batch
