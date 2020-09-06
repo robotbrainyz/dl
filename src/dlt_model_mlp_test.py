@@ -275,6 +275,7 @@ def test_mlp_train():
     assert torch.lt(costs[-1], trainingCostThreshold).all()
 
     yPred = mlp_predict(mlp, XTest)
+    yPred = yPred.to(device)
     lossPred = compute_loss(yTest, yPred, lossFunctionID)
     costPred = compute_cost(lossPred) # cost is the average loss per example
     testCostThreshold = 0.1 # Expect 90% test accuracy
