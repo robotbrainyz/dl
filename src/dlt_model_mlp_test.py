@@ -127,8 +127,8 @@ def test_mlp_train_singleLayer_sigmoid_costs():
         dev = "cpu"
     device = torch.device(dev)
     
-    X = torch.randn(5, 10)
-    y = torch.randn(1, 10)
+    X = torch.randn(5, 10).to(device)
+    y = torch.randn(1, 10).to(device)
 
     activationFunctionID = 'sigmoid'
     layer0 = MLPLayerConfig(1, activationFunctionID)
@@ -138,10 +138,10 @@ def test_mlp_train_singleLayer_sigmoid_costs():
 
     weightsCopy = []
     for weight in mlp.weights:
-        weightsCopy.append(weight.clone().detach())
+        weightsCopy.append(weight.clone().detach().to(device))
     biasesCopy = []
     for bias in mlp.biases:
-        biasesCopy.append(bias.clone().detach())
+        biasesCopy.append(bias.clone().detach().to(device))
 
     lossFunctionID = 'loss_cross_entropy'
     numEpochs = 1
