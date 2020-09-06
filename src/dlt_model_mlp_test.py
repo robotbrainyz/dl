@@ -191,6 +191,14 @@ def test_mlp_train_2Layer_softmax_costs():
 def test_mlp_train():
     ''' End-to-end MLP training and evaluation test using penguin dataset found in ../data/penguins/penguins_size.csv.
     '''
+    if torch.cuda.is_available():  
+        dev = "cuda:0"
+        print('Running test_mlp_train on CUDA')
+    else:  
+        dev = "cpu"
+        print('Running test_mlp_train on CPU')        
+    device = torch.device(dev)
+
     dataFilePath = '../data/penguins/penguins_size.csv'
     df = load_csv(dataFilePath)
 
@@ -203,17 +211,21 @@ def test_mlp_train():
     df.drop(['island'], axis=1, inplace=True)
     df = df.dropna()
     data = torch.tensor(df.values)
-
+    data.to(device)
+    
     assert data.shape[0] == 342
     assert data.shape[1] == 7    
 
     torch.manual_seed(3)
     data=data[torch.randperm(data.size()[0])]# Shuffle to ensure distribution is random
+    data.to(device)
     y = data[:, -3:] # MLP output - one-hot encoded 'species', 3 different species
     X = data[:, :4] # MLP input - culmen length, depth, flipper length, body mass
-
+    
     X = torch.transpose(X, 0, 1)
     y = torch.transpose(y, 0, 1)
+    X.to(device)
+    y.to(device)
     
     assert y.shape[0] == 3
     assert X.shape[0] == 4
@@ -224,6 +236,10 @@ def test_mlp_train():
     yTrain = y[:, :trainSetSize]
     XTest = X[:, trainSetSize:]
     yTest = y[:, trainSetSize:]
+    XTrain.to(device)
+    yTrain.to(device)
+    XTest.to(device)
+    yTest.to(device)    
     assert XTrain.shape[1] == trainSetSize
     assert yTrain.shape[1] == trainSetSize
     assert XTest.shape[1] == testSetSize

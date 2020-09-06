@@ -50,20 +50,26 @@ class MLPModel:
 
             layerConfigs (list): List of MLPLayerConfig objects that define each layer in this MLP.
         '''
+        if torch.cuda.is_available():  
+            dev = "cuda:0"
+        else:  
+            dev = "cpu"
+        device = torch.device(dev)    
+    
         self.validateLayerConfigs(layerConfigs)
 
         self.numInputNodes = numInputNodes
         self.layerConfigs = layerConfigs # not including the input layer
         
         self.weights = []
-        self.weights.append(torch.zeros((layerConfigs[0].numNodes, numInputNodes)))
+        self.weights.append(torch.zeros((layerConfigs[0].numNodes, numInputNodes)).to(device))
         if (len(layerConfigs) > 1):
             for i in range(1, len(layerConfigs)):
-                self.weights.append(torch.zeros((layerConfigs[i].numNodes, layerConfigs[i-1].numNodes)))
+                self.weights.append(torch.zeros((layerConfigs[i].numNodes, layerConfigs[i-1].numNodes)).to(device))
 
         self.biases = []
         for i in range(0, len(layerConfigs)):
-            self.biases.append(torch.zeros((layerConfigs[i].numNodes, 1)))
+            self.biases.append(torch.zeros((layerConfigs[i].numNodes, 1)).to(device))
             
     def __init__(self, numInputNodes, layerConfigs):
         self.init(numInputNodes, layerConfigs)
@@ -82,15 +88,21 @@ def mlp_init_weights(mlp, useSeeds=False):
     assert(type(mlp) is MLPModel)
     assert(len(mlp.weights) > 0)
 
+    if torch.cuda.is_available():  
+        dev = "cuda:0"
+    else:  
+        dev = "cpu"
+    device = torch.device(dev)        
+
     if (useSeeds):
         torch.manual_seed(0)
         
-    mlp.weights[0] = torch.randn(mlp.weights[0].shape[0], mlp.weights[0].shape[1]) * math.sqrt(2.0 / mlp.numInputNodes)
+    mlp.weights[0] = torch.randn(mlp.weights[0].shape[0], mlp.weights[0].shape[1]).to(device) * math.sqrt(2.0 / mlp.numInputNodes)
 
     for i in range (1, len(mlp.weights)):
         if (useSeeds):
             torch.manual_seed(i)
-        mlp.weights[i] = torch.randn(mlp.weights[i].shape[0], mlp.weights[i].shape[1]) * math.sqrt(2.0 / mlp.weights[1].shape[1]) # Number of columns in weight matrix is the number of nodes in the previous layer.
+        mlp.weights[i] = torch.randn(mlp.weights[i].shape[0], mlp.weights[i].shape[1]).to(device) * math.sqrt(2.0 / mlp.weights[1].shape[1]) # Number of columns in weight matrix is the number of nodes in the previous layer.
     
 def mlp_set_weights(mlp, weights):
     ''' Sets the weight values in the given multi-layer perceptron with the given list of matrices.
@@ -145,7 +157,7 @@ def mlp_train(mlp, X, y, lossFunctionID, regularizer, optimizer, batchSize=2000,
     
     assert(batchSize > 0)
     assert(X.shape[1] == y.shape[1])
-    
+
     numBatches = X.shape[1]//batchSize + 1
     costs = [] # List of computed costs (average loss) per batch
 
