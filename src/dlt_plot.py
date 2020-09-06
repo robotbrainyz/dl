@@ -4,10 +4,12 @@ import matplotlib.pyplot as plt
 import time
 import timeit
 import torch
+from dlt_device import get_device
 
 def plot_costs(costs):
+    device = get_device()
     costsTorch = torch.stack(costs, dim=0)#[n for n in costs]
-    columnIndexColumn = torch.arange(len(costs))
+    columnIndexColumn = torch.arange(len(costs)).to(device)
     columnIndexColumn = columnIndexColumn.reshape(columnIndexColumn.shape[0], 1)
     costsTorch = torch.cat([costsTorch, columnIndexColumn], dim=1)
     indices = torch.arange(costsTorch.shape[1]-1)
