@@ -2,6 +2,17 @@
 dl - Deep Neural Networks in Python
 ###################################################################
 
+Introduction
+============
+This library, dl, is an implementation of neural networks using Python.
+
+
+Running and Development Environment
+===================================
+- Developed and (unit) tested locally on Mac OS 10.15.5. 
+- GPU (CUDA) acceleration (unit) tested on Google Colaboratory.
+
+
 Python Dependencies - Local (CPU)
 =================================
 - Python 3.6.10
@@ -37,9 +48,10 @@ To run unit tests, do::
     $ pytest
 
 
-Update Documentation
-====================
-To run update and generate HTML documentation, do::
+View and Update Documentation
+=============================
+- dl's functions and API are available for browsing and searching in dl/doc/_build/html/index.html
+- To update and auto-generate HTML documentation, do::
 
     $ cd doc
     $ . updateDocs.sh
