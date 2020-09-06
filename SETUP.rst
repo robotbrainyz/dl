@@ -64,6 +64,7 @@ Getting Started with dl on Google Colaboratory
 
 - Sign in to Google Colaboratory.
 - Create a new notebook.
+- Go to Runtime -> Change runtime type in the menu to select CPU or GPU as the notebook runtime.
 
 - Mount Google Drive in the notebook::
 
