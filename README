@@ -43,7 +43,7 @@ To download dl from Github, do::
 
 Run Tests
 =========
-To run unit tests, do::
+To run unit tests, change directory to src/ and do::
 
     $ pytest
 
