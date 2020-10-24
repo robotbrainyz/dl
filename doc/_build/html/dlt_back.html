@@ -43,16 +43,17 @@
 <dl class="py function">
 <dt id="dlt_back.back_linear">
 <code class="sig-prename descclassname">dlt_back.</code><code class="sig-name descname">back_linear</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dz</span></em>, <em class="sig-param"><span class="n">a_prev</span></em>, <em class="sig-param"><span class="n">w</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlt_back.back_linear" title="Permalink to this definition">¶</a></dt>
-<dd><p>Given dL/dz, compute dL/dw, dL/db, and dL/da_prev.</p>
-<p>Given z=wx+b, a=activation(z), and L is the loss function given a this function computes dL/dw, dL/db, and dL/da_prev (the dL/da for the previous layer).</p>
+<dd><p>Given dL/dz, compute dL/dw, dL/db, and dL/da_prev (dL/da_prev = dL/dx).</p>
+<p>Given that z=wx+b, a=activation(z), and L=loss(a) is the loss given a, this function computes dL/dw, dL/db, and dL/da_prev (dL/da_prev = dL/dx, and dL/da_prev is the dL/da for the previous layer).</p>
+<p>This function is used during back propagation.</p>
 <dl>
-<dt>Args:</dt><dd><p>dz (matrix): A (n[l] x m) matrix, where l is the current layer, and n[l] is the number of nodes in the current layer.</p>
-<p>a_prev (matrix): A (n[l-1] x m) matrix. This is the activation output from the previous layer.</p>
-<p>w (matrix): A (n[l] x n[l-1]) matrix. Weight values for the connections between the l-1, the previous layer, and l, the current layer.</p>
+<dt>Args:</dt><dd><p>dz (matrix): A (n[l] x m) matrix, where l is the current layer, n[l] is the number of nodes in the current layer, and m is the number of examples.</p>
+<p>a_prev (matrix): A (n[l-1] x m) matrix. This is the activation output from the previous layer during forward propagation.</p>
+<p>w (matrix): A (n[l] x n[l-1]) matrix. Weight values for the connections between l-1, the previous layer, and l, the current layer.</p>
 </dd>
-<dt>Returns:</dt><dd><p>dw (matrix): A (n[l] x n[l-1]) matrix. The values are the change in L with respect to the weights between the l-1 and l layers.</p>
-<p>db (vector): A vector of size n[l]. The values are the change in L with respect to the constant b in the l layer.</p>
-<p>da_prev (matrix): A (n[l-1] x m) matrix. This is a matrix containing the change in L with respect to a[l-1], the activation output from the previous layer.</p>
+<dt>Returns:</dt><dd><p>dw (matrix): A (n[l] x n[l-1]) matrix. The values are the change in L with respect to the weights between l-1, the previous layer and l, the current layer.</p>
+<p>db (vector): A vector of size n[l]. The values are the change in L with respect to the biases b in l, the current layer.</p>
+<p>da_prev (matrix): A (n[l-1] x m) matrix. This is a matrix containing the change in L with respect to a[l-1], the activation output from l-1, the previous layer.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -61,12 +62,12 @@
 <dt id="dlt_back.back_sigmoid">
 <code class="sig-prename descclassname">dlt_back.</code><code class="sig-name descname">back_sigmoid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">da</span></em>, <em class="sig-param"><span class="n">z</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlt_back.back_sigmoid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given dL/da, compute dL/dz.</p>
-<p>Given a = sigmoid(z), and z = wx+b, and L is the loss function given a, dL/dz = dL/da * sigmoid’(z).</p>
+<p>Given that a = sigmoid(z), z = wx+b, and L=loss(a) is the loss given a, dL/dz = dL/da * sigmoid’(z).</p>
 <dl>
-<dt>Args:</dt><dd><p>da (matrix): A (n[l] x m) matrix containing dL/da values.</p>
-<p>z (matrix): A (n[l] x m) matrix containing z=wx+b values.</p>
+<dt>Args:</dt><dd><p>da (matrix): A (n[l] x m) matrix containing dL/da, the change in loss L with respect to a, the activation output in l, the current layer.</p>
+<p>z (matrix): A (n[l] x m) matrix containing z=wx+b values in l, the current layer.</p>
 </dd>
-<dt>Returns:</dt><dd><p>dL/dz (matrix): A (n[l] x m) matrix.</p>
+<dt>Returns:</dt><dd><p>dL/dz (matrix): A (n[l] x m) matrix representing the change in loss L with respect to z.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -74,11 +75,11 @@
 <dl class="py function">
 <dt id="dlt_back.back_softmax">
 <code class="sig-prename descclassname">dlt_back.</code><code class="sig-name descname">back_softmax</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">y_pred</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlt_back.back_softmax" title="Permalink to this definition">¶</a></dt>
-<dd><p>Given y and y_pred (y_pred is also a), compute dL/dz.</p>
-<p>y_pred = a, where a = softmax(z), where z=wx+b.
-Let L be the loss function given y and y_pred. By reduction of the underlying math, it is not necessary to compute dL/da to get dL/dz for back propagation. dL/dz is simply y_pred - y.</p>
+<dd><p>Given y and y_pred, compute dL/dz.</p>
+<p>y_pred = a, where a is the softmax activation of z, and z=wx+b. See dlt_forward.forward for details on z=wx+b.</p>
+<p>Let L be the loss function given y and y_pred. By reduction of the underlying math, it is not necessary to compute dL/da to get dL/dz for back propagation. dL/dz is simply y_pred - y.</p>
 <dl>
-<dt>Args:</dt><dd><p>y (matrix): A (n[l] x m) matrix. Contains the expected output value for each example in each column. m is the number of examples.</p>
+<dt>Args:</dt><dd><p>y (matrix): A (n[l] x m) matrix. Contains the expected output value for each feature in each example. Each example is a column in this matrix. m is the number of examples.</p>
 <p>y_pred (matrix): A (n[l] x m) matrix. Contains the predicted values for each example in each column. m is the number of examples.</p>
 </dd>
 <dt>Returns:</dt><dd><p>dL/dz (matrix): A (n[l] x m) matrix.</p>
@@ -90,12 +91,12 @@ Let L be the loss function given y and y_pred. By reduction of the underlying ma
 <dt id="dlt_back.back_tanh">
 <code class="sig-prename descclassname">dlt_back.</code><code class="sig-name descname">back_tanh</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">da</span></em>, <em class="sig-param"><span class="n">z</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlt_back.back_tanh" title="Permalink to this definition">¶</a></dt>
 <dd><p>Given dL/da, compute dL/dz.</p>
-<p>Given a = tanh(z), and z = wx+b, and L is the loss function given a, dL/dz = dL/da * tanh’(z).</p>
+<p>Given a = tanh(z), and z = wx+b, and L=loss(a) is the loss given a, dL/dz = dL/da * tanh’(z).</p>
 <dl>
-<dt>Args:</dt><dd><p>da (matrix): A (n[l] x m) matrix containing dL/da values.</p>
-<p>z (matrix): A (n[l] x m) matrix containing z=wx+b values.</p>
+<dt>Args:</dt><dd><p>da (matrix): A (n[l] x m) matrix containing dL/da, the change in loss L with respect to a, the activation output in l, the current layer.</p>
+<p>z (matrix): A (n[l] x m) matrix containing z=wx+b values in l, the current layer.</p>
 </dd>
-<dt>Returns:</dt><dd><p>dL/dz (matrix): A (n[l] x m) matrix.</p>
+<dt>Returns:</dt><dd><p>dL/dz (matrix): A (n[l] x m) matrix representing the change in loss L with respect to z.</p>
 </dd>
 </dl>
 </dd></dl>
