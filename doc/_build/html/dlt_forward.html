@@ -38,52 +38,36 @@
 <dl class="py function">
 <dt id="dlt_forward.forward">
 <code class="sig-prename descclassname">dlt_forward.</code><code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">w</span></em>, <em class="sig-param"><span class="n">b</span></em>, <em class="sig-param"><span class="n">activationFunctionID</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlt_forward.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Forward propagate x, the input to this layer, with w and b, the weights in this layer, to obtain z. Activate z with the activation function to produce a.</p>
+<p>a = activate (wx + b)</p>
+<dl>
+<dt>Args: </dt><dd><p>x (matrix): A (n[0] x m) matrix, where n[0] is the number of nodes in the previous layer, and m is the number of examples.</p>
+<p>w (matrix): A (n[1] x n[0]) matrix of weights in this layer, where n[1] is the number of nodes in this layer,</p>
+<p>b (matrix): A (n[1] x 1) matrix of constants in this layer, where n[1] is the number of nodes in this layer.</p>
+</dd>
+<dt>Returns:</dt><dd><p>z: A (n[1] x m) matrix equals to wx + b.</p>
+<p>matrix: A (n[1] x m) matrix where (every n[1] x 1) column is the activated forward propagation output for an example.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="dlt_forward.forward_activate">
+<code class="sig-prename descclassname">dlt_forward.</code><code class="sig-name descname">forward_activate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">z</span></em>, <em class="sig-param"><span class="n">activationFunctionID</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlt_forward.forward_activate" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
-<dt id="dlt_forward.forward_sigmoid">
-<code class="sig-prename descclassname">dlt_forward.</code><code class="sig-name descname">forward_sigmoid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">w</span></em>, <em class="sig-param"><span class="n">b</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlt_forward.forward_sigmoid" title="Permalink to this definition">¶</a></dt>
-<dd><p>Forward propagate x, the input to this layer, with w and b, the weights in this layer, to obtain z. Activate z with the sigmoid function to produce a.</p>
-<p>a = sigmoid (wx + b)</p>
+<dt id="dlt_forward.forward_rnn">
+<code class="sig-prename descclassname">dlt_forward.</code><code class="sig-name descname">forward_rnn</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">aPrev</span></em>, <em class="sig-param"><span class="n">wa</span></em>, <em class="sig-param"><span class="n">ba</span></em>, <em class="sig-param"><span class="n">activationFunctionID</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlt_forward.forward_rnn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Forward propagate concatenated aPrev and x, with wa and ba, the weights in this cell, to obtain z. Activate z with the activation function to produce a.</p>
 <dl>
-<dt>Args: </dt><dd><p>x (matrix): A (n[0] x m) matrix, where n[0] is the number of nodes in the previous layer, and m is the number of examples.</p>
-<p>w (matrix): A (n[1] x n[0]) matrix of weights in this layer, where n[1] is the number of nodes in this layer,</p>
-<p>b (matrix): A (n[1] x 1) matrix of constants in this layer, where n[1] is the number of nodes in this layer,</p>
+<dt>Args:</dt><dd><p>x (matrix): A (nx x m) matrix, where nx is the number of input features, and m is the number of examples.</p>
+<p>aPrev (matrix): A (na x m) matrix, where na is the number of activated features from the previous cell, and m is the number of examples.</p>
+<p>wa (matrix): A (ni x (na+nx)) matrix, where ni is the number of nodes in this layer.</p>
+<p>ba (matrix): A (ni x 1) matrix of constants in this layer, where ni is the number of nodes in this layer.</p>
 </dd>
-<dt>Returns:</dt><dd><p>z: A (n[1] x m) matrix equals to wx + b.</p>
-<p>matrix: A (n[1] x m) matrix where (every n[1] x 1) column is the activated forward propagation output for an example.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="dlt_forward.forward_softmax">
-<code class="sig-prename descclassname">dlt_forward.</code><code class="sig-name descname">forward_softmax</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">w</span></em>, <em class="sig-param"><span class="n">b</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlt_forward.forward_softmax" title="Permalink to this definition">¶</a></dt>
-<dd><p>Forward propagate x, the input to this layer, with w and b, the weights in this layer, to obtain z. Activate z with the softmax function to produce a.</p>
-<p>a = softmax (wx + b)</p>
-<dl>
-<dt>Args: </dt><dd><p>x (matrix): A (n[0] x m) matrix, where n[0] is the number of nodes in the previous layer, and m is the number of examples.</p>
-<p>w (matrix): A (n[1] x n[0]) matrix of weights in this layer, where n[1] is the number of nodes in this layer,</p>
-<p>b (matrix): A (n[1] x 1) matrix of constants in this layer, where n[1] is the number of nodes in this layer,</p>
-</dd>
-<dt>Returns:</dt><dd><p>z: A (n[1] x m) matrix equals to wx + b.</p>
-<p>matrix: A (n[1] x m) matrix where (every n[1] x 1) column is the activated forward propagation output for an example.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt id="dlt_forward.forward_tanh">
-<code class="sig-prename descclassname">dlt_forward.</code><code class="sig-name descname">forward_tanh</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">w</span></em>, <em class="sig-param"><span class="n">b</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dlt_forward.forward_tanh" title="Permalink to this definition">¶</a></dt>
-<dd><p>Forward propagate x, the input to this layer, with w and b, the weights in this layer, to obtain z. Activate z with the tanh function to produce a.</p>
-<p>a = tanh (wx + b)</p>
-<dl>
-<dt>Args: </dt><dd><p>x (matrix): A (n[0] x m) matrix, where n[0] is the number of nodes in the previous layer, and m is the number of examples.</p>
-<p>w (matrix): A (n[1] x n[0]) matrix of weights in this layer, where n[1] is the number of nodes in this layer,</p>
-<p>b (matrix): A (n[1] x 1) matrix of constants in this layer, where n[1] is the number of nodes in this layer,</p>
-</dd>
-<dt>Returns:</dt><dd><p>z: A (n[1] x m) matrix equals to wx + b.</p>
-<p>matrix: A (n[1] x m) matrix where (every n[1] x 1) column is the activated forward propagation output for an example.</p>
+<dt>Returns:</dt><dd><p>z: A (ni x m) matrix, equals to wa.(aPrev, x) + ba, where (aPrev,x) is the concatenated aPrev and x.</p>
+<p>matrix: A (ni x m) matrix, the result of running the activation function on z.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -108,14 +92,6 @@
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="setup.html">dl - Deep Neural Networks in Python</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="setup.html#python-dependencies">Python Dependencies</a></li>
-<li class="toctree-l2"><a class="reference internal" href="setup.html#download">Download</a></li>
-<li class="toctree-l2"><a class="reference internal" href="setup.html#run-tests">Run Tests</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="setup.html#installation-environment-for-auto-generating-documentation">Installation - Environment for auto-generating documentation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="setup.html#google-colab">Google Colab</a></li>
-</ul>
-</li>
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">src</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="dlt_activate.html">dlt_activate module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="dlt_activate_test.html">dlt_activate_test module</a></li>
@@ -143,11 +119,9 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-  <li><a href="setup.html">dl - Deep Neural Networks in Python</a><ul>
   <li><a href="modules.html">src</a><ul>
       <li>Previous: <a href="dlt_device.html" title="previous chapter">dlt_device module</a></li>
       <li>Next: <a href="dlt_forward_test.html" title="next chapter">dlt_forward_test module</a></li>
-  </ul></li>
   </ul></li>
   </ul></li>
 </ul>
