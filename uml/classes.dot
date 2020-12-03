@@ -1,0 +1,9 @@
+digraph "classes" {
+charset="utf-8"
+rankdir=BT
+"0" [label="{AdamOptimizer|adamMomentum\ladamScale\lbiasesMomentum : list\lbiasesScale : list\lweightsMomentum : list\lweightsScale : list\l|init(mlp, adamMomentum, adamScale)\loptimize(dw, db, iteration, layerIndex)\l}", shape="record"];
+"1" [label="{DummyOptimizer|\l|optimize(dw, db, iteration, layerIndex)\l}", shape="record"];
+"2" [label="{L2Regularizer|regularizationFactor\l|init(regularizationFactor)\lregularize(weights, numExamples)\l}", shape="record"];
+"3" [label="{MLPLayerConfig|activationFunctionID\lnumNodes\l|init(numNodes, activationFunctionID)\l}", shape="record"];
+"4" [label="{MLPModel|biases : list\llayerConfigs\lnumInputNodes\lweights : list\l|init(numInputNodes, layerConfigs)\lvalidateLayerConfigs(layerConfigs)\l}", shape="record"];
+}

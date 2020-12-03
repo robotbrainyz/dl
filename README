@@ -22,7 +22,9 @@ Python Dependencies - Local (CPU)
 - seaborn 0.10.1
 - Sphinx 3.2.1 (installed using Anaconda: conda install -c anaconda sphinx)
 - torch 1.6.0
-
+- pylist 1.4.0 (for uml class diagram)
+- graphviz 0.15 (for uml class diagram)
+- pydot-1.4.1 (for uml class diagram)
 
 Python Dependencies - Remote - Google Colaboratory (GPU)
 ========================================================
@@ -55,6 +57,15 @@ View and Update Documentation
 
     $ cd doc
     $ . updateDocs.sh
+
+
+UML Class and Package Diagrams
+==============================
+- To update class and package diagrams, do::
+
+    $ sh generateUml.sh
+
+- The class and package diagrams can be found in the /uml folder: dlt_class_diagram.png and dlt_package_diagram.png
 
 
 Getting Started with dl on Google Colaboratory

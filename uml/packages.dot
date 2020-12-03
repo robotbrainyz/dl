@@ -1,0 +1,49 @@
+digraph "packages" {
+charset="utf-8"
+rankdir=BT
+"0" [label="src", shape="box"];
+"1" [label="src.dlt_activate", shape="box"];
+"2" [label="src.dlt_activate_test", shape="box"];
+"3" [label="src.dlt_back", shape="box"];
+"4" [label="src.dlt_back_test", shape="box"];
+"5" [label="src.dlt_data", shape="box"];
+"6" [label="src.dlt_data_test", shape="box"];
+"7" [label="src.dlt_device", shape="box"];
+"8" [label="src.dlt_forward", shape="box"];
+"9" [label="src.dlt_forward_test", shape="box"];
+"10" [label="src.dlt_loss", shape="box"];
+"11" [label="src.dlt_loss_test", shape="box"];
+"12" [label="src.dlt_model_mlp", shape="box"];
+"13" [label="src.dlt_model_mlp_test", shape="box"];
+"14" [label="src.dlt_optimizer", shape="box"];
+"15" [label="src.dlt_optimizer_test", shape="box"];
+"16" [label="src.dlt_plot", shape="box"];
+"17" [label="src.dlt_regularizer", shape="box"];
+"18" [label="src.dlt_regularizer_test", shape="box"];
+"2" -> "1" [arrowhead="open", arrowtail="none"];
+"3" -> "1" [arrowhead="open", arrowtail="none"];
+"4" -> "1" [arrowhead="open", arrowtail="none"];
+"4" -> "3" [arrowhead="open", arrowtail="none"];
+"6" -> "5" [arrowhead="open", arrowtail="none"];
+"8" -> "1" [arrowhead="open", arrowtail="none"];
+"9" -> "1" [arrowhead="open", arrowtail="none"];
+"9" -> "8" [arrowhead="open", arrowtail="none"];
+"11" -> "10" [arrowhead="open", arrowtail="none"];
+"12" -> "3" [arrowhead="open", arrowtail="none"];
+"12" -> "7" [arrowhead="open", arrowtail="none"];
+"12" -> "8" [arrowhead="open", arrowtail="none"];
+"12" -> "10" [arrowhead="open", arrowtail="none"];
+"12" -> "16" [arrowhead="open", arrowtail="none"];
+"13" -> "1" [arrowhead="open", arrowtail="none"];
+"13" -> "5" [arrowhead="open", arrowtail="none"];
+"13" -> "7" [arrowhead="open", arrowtail="none"];
+"13" -> "10" [arrowhead="open", arrowtail="none"];
+"13" -> "12" [arrowhead="open", arrowtail="none"];
+"13" -> "14" [arrowhead="open", arrowtail="none"];
+"13" -> "17" [arrowhead="open", arrowtail="none"];
+"15" -> "7" [arrowhead="open", arrowtail="none"];
+"15" -> "12" [arrowhead="open", arrowtail="none"];
+"15" -> "14" [arrowhead="open", arrowtail="none"];
+"16" -> "7" [arrowhead="open", arrowtail="none"];
+"18" -> "17" [arrowhead="open", arrowtail="none"];
+}
