@@ -1,6 +1,7 @@
 import pytest
 
 from dlt_model_cell import Cell, CellBasic
+from dlt_model_config import NNLayerConfig, CellBasicConfig
 
 class CellForTest:
     ''' Test class for a cell in an RNN.
@@ -82,4 +83,37 @@ def test_RNNCell_functionInheritance():
     with pytest.raises(Exception):
         listCells[1].backProp(paramsA)
 
-       
+def test_cell_basic_init():
+    internalLayerConfig = NNLayerConfig(3, 'tanh')
+    outputLayerConfig = NNLayerConfig(2, 'softmax')
+    numInputPrevLayer = 2
+    numInputPrevTime = 3
+    cellBasicConfig = CellBasicConfig(numInputPrevLayer, numInputPrevTime, internalLayerConfig, outputLayerConfig)
+
+    cellBasic = CellBasic(cellBasicConfig)
+
+    # Check that the correct weight matrices are created when the cell initialized.
+    assert cellBasic.m_weightsInternal.shape[0] == 3
+    assert cellBasic.m_weightsInternal.shape[1] == 5
+
+    assert cellBasic.m_biasesInternal.shape[0] == 3
+    assert cellBasic.m_biasesInternal.shape[1] == 1
+
+    assert cellBasic.m_weightsOutput.shape[0] == 2
+    assert cellBasic.m_weightsOutput.shape[1] == 3
+
+    assert cellBasic.m_biasesOutput.shape[0] == 2
+    assert cellBasic.m_biasesOutput.shape[1] == 1
+    
+def test_cell_basic_init_fail():
+    cellConfig = None
+
+    # Check that a null config will fail to initialize a cell.
+    with pytest.raises(Exception):
+        cellBasic = CellBasic(cellConfig)
+
+    # Check that an incompatible config type will fail to initialize a cell.
+    cellConfig = NNLayerConfig
+    with pytest.raises(Exception):
+        cellBasic = CellBasic(cellConfig)
+

@@ -16,7 +16,7 @@ class L2Regularizer():
         '''
         regularization_cost = 0
         regularization_weight_delta = []
-        regularizationFactorScaled = self.regularizationFactor/numExamples
+        regularizationFactorScaled = self.m_regularizationFactor/numExamples
         for layerWeights in weights:
             regularization_cost = regularization_cost + torch.sum(torch.square(layerWeights))
             regularization_weight_delta.append(layerWeights * regularizationFactorScaled)
@@ -30,7 +30,7 @@ class L2Regularizer():
         Args:
             regularizationFactor (float): Factor to apply regularization.
         '''
-        self.regularizationFactor = regularizationFactor
+        self.m_regularizationFactor = regularizationFactor
     
     def __init__(self, regularizationFactor):
         self.init(regularizationFactor)

@@ -5,46 +5,47 @@ from dlt_activate import sigmoid, tanh, softmax
 from dlt_data import load_csv, one_hot_encode_column, standardize_column
 from dlt_device import get_device
 from dlt_loss import compute_loss, compute_cost
-from dlt_model_mlp import MLPLayerConfig, MLPModel, mlp_init_weights, mlp_train, mlp_predict
+from dlt_model_config import NNLayerConfig
+from dlt_model_mlp import MLPModel, mlp_init_weights, mlp_train, mlp_predict
 from dlt_optimizer import AdamOptimizer
 from dlt_regularizer import L2Regularizer
 
 def test_MLPModel_init_1Layer_MLP():
-    layer0 = MLPLayerConfig(1, 'sigmoid')
+    layer0 = NNLayerConfig(1, 'sigmoid')
     layers = [layer0]
     numInputNodes = 3
     mlp = MLPModel(numInputNodes, layers)
-    assert math.isclose(len(mlp.weights),  1, rel_tol=1e-05)
-    assert math.isclose(mlp.weights[0].shape[0],  1, rel_tol=1e-05)
-    assert math.isclose(mlp.weights[0].shape[1],  3, rel_tol=1e-05)
-    assert math.isclose(len(mlp.biases),  1, rel_tol=1e-05)
-    assert math.isclose(mlp.biases[0].shape[0],  1, rel_tol=1e-05)
-    assert math.isclose(mlp.biases[0].shape[1],  1, rel_tol=1e-05)
+    assert math.isclose(len(mlp.m_weights),  1, rel_tol=1e-05)
+    assert math.isclose(mlp.m_weights[0].shape[0],  1, rel_tol=1e-05)
+    assert math.isclose(mlp.m_weights[0].shape[1],  3, rel_tol=1e-05)
+    assert math.isclose(len(mlp.m_biases),  1, rel_tol=1e-05)
+    assert math.isclose(mlp.m_biases[0].shape[0],  1, rel_tol=1e-05)
+    assert math.isclose(mlp.m_biases[0].shape[1],  1, rel_tol=1e-05)
 
 def test_MLPModel_init_2Layer_MLP():
-    layer0 = MLPLayerConfig(5, 'tanh')
-    layer1 = MLPLayerConfig(3, 'softmax')
+    layer0 = NNLayerConfig(5, 'tanh')
+    layer1 = NNLayerConfig(3, 'softmax')
     layers = [layer0, layer1]
     numInputNodes = 4
     mlp = MLPModel(numInputNodes, layers)
-    assert math.isclose(len(mlp.weights),  2, rel_tol=1e-05)
-    assert math.isclose(mlp.weights[0].shape[0],  5, rel_tol=1e-05)
-    assert math.isclose(mlp.weights[0].shape[1],  4, rel_tol=1e-05)
-    assert math.isclose(mlp.weights[1].shape[0],  3, rel_tol=1e-05)
-    assert math.isclose(mlp.weights[1].shape[1],  5 , rel_tol=1e-05)  
-    assert math.isclose(len(mlp.biases),  2, rel_tol=1e-05)
-    assert math.isclose(mlp.biases[0].shape[0],  5, rel_tol=1e-05)
-    assert math.isclose(mlp.biases[0].shape[1],  1, rel_tol=1e-05)
-    assert math.isclose(mlp.biases[1].shape[0],  3, rel_tol=1e-05)
-    assert math.isclose(mlp.biases[1].shape[1],  1, rel_tol=1e-05)           
+    assert math.isclose(len(mlp.m_weights),  2, rel_tol=1e-05)
+    assert math.isclose(mlp.m_weights[0].shape[0],  5, rel_tol=1e-05)
+    assert math.isclose(mlp.m_weights[0].shape[1],  4, rel_tol=1e-05)
+    assert math.isclose(mlp.m_weights[1].shape[0],  3, rel_tol=1e-05)
+    assert math.isclose(mlp.m_weights[1].shape[1],  5 , rel_tol=1e-05)  
+    assert math.isclose(len(mlp.m_biases),  2, rel_tol=1e-05)
+    assert math.isclose(mlp.m_biases[0].shape[0],  5, rel_tol=1e-05)
+    assert math.isclose(mlp.m_biases[0].shape[1],  1, rel_tol=1e-05)
+    assert math.isclose(mlp.m_biases[1].shape[0],  3, rel_tol=1e-05)
+    assert math.isclose(mlp.m_biases[1].shape[1],  1, rel_tol=1e-05)           
 
 def test_mlp_init_weights():
     # Create a MLP with 4-5-3 nodes in the input, middle and output layer.
     # This is a 2 layer MLP (not counting the input layer).
     device = get_device()
     
-    layer0 = MLPLayerConfig(5, 'tanh')
-    layer1 = MLPLayerConfig(3, 'softmax')
+    layer0 = NNLayerConfig(5, 'tanh')
+    layer1 = NNLayerConfig(3, 'softmax')
     layers = [layer0, layer1]
     numInputNodes = 4
     mlp = MLPModel(numInputNodes, layers)
@@ -57,7 +58,7 @@ def test_mlp_init_weights():
     torch.manual_seed(0)    
     expectedWeightsL0 = torch.randn(5, 4) * factorHeInit
     expectedWeightsL0 = expectedWeightsL0.to(device)
-    assert torch.allclose(mlp.weights[0], expectedWeightsL0)
+    assert torch.allclose(mlp.m_weights[0], expectedWeightsL0)
 
     factorHeInit = math.sqrt(2.0/5) # Scale factor used in He initialization for layer 1
     assert math.isclose(factorHeInit,  math.sqrt(2/5), rel_tol=1e-05)    
@@ -65,14 +66,14 @@ def test_mlp_init_weights():
     torch.manual_seed(1)    
     expectedWeightsL1 = torch.randn(3, 5) * factorHeInit
     expectedWeightsL1 = expectedWeightsL1.to(device)    
-    assert torch.allclose(mlp.weights[1], expectedWeightsL1)    
+    assert torch.allclose(mlp.m_weights[1], expectedWeightsL1)    
 
 def test_mlp_init_weights1Layer():
     # Create a MLP with 4-5 nodes in the inputand output layer.
     # This is a 1 layer MLP (not counting the input layer).
     device = get_device()
     
-    layer0 = MLPLayerConfig(5, 'softmax')
+    layer0 = NNLayerConfig(5, 'softmax')
     layers = [layer0]
     numInputNodes = 4
     mlp = MLPModel(numInputNodes, layers)
@@ -85,14 +86,14 @@ def test_mlp_init_weights1Layer():
     torch.manual_seed(0)    
     expectedWeightsL0 = torch.randn(5, 4) * factorHeInit
     expectedWeightsL0 = expectedWeightsL0.to(device)
-    assert torch.allclose(mlp.weights[0], expectedWeightsL0)
+    assert torch.allclose(mlp.m_weights[0], expectedWeightsL0)
 
 def test_mlp_train_numBatches():
     X = torch.randn(5, 10)
     y = torch.randn(1, 10)
 
     activationFunctionID = 'sigmoid'
-    layer0 = MLPLayerConfig(1, activationFunctionID)
+    layer0 = NNLayerConfig(1, activationFunctionID)
     layers = [layer0]    
     numInputNodes = X.shape[0]
     mlp = MLPModel(numInputNodes, layers)
@@ -119,16 +120,16 @@ def test_mlp_train_singleLayer_sigmoid_costs():
     y = torch.randn(1, 10).to(device)
 
     activationFunctionID = 'sigmoid'
-    layer0 = MLPLayerConfig(1, activationFunctionID)
+    layer0 = NNLayerConfig(1, activationFunctionID)
     layers = [layer0]    
     numInputNodes = X.shape[0]
     mlp = MLPModel(numInputNodes, layers)
 
     weightsCopy = []
-    for weight in mlp.weights:
+    for weight in mlp.m_weights:
         weightsCopy.append(weight.clone().detach())
     biasesCopy = []
-    for bias in mlp.biases:
+    for bias in mlp.m_biases:
         biasesCopy.append(bias.clone().detach())
 
     lossFunctionID = 'loss_cross_entropy'
@@ -162,17 +163,17 @@ def test_mlp_train_2Layer_softmax_costs():
 
     activationFunctionID0 = 'tanh'
     activationFunctionID1 = 'softmax'    
-    layer0 = MLPLayerConfig(4, activationFunctionID0)
-    layer1 = MLPLayerConfig(3, activationFunctionID1)
+    layer0 = NNLayerConfig(4, activationFunctionID0)
+    layer1 = NNLayerConfig(3, activationFunctionID1)
     layers = [layer0, layer1]
     numInputNodes = X.shape[0]
     mlp = MLPModel(numInputNodes, layers)
 
     weightsCopy = []
-    for weight in mlp.weights:
+    for weight in mlp.m_weights:
         weightsCopy.append(weight.clone().detach())
     biasesCopy = []
-    for bias in mlp.biases:
+    for bias in mlp.m_biases:
         biasesCopy.append(bias.clone().detach())
         
     lossFunctionID = 'loss_cross_entropy_softmax'
@@ -253,8 +254,8 @@ def test_mlp_train():
 
     activationFunctionID0 = 'tanh'
     activationFunctionID1 = 'softmax'    
-    layer0 = MLPLayerConfig(4, activationFunctionID0)
-    layer1 = MLPLayerConfig(3, activationFunctionID1)
+    layer0 = NNLayerConfig(4, activationFunctionID0)
+    layer1 = NNLayerConfig(3, activationFunctionID1)
     layers = [layer0, layer1]
     numInputNodes = X.shape[0]
     mlp = MLPModel(numInputNodes, layers)

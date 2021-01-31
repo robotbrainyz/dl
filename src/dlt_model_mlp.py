@@ -6,24 +6,9 @@ from dlt_back import back_softmax, back, back_linear
 from dlt_device import get_device
 from dlt_forward import forward
 from dlt_loss import compute_loss, compute_cost, loss_cross_entropy_back
+from dlt_model_config import NNLayerConfig
 from dlt_plot import plot_costs, plot_time
-
-class MLPLayerConfig:
-    ''' Configuration and settings for a layer in a multi-layer perceptron model.
-    '''
-    def init(self, numNodes, activationFunctionID):
-        ''' Initializes this layer configuration.
-
-        Args:
-            numNodes (int): Number of nodes in this layer.
-
-            activationFunctionID (string): Identifies the activation function for this layer. Needs to match one of the functions in dl_activate.py, e.g. sigmoid.
-        '''
-        self.numNodes = numNodes
-        self.activationFunctionID = activationFunctionID
-        
-    def __init__(self, numNodes, activationFunctionID):
-        self.init(numNodes, activationFunctionID)
+from dlt_weight_initializer import init_weights_He
 
 class MLPModel:
     ''' A multi-layer perceptron model.
@@ -33,13 +18,13 @@ class MLPModel:
         ''' Validates if a valid list of layer configuration objects is provided to initialize the multi-layer perceptron model.
 
         Args:
-            layerConfigs (list): A list of MLPLayerConfig objects.
+            layerConfigs (list): A list of NNLayerConfig objects.
         '''
         assert(layerConfigs is not None)
         assert(type(layerConfigs) is list)
         assert(len(layerConfigs) > 0)
         for layerConfig in layerConfigs:
-            assert(type(layerConfig) is MLPLayerConfig)
+            assert(type(layerConfig) is NNLayerConfig)
 
     def init(self, numInputNodes, layerConfigs):
         ''' Initializes this multi-layer perceptron (MLP) model.
@@ -49,24 +34,24 @@ class MLPModel:
         Args:
             numInputNodes (int): Number of input nodes in the input layer.
 
-            layerConfigs (list): List of MLPLayerConfig objects that define each layer in this MLP.
+            layerConfigs (list): List of NNLayerConfig objects that define each layer in this MLP.
         '''
         device = get_device()
     
         self.validateLayerConfigs(layerConfigs)
 
-        self.numInputNodes = numInputNodes
-        self.layerConfigs = layerConfigs # not including the input layer
+        self.m_numInputNodes = numInputNodes
+        self.m_layerConfigs = layerConfigs # not including the input layer
         
-        self.weights = []
-        self.weights.append(torch.zeros((layerConfigs[0].numNodes, numInputNodes)).to(device))
+        self.m_weights = []
+        self.m_weights.append(torch.zeros((layerConfigs[0].m_numNodes, self.m_numInputNodes)).to(device))
         if (len(layerConfigs) > 1):
             for i in range(1, len(layerConfigs)):
-                self.weights.append(torch.zeros((layerConfigs[i].numNodes, layerConfigs[i-1].numNodes)).to(device))
+                self.m_weights.append(torch.zeros((layerConfigs[i].m_numNodes, layerConfigs[i-1].m_numNodes)).to(device))
 
-        self.biases = []
+        self.m_biases = []
         for i in range(0, len(layerConfigs)):
-            self.biases.append(torch.zeros((layerConfigs[i].numNodes, 1)).to(device))
+            self.m_biases.append(torch.zeros((layerConfigs[i].m_numNodes, 1)).to(device))
             
     def __init__(self, numInputNodes, layerConfigs):
         self.init(numInputNodes, layerConfigs)
@@ -83,19 +68,19 @@ def mlp_init_weights(mlp, useSeeds=False):
         useSeeds (bool): Flag to indicate if seeds are used for random number generation. This is useful in testing where the same set of random numbers can be generated again to validate against the weight values.
     '''
     assert(type(mlp) is MLPModel)
-    assert(len(mlp.weights) > 0)
+    assert(len(mlp.m_weights) > 0)
 
     device = get_device()
 
     if (useSeeds):
         torch.manual_seed(0)
         
-    mlp.weights[0] = torch.randn(mlp.weights[0].shape[0], mlp.weights[0].shape[1]).to(device) * math.sqrt(2.0 / mlp.numInputNodes)
+    mlp.m_weights[0] = init_weights_He(mlp.m_weights[0].shape[0], mlp.m_weights[0].shape[1])
 
-    for i in range (1, len(mlp.weights)):
+    for i in range (1, len(mlp.m_weights)):
         if (useSeeds):
             torch.manual_seed(i)
-        mlp.weights[i] = torch.randn(mlp.weights[i].shape[0], mlp.weights[i].shape[1]).to(device) * math.sqrt(2.0 / mlp.weights[1].shape[1]) # Number of columns in weight matrix is the number of nodes in the previous layer.
+        mlp.m_weights[i] = init_weights_He(mlp.m_weights[i].shape[0], mlp.m_weights[i].shape[1])
     
 def mlp_set_weights(mlp, weights):
     ''' Sets the weight values in the given multi-layer perceptron with the given list of matrices.
@@ -143,10 +128,10 @@ def mlp_train(mlp, X, y, lossFunctionID, regularizer, optimizer, batchSize=2000,
         numBatches (int): Number of batches given the batchSize and number of training examples.
     '''
     # Number of input nodes should be the same as the number of rows in the input training data matrix
-    assert(mlp.weights[0].shape[1] == X.shape[0])
+    assert(mlp.m_weights[0].shape[1] == X.shape[0])
 
     # Number of output nodes should be the same as the number of rows in the training data expected output.
-    assert(mlp.weights[len(mlp.weights)-1].shape[0] == y.shape[0])
+    assert(mlp.m_weights[len(mlp.m_weights)-1].shape[0] == y.shape[0])
     
     assert(batchSize > 0)
     assert(X.shape[1] == y.shape[1])
@@ -176,32 +161,32 @@ def mlp_train(mlp, X, y, lossFunctionID, regularizer, optimizer, batchSize=2000,
             # Forward propagate
             aCache = [] # Cache to contain activation output of all layers
             zCache = [] # Cache to contain input to activation for all layers
-            for layerIndex in range(0, len(mlp.layerConfigs)):
+            for layerIndex in range(0, len(mlp.m_layerConfigs)):
                 if layerIndex > 0:
                     layerInput = aCache[layerIndex-1]
                 else:
                     layerInput = XBatch
                 z, a = forward(layerInput,
-                              mlp.weights[layerIndex],
-                              mlp.biases[layerIndex],
-                              mlp.layerConfigs[layerIndex].activationFunctionID)
+                              mlp.m_weights[layerIndex],
+                              mlp.m_biases[layerIndex],
+                              mlp.m_layerConfigs[layerIndex].m_activationFunctionID)
                 aCache.append(a.to(device))
                 zCache.append(z.to(device))
     
             # Compute Loss and cost
             yBatch_pred = aCache[len(aCache)-1] # Predicted output is activation output of last layer
             loss = compute_loss(yBatch, yBatch_pred, lossFunctionID)
-            regCost, regWeightsDelta = regularizer.regularize(mlp.weights, loss.shape[1])
+            regCost, regWeightsDelta = regularizer.regularize(mlp.m_weights, loss.shape[1])
             costs.append(compute_cost(loss+regCost)) # cost is the average loss per example
 
             # Back propagate
-            if (mlp.layerConfigs[len(mlp.layerConfigs)-1].activationFunctionID != 'softmax'):
+            if (mlp.m_layerConfigs[len(mlp.m_layerConfigs)-1].m_activationFunctionID != 'softmax'):
                 da = loss_cross_entropy_back(yBatch, yBatch_pred)
             else:
                 da = None
                 
-            for layerIndex in range(len(mlp.layerConfigs)-1, -1, -1):
-                layerActivationFunctionID = mlp.layerConfigs[layerIndex].activationFunctionID
+            for layerIndex in range(len(mlp.m_layerConfigs)-1, -1, -1):
+                layerActivationFunctionID = mlp.m_layerConfigs[layerIndex].m_activationFunctionID
                 if (layerActivationFunctionID != 'softmax'):
                     dz = back(da, zCache[layerIndex], layerActivationFunctionID)
                 else:
@@ -210,11 +195,11 @@ def mlp_train(mlp, X, y, lossFunctionID, regularizer, optimizer, batchSize=2000,
                     aPrev = XBatch
                 else:
                     aPrev = aCache[layerIndex-1]
-                dw, db, da = back_linear(dz, aPrev, mlp.weights[layerIndex]) # Replace da to continue back prop in previous layer.
+                dw, db, da = back_linear(dz, aPrev, mlp.m_weights[layerIndex]) # Replace da to continue back prop in previous layer.
 
                 weightsDelta, biasesDelta = optimizer.optimize(dw, db, iteration, layerIndex)
-                mlp.weights[layerIndex] = mlp.weights[layerIndex] - learningRate * (weightsDelta + regWeightsDelta[layerIndex])
-                mlp.biases[layerIndex] = mlp.biases[layerIndex] - learningRate * biasesDelta
+                mlp.m_weights[layerIndex] = mlp.m_weights[layerIndex] - learningRate * (weightsDelta + regWeightsDelta[layerIndex])
+                mlp.m_biases[layerIndex] = mlp.m_biases[layerIndex] - learningRate * biasesDelta
                 iteration = iteration + 1
             endTime = time.time()
             elapsed = endTime-startTime
@@ -239,15 +224,15 @@ def mlp_predict(mlp, X):
         matrix: Predicted output for the given input X. The number of columns is the number of examples. The number of rows is the number of output features from the MLP.
     '''
     aCache = [] # Cache to contain activation output of all layers
-    for layerIndex in range(0, len(mlp.layerConfigs)):
+    for layerIndex in range(0, len(mlp.m_layerConfigs)):
         if layerIndex > 0:
             layerInput = aCache[layerIndex-1]
         else:
             layerInput = X
         z, a = forward(layerInput,
-                       mlp.weights[layerIndex],
-                       mlp.biases[layerIndex],
-                       mlp.layerConfigs[layerIndex].activationFunctionID)
+                       mlp.m_weights[layerIndex],
+                       mlp.m_biases[layerIndex],
+                       mlp.m_layerConfigs[layerIndex].m_activationFunctionID)
         aCache.append(a)
     
     # Predicted output is activation output of last layer
